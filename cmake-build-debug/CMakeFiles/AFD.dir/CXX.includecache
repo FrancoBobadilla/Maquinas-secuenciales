@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/AFD.cpp
+iostream
+-
+AFD.h
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/AFD.h
+
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/AFD.h
+Estado.h
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/Estado.h
+
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/Estado.cpp
+Estado.h
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/Estado.h
+
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/Estado.h
+
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/main.cpp
+iostream
+-
+AFD.h
+/cygdrive/c/Users/f_bob/CLionProjects/AFD/AFD.h
+
