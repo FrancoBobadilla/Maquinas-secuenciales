@@ -19,7 +19,7 @@ private:
 public:
     AFD(int, int);
 
-    int transicion(char);
+    void transicion(char);
 };
 
 #endif //AFD_AFD_H
