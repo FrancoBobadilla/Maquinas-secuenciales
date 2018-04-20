@@ -87,14 +87,15 @@ AFD::AFD(int a, int b) {
     }
 }
 
-void AFD::transicion(char entrada) { //debe verificarse que entrada pertenezca al alfabteo
-    int x = 0;
+void AFD::transicion(char entrada) {
+    int x = -1;
     for (int i = 0; i < nEAlf; ++i) {
         if (entrada == alf[i]) {
             x = i;
+            i = nEAlf;
         }
     }
-    if (x == nEAlf)throw 1;
+    if (x == -1)throw 1;
     estAct = f[estAct.nombre][x];
     cout << endl << "Estado " << estAct.nombre << " alcanzado" << endl;
     if (estAct.situacion) {
