@@ -145,20 +145,21 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
 
             cout << "Ingrese el símbolo de entrada: ";
             cin >> entTmp;
-            while (!existeEntrada(entTmp)) {
+            int entTmpIndex = getEntradaIndex(entTmp);
+            while (-1 == entTmpIndex) {
                 cout << endl << "Ingrese una entrada válida del autómata" << endl;
                 cin >> entTmp;
+                entTmpIndex = getEntradaIndex(entTmp);
             }
 
             cout << "Ingrese el valor del tope de la pila: ";
             cin >> topTmp;
-            while (!existeEntradaPila(topTmp)) {
+            int topTmpIndex = getEntradaPilaIndex(topTmp);
+            while (-1 == topTmpIndex) {
                 cout << endl << "Ingrese una entrada válida del lenguaje de pila del autómata" << endl;
                 cin >> topTmp;
+                topTmpIndex = getEntradaPilaIndex(topTmp);
             }
-
-            int entTmpIndex = getEntradaIndex(entTmp);
-            int topTmpIndex = getEntradaPilaIndex(topTmp);
 
             if (nullptr == f[estTmp][entTmpIndex][topTmpIndex]) {
                 cout << "Ingrese la cantidad de transiciones: ";
@@ -228,12 +229,12 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
     }
 }
 
-bool APila::existeEntrada(char t) {
-    for (int i = 0; i < this->nEAlf; ++i)
-        if (this->alf[i] == t)
-            return true;
-    return false;
-}
+//bool APila::existeEntrada(char t) {
+//    for (int i = 0; i < this->nEAlf; ++i)
+//        if (this->alf[i] == t)
+//            return true;
+//    return false;
+//}
 
 bool APila::existeEntradaPila(char t) {
     for (int i = 0; i < this->nEAlfPila; ++i)

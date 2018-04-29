@@ -32,7 +32,7 @@ private:
     char *alfPila;
 
     //métodos privados
-    bool existeEntrada(char entrada);
+//    bool existeEntrada(char entrada);
 
     bool existeEntradaPila(char entradaPila);
 
