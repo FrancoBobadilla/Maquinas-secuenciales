@@ -11,7 +11,8 @@
 
 struct EstadoYPila {
     Estado f_estado;
-    char *f_pila;
+    char f_pila_1;//se apila primero
+    char f_pila_2;
 };
 
 class APila {
@@ -24,7 +25,7 @@ private:
 
     Estado estAct;
 
-    EstadoYPila ****f;  // es una matriz cubida que punteros a listas de estados y apilamientos
+    EstadoYPila ****f;  // es una matriz cubica de punteros a estructura de estados y apilamientos (para que pueda ser null)
 
     //Propios del Autómata de Pila
     Stack<char> pila;
@@ -32,9 +33,11 @@ private:
     char *alfPila;
 
     //métodos privados
-//    bool existeEntrada(char entrada);
+    /*
+    bool existeEntrada(char entrada);
 
     bool existeEntradaPila(char entradaPila);
+     */
 
     int getEntradaIndex(char simboloEntrada);
 

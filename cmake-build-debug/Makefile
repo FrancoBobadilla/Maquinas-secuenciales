@@ -150,6 +150,33 @@ AFD.cpp.s:
 	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/AFD.cpp.s
 .PHONY : AFD.cpp.s
 
+APila.o: APila.cpp.o
+
+.PHONY : APila.o
+
+# target to build an object file
+APila.cpp.o:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APila.cpp.o
+.PHONY : APila.cpp.o
+
+APila.i: APila.cpp.i
+
+.PHONY : APila.i
+
+# target to preprocess a source file
+APila.cpp.i:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APila.cpp.i
+.PHONY : APila.cpp.i
+
+APila.s: APila.cpp.s
+
+.PHONY : APila.s
+
+# target to generate assembly for a file
+APila.cpp.s:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APila.cpp.s
+.PHONY : APila.cpp.s
+
 Estado.o: Estado.cpp.o
 
 .PHONY : Estado.o
@@ -216,6 +243,9 @@ help:
 	@echo "... AFD.o"
 	@echo "... AFD.i"
 	@echo "... AFD.s"
+	@echo "... APila.o"
+	@echo "... APila.i"
+	@echo "... APila.s"
 	@echo "... Estado.o"
 	@echo "... Estado.i"
 	@echo "... Estado.s"
