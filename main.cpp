@@ -37,9 +37,11 @@ int main() {
         cin >> entrada;
         if (entrada != '/') {
             try {
-                A.transicion(entrada);
+                //A.transicion(entrada);
+                if (!A.transicion(entrada)) {                               //
+                    cout << endl << "Transición no definida" << endl;       //
+                }                                                           //
             } catch (int e) {
-                if (e == -2) return 0;                                      //
                 cout << endl << "Entrada inválida" << endl;
             }
         }

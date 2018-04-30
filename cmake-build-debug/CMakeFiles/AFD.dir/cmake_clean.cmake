@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/AFD.dir/AFD.cpp.o"
   "CMakeFiles/AFD.dir/Estado.cpp.o"
   "CMakeFiles/AFD.dir/APila.cpp.o"
+  "CMakeFiles/AFD.dir/APilaHandler.cpp.o"
   "AFD.pdb"
   "AFD.exe"
   "libAFD.dll.a"

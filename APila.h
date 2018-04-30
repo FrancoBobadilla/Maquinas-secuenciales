@@ -34,11 +34,6 @@ private:
     Stack<char> pila;
 
     //métodos privados
-    /*
-    bool existeEntrada(char entrada);
-
-    bool existeEntradaPila(char entradaPila);
-     */
 
     int getEntradaIndex(char simboloEntrada);
 
@@ -47,7 +42,7 @@ private:
 public:
     APila(int nroEstados, int nroAlfEntrada, int nroAlfPila);
 
-    void transicion(char);
+    bool transicion(char);
 };
 
 

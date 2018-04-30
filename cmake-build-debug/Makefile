@@ -177,6 +177,33 @@ APila.cpp.s:
 	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APila.cpp.s
 .PHONY : APila.cpp.s
 
+APilaHandler.o: APilaHandler.cpp.o
+
+.PHONY : APilaHandler.o
+
+# target to build an object file
+APilaHandler.cpp.o:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APilaHandler.cpp.o
+.PHONY : APilaHandler.cpp.o
+
+APilaHandler.i: APilaHandler.cpp.i
+
+.PHONY : APilaHandler.i
+
+# target to preprocess a source file
+APilaHandler.cpp.i:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APilaHandler.cpp.i
+.PHONY : APilaHandler.cpp.i
+
+APilaHandler.s: APilaHandler.cpp.s
+
+.PHONY : APilaHandler.s
+
+# target to generate assembly for a file
+APilaHandler.cpp.s:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APilaHandler.cpp.s
+.PHONY : APilaHandler.cpp.s
+
 Estado.o: Estado.cpp.o
 
 .PHONY : Estado.o
@@ -246,6 +273,9 @@ help:
 	@echo "... APila.o"
 	@echo "... APila.i"
 	@echo "... APila.s"
+	@echo "... APilaHandler.o"
+	@echo "... APilaHandler.i"
+	@echo "... APilaHandler.s"
 	@echo "... Estado.o"
 	@echo "... Estado.i"
 	@echo "... Estado.s"

@@ -12,8 +12,6 @@ using namespace std;
 APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
     if (nroEst <= 0 || nroAlfEnt <= 0 || nroAlfPila <= 0)throw -1;
 
-    cout << endl << "Note que lambda se representa por: " << LAMBDA << endl;
-
     this->nE = nroEst;
     this->est = new Estado[this->nE];
 
@@ -65,19 +63,6 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
             } else {
                 this->alf[i] = nuevEnt;
             }
-            /*
-            for (int j = 0; j < i; ++j) {
-                if (alf[j] == nuevEnt) {
-                    cout << endl << "Entrada repetida!" << "Ingresar nuevamente la entrada" << endl << endl;
-                    i--;
-                    j = i + 1;
-                }
-                x = j + 1;
-            }
-            if (x == i) {
-                this->alf[i] = nuevEnt;
-            }
-            */
         }
     }
 
@@ -114,8 +99,8 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
      * donde no se admiten entradas repetidas (LAMBDA y '#' cuentan)
      */
     //x = 0;
-    cout << endl << "Ingresar el alfabeto de la pila" << endl;
-    cout << "Recuerde que '#' es símbolo de pila vacía y '" << LAMBDA << "' es el simbolo de pila vacía" << endl;
+    cout << endl << "Ingresar el alfabeto de la pila" << endl << "Recuerde que '#' es símbolo de pila vacía y '"
+         << LAMBDA << "' es el simbolo de pila vacía" << endl;
     for (int l = 0; l < this->nEAlfPila - 2; ++l) {
         cout << " Símbolo de pila número " << l << ": ";
         cin >> nuevEnt;
@@ -125,19 +110,6 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
         } else {
             this->alfPila[l] = nuevEnt;
         }
-        /*
-        for (int m = 0; m < l; ++m) {
-            if (this->alfPila[m] == nuevEnt) {
-                cout << endl << "Entrada repetida!" << "Ingresar nuevamente la entrada" << endl << endl;
-                l--;
-                m = l + 1;
-            }
-            x = m + 1;
-        }
-        if (x == l) {
-            this->alfPila[l] = nuevEnt;
-        }
-         */
     }
 
     /*
@@ -191,8 +163,8 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
                     cin >> cantTran;
                 }
 
-                f[estTmp][entTmpIndex][topTmpIndex] = new EstadoYPila[cantTran];
-
+                f[estTmp][entTmpIndex][topTmpIndex] = new EstadoYPila[cantTran + 1];
+                f[estTmp][entTmpIndex][topTmpIndex][cantTran].f_estado.nombre = -1;
                 cout << "Entonces: estando en el Estado " << estTmp << " con la entrada " << entTmp
                      << " y en la pila hay " << topTmp << endl;
 
@@ -208,7 +180,7 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
                         cin >> estDestino;
                     }
 
-                    //Situacion del tope de pila del cual se parte
+                    //Situacion del tope de pila con el cual se parte
                     while (newChar != '0' && newChar != '1') {
                         cout << "¿Se conservará el tope de pila durante la transicion? (1/0): ";
                         cin >> newChar;
@@ -234,34 +206,6 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
                         charPtrTmp = (char) 0;
                     else
                         charPtrTmp = topTmp;
-
-                    /*
-                    //Primer elemento que se apila
-                    cout << "\tIngrese el primer elemento a apilar ('" << LAMBDA << "' para no apilar nada): ";
-                    cin >> topTmp;
-                    while ((getEntradaPilaIndex(topTmp) == -1)
-                           || (topTmp == '#' ) {
-                        cout << "\tIngrese un elemento válido a apilar ('" << LAMBDA << "' para no apilar nada): ";
-                        cin >> topTmp;
-                    }
-
-                    if (LAMBDA == topTmp) {
-                        f[estTmp][entTmpIndex][topTmpIndex][i] = {this->est[estDestino], nullptr};//solo se desapila
-                    } else {
-                        charPtrTmp[0] = topTmp;
-
-                        //Segundo elemento que se apila
-                        cout << "\tIngrese el segundo elemento a apilar ('" << LAMBDA << "', si no hay): ";
-                        cin >> topTmp;
-                        while (getEntradaPilaIndex(topTmp) == -1) {
-                            cout << "\tIngrese un elemento válido a apilar ('" << LAMBDA << "', si no hay): ";
-                            cin >> topTmp;
-                        }
-                        if (LAMBDA == topTmp)
-                            charPtrTmp[1] = (char) 0;
-                        else
-                            charPtrTmp[1] = topTmp;
-                     */
                     f[estTmp][entTmpIndex][topTmpIndex][i] = {this->est[estDestino], charPtrTmp, u};
                 }
             } else {
@@ -294,34 +238,28 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
     }
 }
 
-void APila::transicion(char nuevEnt) {
-    char topePila = pila.pop();                                             //
-    int indexAlfEnt = getEntradaIndex(nuevEnt);                             //
-    if (indexAlfEnt == -1) throw -1;                                        //
-    EstadoYPila *resTransicion = f[estAct.nombre][indexAlfEnt][topePila];   //
-    if (resTransicion == nullptr) throw -2;                                 //
-    if (resTransicion->f_tope) pila.push(topePila);                         //
-    pila.push(resTransicion->f_pila);                                       //
-    estAct = resTransicion->f_estado;                                       //
-    cout << endl << "Estado " << estAct.nombre << " alcanzado" << endl;     //
-    if (estAct.situacion) cout << endl << "SALIDA" << endl;                 //
+bool APila::transicion(char nuevEnt) {
+    int i=0;
+    char topePila = pila.pop();
+    int indexAlfEnt = getEntradaIndex(nuevEnt);
+    if (indexAlfEnt == -1) throw -1;
+    EstadoYPila *resTransicion = f[estAct.nombre][indexAlfEnt][topePila];
+    if (resTransicion == nullptr) {
+        pila.push(topePila);
+        return false;
+    }
+    while (resTransicion[i].f_estado.nombre != -1) {
+        //hacer bien
+        if (resTransicion[i].f_tope) pila.push(topePila);
+        pila.push(resTransicion[i].f_pila);
+        estAct = resTransicion[i].f_estado;
+        cout << endl << "Estado " << estAct.nombre << " alcanzado" << endl;
+        if (estAct.situacion) cout << endl << "SALIDA" << endl;
+        transicion('$');
+    }
+    return true;
 }
 
-/*
-bool APila::existeEntrada(char t) {
-    for (int i = 0; i < this->nEAlf; ++i)
-        if (this->alf[i] == t)
-            return true;
-    return false;
-}
-
-bool APila::existeEntradaPila(char t) {
-    for (int i = 0; i < this->nEAlfPila; ++i)
-        if (this->alfPila[i] == t)
-            return true;
-    return false;
-}
-*/
 int APila::getEntradaIndex(char s) {
     for (int i = 0; i < this->nEAlf; ++i) {
         if (this->alf[i] == s)
