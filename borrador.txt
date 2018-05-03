@@ -1,0 +1,86 @@
+probar AP
+
+void probarAP(int cantEstados, int cantEntradas) {
+    int cantAlfabetoPila = 0;
+
+    while (cantAlfabetoPila <= 0) {
+        cout << endl << "Ingrese tamaño del alfabeto de la Pila: ";
+        cin >> cantAlfabetoPila;
+        if (cantAlfabetoPila <= 0)
+            cout << endl << "Ingrese una cantidad válida" << endl;
+    }
+
+    APila AP(cantEstados, cantEntradas, cantAlfabetoPila);
+
+    cout << "FIN PRUEBA AP" << endl;
+}
+
+
+
+dos funciones de transición
+
+do {
+        cout << "Ingresar nueva transición? (0/1): ";
+        cin >> t;
+
+        if (1 == t) {
+            cout << "Ingrese el Estado del cual se origina la transición: ";
+            cin >> estTmp;
+            if (estTmp < this->nE && estTmp >= 0) {
+                cout << "Ingrese el símbolo de entrada: ";
+                cin >> entTmp;
+                if (existeEntrada(entTmp)) {
+                    cout << "Ingrese el valor del tope de la pila: ";
+                    cin >> topTmp;
+                    if (existeEntradaPila(topTmp)) {
+                        int entTmpIndex = getEntradaIndex(entTmp);
+                        int topTmpIndex = getEntradaPilaIndex(topTmp);
+                        if (nullptr == f[estTmp][entTmpIndex][topTmpIndex]) {
+                            cout << "Ingrese la cantidad de transiciones: ";
+                            cin >> cantTran;
+                            f[estTmp][entTmpIndex][topTmpIndex] = new EstadoYPila[cantTran];
+                            cout << "Entonces: estando en el Estado " << estTmp << " con la entrada " << entTmp
+                                 << " y en la pila hay " << topTmp << endl;
+                            for (int i = 0; i < cantTran; ++i) {
+                                cout << "Posibilidad " << i + 1 << endl;
+                                cout << "Va al estado: ";
+                                cin >> estDestino;
+                                while (estDestino >= this->nE || estDestino < 0) {
+                                    cout << "Ingrese un estado válido del autómata: ";
+                                    cin >> estDestino;
+                                }
+                                cout << "Ingrese el primer elemento a apilar ('/', si no): ";
+                                cin >> topTmp;
+                                while ('/' != topTmp && !existeEntradaPila(topTmp)) {
+                                    cout << "Ingrese un elemento válido a apilar ('/', si no): ";
+                                    cin >> topTmp;
+                                }
+                                if ('/' == topTmp) {
+                                    f[estTmp][entTmpIndex][topTmpIndex][i] = {this->est[estDestino], nullptr};
+                                } else {
+                                    charPtrTmp[0] = topTmp;
+                                    cout << "Ingrese el segundo elemento a apilar ('/', si no hay): ";
+                                    cin >> topTmp;
+                                    while ('/' != topTmp && !existeEntradaPila(topTmp)) {
+                                        cout << "Ingrese un elemento válido a apilar ('/', si no): ";
+                                        cin >> topTmp;
+                                    }
+                                    if ('/' == topTmp)
+                                        charPtrTmp[1] = (char) 0;
+                                    else
+                                        charPtrTmp[1] = topTmp;
+                                    f[estTmp][entTmpIndex][topTmpIndex][i] = {this->est[estDestino], charPtrTmp};
+                                }
+                            }
+                        } else
+                            cout << endl << "Ya se ha definido esa transición" << endl;
+                    } else
+                        cout << endl << "Ingrese una entrada válida del lenguaje de pila del autómata" << endl;
+                } else
+                    cout << endl << "Ingrese una entrada válida del autómata" << endl;
+            } else
+                cout << endl << "Ingrese un estado válido del autómata" << endl;
+        }
+
+    } while (1 == t);
+
