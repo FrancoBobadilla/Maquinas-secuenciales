@@ -5,21 +5,23 @@
 #ifndef AFD_AFD_H
 #define AFD_AFD_H
 
-#include "Estado.h"
+#include "Automata.h"
 
-class AFD {
+class AFD : public Automata {
 private:
-    int nE;
-    Estado *est;
-    int nEAlf;
-    char *alf;
-    Estado estAct;
-    //char entAct;
-    Estado **f;
-public:
-    AFD(int, int);
+    Estado ***f;        // para poder ser nullptr
 
-    void transicion(char);
+    bool isReadyF();
+
+public:
+    AFD(unsigned int cantidadEstados, unsigned int tamanoAlfabeto);
+
+    void setF(std::string nombreEstadoSalida, char entrada, std::string nombreEstadoDestino);
+
+    virtual Estado transicion(char);
 };
+
+
+//falta corroborar que haya al menos un estado que sea de salida
 
 #endif //AFD_AFD_H

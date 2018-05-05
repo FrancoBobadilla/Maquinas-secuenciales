@@ -7,29 +7,22 @@
 
 
 #include "Data_Structures/Stack.h"
-#include "Estado.h"
+#include "Automata.h"
 
-struct EstadoYPila {
+struct ElementosTransicionPila {
     Estado f_estado;
     char f_pila;
     bool f_tope;
 };
 
-class APila {
+class APila : public Automata {
 private:
-    Estado estAct;
-
-    EstadoYPila ****f;  // es una matriz cubica de punteros a estructura de estados y apilamientos (para que pueda ser null)
-
-    int nE;
-    Estado *est;
-
-    int nEAlf;
-    char *alf;
+    // es una matriz cubica de punteros a estructura de estados y apilamientos (para que pueda ser null)
+    ElementosTransicionPila ****f;
 
     //Propios del Autómata de Pila
-    int nEAlfPila;
-    char *alfPila;
+    int nroElementosAlfabetoPila;
+    char *alfabetoPila;
 
     Stack<char> pila;
 
@@ -40,9 +33,9 @@ private:
     int getEntradaPilaIndex(char simboloEntradaPila);
 
 public:
-    APila(int nroEstados, int nroAlfEntrada, int nroAlfPila);
+    APila(unsigned int nroEstados, unsigned int nroAlfEntrada, unsigned int nroAlfPila);
 
-    void transicion(char);
+   void transicion(char);
 };
 
 

@@ -26,7 +26,7 @@ do {
         if (1 == t) {
             cout << "Ingrese el Estado del cual se origina la transición: ";
             cin >> estTmp;
-            if (estTmp < this->nE && estTmp >= 0) {
+            if (estTmp < this->nroEstados && estTmp >= 0) {
                 cout << "Ingrese el símbolo de entrada: ";
                 cin >> entTmp;
                 if (existeEntrada(entTmp)) {
@@ -45,7 +45,7 @@ do {
                                 cout << "Posibilidad " << i + 1 << endl;
                                 cout << "Va al estado: ";
                                 cin >> estDestino;
-                                while (estDestino >= this->nE || estDestino < 0) {
+                                while (estDestino >= this->nroEstados || estDestino < 0) {
                                     cout << "Ingrese un estado válido del autómata: ";
                                     cin >> estDestino;
                                 }

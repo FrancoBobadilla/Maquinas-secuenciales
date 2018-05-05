@@ -6,9 +6,11 @@
 #define AFD_ESTADO_H
 
 
+#include <iostream>
+
 class Estado {
 public:
-    int nombre;
+    std::string nombre;
     bool situacion;
 
     void operator=(const Estado &);

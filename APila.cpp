@@ -9,32 +9,32 @@
 
 using namespace std;
 
-APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
+APila::APila(unsigned int nroEst, unsigned int nroAlfEnt, unsigned int nroAlfPila) : Automata() {
     if (nroEst <= 0 || nroAlfEnt <= 0 || nroAlfPila <= 0)throw -1;
 
     cout << endl << "Note que lambda se representa por: " << LAMBDA << endl;
 
-    this->nE = nroEst;
-    this->est = new Estado[this->nE];
+    this->nroEstados = nroEst;
+    this->estados = new Estado[this->nroEstados];
 
-    this->nEAlf = nroAlfEnt + 1;                    // OJO ACA
-    this->alf = new char[this->nEAlf];              //para aceptar transición lambda
-    this->alf[nEAlf - 1] = LAMBDA;
+    this->nroElementosAlfabeto = nroAlfEnt + 1;                    // OJO ACA
+    this->alfabeto = new char[this->nroElementosAlfabeto];              //para aceptar transición lambda
+    this->alfabeto[nroElementosAlfabeto - 1] = LAMBDA;
 
-    this->nEAlfPila = nroAlfPila + 2;               // OJO ACA
-    this->alfPila = new char[this->nEAlfPila];      //para aceptar simbolo de pila vacía
-    this->alfPila[this->nEAlfPila - 2] = '#';
-    this->alfPila[this->nEAlfPila - 1] = LAMBDA;
+    this->nroElementosAlfabetoPila = nroAlfPila + 2;               // OJO ACA
+    this->alfabetoPila = new char[this->nroElementosAlfabetoPila];      //para aceptar simbolo de pila vacía
+    this->alfabetoPila[this->nroElementosAlfabetoPila - 2] = '#';
+    this->alfabetoPila[this->nroElementosAlfabetoPila - 1] = LAMBDA;
 
 
     //f [ESTADO ACTUAL] [ENTRADA] [TOPE DE PILA] = EstadoYPila*
-    f = new EstadoYPila ***[this->nE];
+    f = new ElementosTransicionPila ***[this->nroEstados];
 
-    for (int i = 0; i < this->nE; ++i) {
-        f[i] = new EstadoYPila **[this->nEAlf];
-        for (int j = 0; j < this->nEAlf; ++j) {
-            f[i][j] = new EstadoYPila *[this->nEAlfPila];
-            for (int k = 0; k < nEAlfPila; ++k)
+    for (int i = 0; i < this->nroEstados; ++i) {
+        f[i] = new ElementosTransicionPila **[this->nroElementosAlfabeto];
+        for (int j = 0; j < this->nroElementosAlfabeto; ++j) {
+            f[i][j] = new ElementosTransicionPila *[this->nroElementosAlfabetoPila];
+            for (int k = 0; k < nroElementosAlfabetoPila; ++k)
                 f[i][j][k] = nullptr;
         }
     }
@@ -49,7 +49,7 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
     char nuevEnt;
     //int x = 0;
     cout << endl << "Ingresar el alfabeto de entrada" << endl;
-    for (int i = 0; i < nEAlf - 1; i++) {
+    for (int i = 0; i < nroElementosAlfabeto - 1; i++) {
         cout << " Entrada " << i << " ('/' no admitido): ";
         cin >> nuevEnt;
         if (nuevEnt == '/') {
@@ -63,7 +63,7 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
                      << endl;
                 i--;
             } else {
-                this->alf[i] = nuevEnt;
+                this->alfabeto[i] = nuevEnt;
             }
         }
     }
@@ -71,23 +71,23 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
     /*
      * El siguiente bloque es para definir la situacion de los estados est[] en est[].situacion,
      * que solo pueden tomar los valores '0' o '1'
-     * y nE es la cantidad de estados
+     * y nroEstados es la cantidad de estados
      *
      * Se deberia exportar método en la clase abstracta
      */
     cout << endl << "Ingresar situaciones de los estados" << endl;
-    for (int i = 0; i < this->nE; i++) {
-        this->est[i].nombre = i;  //podria sacarse el atributo nombre de los estados
+    for (int i = 0; i < this->nroEstados; i++) {
+        this->estados[i].nombre = i;  //podria sacarse el atributo nombre de los estados
         char nuevSit = 'a';
         while (nuevSit != '0' && nuevSit != '1') {
             cout << " El estado " << i << " ¿es de salida? (1/0): ";
             cin >> nuevSit;
             if (nuevSit == '0') {
-                est[i].situacion = false;
+                estados[i].situacion = false;
 
             } else {
                 if (nuevSit == '1') {
-                    est[i].situacion = true;
+                    estados[i].situacion = true;
                 } else {
                     cout << "Ingrese un caracter valido" << endl;
                 }
@@ -103,14 +103,14 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
 
     cout << endl << "Ingresar el alfabeto de la pila" << endl << "Recuerde que '#' es símbolo de pila vacía y '"
          << LAMBDA << "' es el simbolo de pila vacía" << endl;
-    for (int l = 0; l < this->nEAlfPila - 2; ++l) {
+    for (int l = 0; l < this->nroElementosAlfabetoPila - 2; ++l) {
         cout << " Símbolo de pila número " << l << ": ";
         cin >> nuevEnt;
         if (getEntradaPilaIndex(nuevEnt) != -1) {
             cout << endl << "Entrada repetida!" << "Ingresar nuevamente la entrada" << endl << endl;
             l--;
         } else {
-            this->alfPila[l] = nuevEnt;
+            this->alfabetoPila[l] = nuevEnt;
         }
     }
 
@@ -130,7 +130,7 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
             //Estado del cual se parte
             cout << "Ingrese el Estado del cual se origina la transición: ";
             cin >> estTmp;
-            while (estTmp >= this->nE || estTmp < 0) {
+            while (estTmp >= this->nroEstados || estTmp < 0) {
                 cout << endl << "Ingrese un estado válido del autómata" << endl;
                 cin >> estTmp;
             }
@@ -165,7 +165,7 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
                     cin >> cantTran;
                 }
 
-                f[estTmp][entTmpIndex][topTmpIndex] = new EstadoYPila[cantTran];
+                f[estTmp][entTmpIndex][topTmpIndex] = new ElementosTransicionPila[cantTran];
 
                 cout << "Entonces: estando en el Estado " << estTmp << " con la entrada " << entTmp
                      << " y en la pila hay " << topTmp << endl;
@@ -177,7 +177,7 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
                     //Estado al cual se llega
                     cout << "\tVa al estado: ";
                     cin >> estDestino;
-                    while (estDestino >= this->nE || estDestino < 0) {
+                    while (estDestino >= this->nroEstados || estDestino < 0) {
                         cout << "\tIngrese un estado válido del autómata: ";
                         cin >> estDestino;
                     }
@@ -209,7 +209,7 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
                     else
                         charPtrTmp = topTmp;
 
-                    f[estTmp][entTmpIndex][topTmpIndex][i] = {this->est[estDestino], charPtrTmp, u};
+                    f[estTmp][entTmpIndex][topTmpIndex][i] = {this->estados[estDestino], charPtrTmp, u};
                 }
             } else {
                 cout << endl << "Ya se ha definido esa transición" << endl;
@@ -227,16 +227,16 @@ APila::APila(int nroEst, int nroAlfEnt, int nroAlfPila) {
      * Se deberia exportar método en la clase abstracta
      */
     int n = -1;
-    while (n < 0 || n >= nE) {
+    while (n < 0 || n >= nroEstados) {
         cout << endl << "Estado inicial: Estado ";
         cin >>
             n;
-        if (n < 0 || n >= nE) {
+        if (n < 0 || n >= nroEstados) {
             cout << endl << "Ingrese un estado válido del autómata" <<
                  endl;
         } else {
             this->
-                    estAct = this->est[n];
+                    estadoActual = this->estados[n];
         }
     }
 }
@@ -246,29 +246,29 @@ void APila::transicion(char nuevEnt) {
     int indexAlfEnt = getEntradaIndex(nuevEnt);
     if (indexAlfEnt == -1)
         throw -1;
-    EstadoYPila *resTransicion = f[estAct.nombre][indexAlfEnt][topePila];
+    ElementosTransicionPila *resTransicion = f[estadoActual.nombre][indexAlfEnt][topePila];
     if (resTransicion == nullptr)
         throw -2;
     if (resTransicion->f_tope)
         pila.push(topePila);
     pila.push(resTransicion->f_pila);
-    estAct = resTransicion->f_estado;
-    cout << endl << "Estado " << estAct.nombre << " alcanzado" << endl;
-    if (estAct.situacion)
+    estadoActual = resTransicion->f_estado;
+    cout << endl << "Estado " << estadoActual.nombre << " alcanzado" << endl;
+    if (estadoActual.situacion)
         cout << endl << "SALIDA" << endl;
 }
 
 int APila::getEntradaIndex(char s) {
-    for (int i = 0; i < this->nEAlf; ++i) {
-        if (this->alf[i] == s)
+    for (int i = 0; i < this->nroElementosAlfabeto; ++i) {
+        if (this->alfabeto[i] == s)
             return i;
     }
     return -1;
 }
 
 int APila::getEntradaPilaIndex(char s) {
-    for (int i = 0; i < this->nEAlfPila; ++i) {
-        if (this->alfPila[i] == s)
+    for (int i = 0; i < this->nroElementosAlfabetoPila; ++i) {
+        if (this->alfabetoPila[i] == s)
             return i;
     }
     return -1;
