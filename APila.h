@@ -10,9 +10,9 @@
 #include "Automata.h"
 
 struct ElementosTransicionPila {
-    Estado f_estado;
-    char f_pila;
-    bool f_tope;
+    Estado estado;
+    bool conservarTope;
+    char apilamiento;
 };
 
 class APila : public Automata {
@@ -20,23 +20,34 @@ private:
     // es una matriz cubica de punteros a estructura de estados y apilamientos (para que pueda ser null)
     ElementosTransicionPila ****f;
 
-    //Propios del Autómata de Pila
-    int nroElementosAlfabetoPila;
+    unsigned int nroElementosAlfabetoPila;
+    unsigned int cantActualElementosAlfabetoPila;
     char *alfabetoPila;
 
     Stack<char> pila;
 
-    //métodos privados
-
-    int getEntradaIndex(char simboloEntrada);
-
-    int getEntradaPilaIndex(char simboloEntradaPila);
+    //métodos auxiliares
+    unsigned int getAlfabetoPilaIndex(char simboloEntradaPila);
 
 public:
-    APila(unsigned int nroEstados, unsigned int nroAlfEntrada, unsigned int nroAlfPila);
+    APila(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoPila);
 
-   void transicion(char);
+    virtual Estado transicion(char);
+
+    void setF(std::string nombreEstadoSalida, char entrada, char valorPila, std::string nombreEstadoDestino,
+              bool conservarTope, char apilamiento);
+
+    void setAlfabetoPila(char);
 };
 
 
 #endif //AFD_APILA_H
+
+
+/*
+ * El automata no tiene transiciones lambda
+ * El automata no tiene transiciones "n-arias"
+ *
+ * Lo no determinista se reduce a no definir todas las transiciones
+ *
+ * */

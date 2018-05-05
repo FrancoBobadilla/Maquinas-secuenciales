@@ -5,6 +5,8 @@
 #include "Automata.h"
 
 Automata::Automata(unsigned int cantEstados, unsigned int tamAlfabeto) {
+    if (0 >= cantEstados || 0 >= tamAlfabeto)
+        throw 0;
     this->nroEstados = cantEstados;
     this->cantActualEstados = 0;
     this->estados = new Estado[cantEstados];
@@ -46,6 +48,10 @@ void Automata::setEstadoActual(std::string nombreEstado) {
     this->estadoActual = this->estados[getEstadoIndex(nombreEstado)];
 }
 
+/*
+   * Este bloque es para definir el estado inicial del automata,
+   * que pertenece a est[]
+   */
 void Automata::setEstadoInicial(std::string nombreEstadoInicial) {
     //deberia chequear que no se haya ingresado un estado inicial previamente;
     this->setEstadoActual(nombreEstadoInicial);
@@ -54,6 +60,12 @@ void Automata::setEstadoInicial(std::string nombreEstadoInicial) {
 unsigned int Automata::getNroElementosAlfabeto() const {
     return this->nroElementosAlfabeto;
 }
+
+/*
+     * El siguiente bloque es para cargar el alfabeto de entrada de tamaño nEAlf en alf[],
+     * y tampoco se admiten entradas repetidas
+     *
+     */
 
 void Automata::setAlfabeto(char c) {
     if (this->cantActualElementosAlfabeto >= this->nroElementosAlfabeto)
