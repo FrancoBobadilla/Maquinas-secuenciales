@@ -12,16 +12,14 @@ protected:
     unsigned int nroEstados;
     unsigned int cantActualEstados;
     Estado *estados;
-    Estado estadoActual;            // por que no pointer? const ptr o ptr const
+    Estado *estadoActual;
 
     unsigned int nroElementosAlfabeto;
     unsigned int cantActualElementosAlfabeto;
     char *alfabeto;
 
-    bool isCargado;
-
     //metodos auxiliares
-    unsigned int getEstadoIndex(std::string nombreEstado);     // esto esta mal, deberia devolver unsigned int
+    unsigned int getEstadoIndex(std::string nombreEstado);
 
     unsigned int getAlfabetoIndex(char elementoAlfabeto);
 

@@ -5,22 +5,18 @@
 #include "Automata.h"
 
 Automata::Automata(unsigned int cantEstados, unsigned int tamAlfabeto) {
-    if (0 >= cantEstados || 0 >= tamAlfabeto)
+    if (0 >= cantEstados || 0 >= tamAlfabeto) //si la cantidad de estados es uInt, ¿no es siempre >= 0?
         throw 0;
     this->nroEstados = cantEstados;
     this->cantActualEstados = 0;
     this->estados = new Estado[cantEstados];
-//    this->estadoActual = nullptr;   // esto esta mal
+    this->estadoActual = nullptr;
 
     this->nroElementosAlfabeto = tamAlfabeto;
     this->cantActualElementosAlfabeto = 0;
     this->alfabeto = new char[tamAlfabeto];     //podria considerarse que sean strings
 
     this->isCargado = false;
-}
-
-unsigned int Automata::getNroEstados() const {
-    return this->nroEstados;
 }
 
 void Automata::setEstado(Estado e) {
@@ -40,12 +36,16 @@ void Automata::setEstado(Estado e) {
     throw -2;
 }
 
-std::string Automata::getEstadoActual() const {
-    return this->estadoActual.nombre;
+unsigned int Automata::getNroEstados() const {
+    return this->nroEstados;
 }
 
 void Automata::setEstadoActual(std::string nombreEstado) {
-    this->estadoActual = this->estados[getEstadoIndex(nombreEstado)];
+    *this->estadoActual = this->estados[getEstadoIndex(nombreEstado)];
+}
+
+std::string Automata::getEstadoActual() const {
+    return this->estadoActual->nombre;
 }
 
 /*
@@ -53,12 +53,9 @@ void Automata::setEstadoActual(std::string nombreEstado) {
    * que pertenece a est[]
    */
 void Automata::setEstadoInicial(std::string nombreEstadoInicial) {
-    //deberia chequear que no se haya ingresado un estado inicial previamente;
+    if (nullptr != estadoActual)
+        throw -1;       //ya está lleno
     this->setEstadoActual(nombreEstadoInicial);
-}
-
-unsigned int Automata::getNroElementosAlfabeto() const {
-    return this->nroElementosAlfabeto;
 }
 
 /*
@@ -83,9 +80,12 @@ void Automata::setAlfabeto(char c) {
     // conceptualmente esta mal: esta tomando como excepcion algo que esta bien
     throw -2;
 }
-
 // ERROR 1 lleno
 // ERROR 2 Repetido
+
+unsigned int Automata::getNroElementosAlfabeto() const {
+    return this->nroElementosAlfabeto;
+}
 
 unsigned int Automata::getEstadoIndex(std::string e) {
     for (unsigned int i = 0; i < this->cantActualEstados; ++i) {

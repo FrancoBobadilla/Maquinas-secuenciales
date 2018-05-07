@@ -4,9 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/cygdrive/c/Users/f_bob/CLionProjects/AFD/AFD.cpp" "/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/CMakeFiles/AFD.dir/AFD.cpp.o"
-  "/cygdrive/c/Users/f_bob/CLionProjects/AFD/Estado.cpp" "/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/CMakeFiles/AFD.dir/Estado.cpp.o"
-  "/cygdrive/c/Users/f_bob/CLionProjects/AFD/main.cpp" "/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/CMakeFiles/AFD.dir/main.cpp.o"
+  "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/AFD.cpp" "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/CMakeFiles/AFD.dir/AFD.cpp.o"
+  "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/APila.cpp" "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/CMakeFiles/AFD.dir/APila.cpp.o"
+  "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Automata.cpp" "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/CMakeFiles/AFD.dir/Automata.cpp.o"
+  "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Estado.cpp" "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/CMakeFiles/AFD.dir/Estado.cpp.o"
+  "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/main.cpp" "/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/CMakeFiles/AFD.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

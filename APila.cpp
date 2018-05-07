@@ -9,7 +9,7 @@ APila::APila(unsigned int nroEst, unsigned int nroAlfEnt, unsigned int nroAlfPil
         throw 0;
 
     this->nroElementosAlfabetoPila = nroAlfPila;               // ahora el símbolo de pila vacia es isEmpty()
-    this->cantActualElementosAlfabetoPila = 0;                 // se denería considerar una columna mas para pila vacia
+    this->cantActualElementosAlfabetoPila = 0;                 // se debería considerar una columna mas para pila vacia
     this->alfabetoPila = new char[this->nroElementosAlfabetoPila];
 
 
@@ -94,17 +94,31 @@ void APila::setAlfabetoPila(char c) {
 Estado APila::transicion(char entrada) {
     // se deberia guardar una constante para que una vez efectuada la primer transicion no se pueda
     // modificar la funcion de transicion
-
-    unsigned int enrtadaIndex;
-
+    char topeDePila;
     try {
-        enrtadaIndex = this->getAlfabetoIndex(entrada);
+        topeDePila = pila.pop();
+    } catch (int exc) {
+        if (-11 == exc)
+            throw -20;
+    }
+
+    ElementosTransicionPila *salidaF;
+    try {
+        salidaF = this->f[this->getEstadoIndex(estadoActual->nombre)][this->getAlfabetoIndex(
+                entrada)][this->getAlfabetoPilaIndex(topeDePila)];
     } catch (int exc) {
         if (-1 == exc)
             throw -21;
     }
 
-    // anadir funcionalidad
+    if (true == salidaF->conservarTope)
+        pila.push(topeDePila);
+
+    pila.push(salidaF->apilamiento);
+
+    *estadoActual = salidaF->estado;
+
+    return *estadoActual;
 }
 
 unsigned int APila::getAlfabetoPilaIndex(char s) {
@@ -114,3 +128,4 @@ unsigned int APila::getAlfabetoPilaIndex(char s) {
     }
     throw -1;
 }
+

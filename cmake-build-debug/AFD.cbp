@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug"/>
+				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug"/>
+				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug"/>
+				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="AFD">
-				<Option output="/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/AFD.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug"/>
+				<Option output="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/AFD.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -52,15 +52,15 @@
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/../../../../lib/../include/w32api"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 AFD"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 AFD"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="AFD/fast">
-				<Option output="/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/AFD.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug"/>
+				<Option output="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/AFD.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -73,29 +73,47 @@
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/6.4.0/../../../../lib/../include/w32api"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 AFD/fast"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 AFD/fast"/>
+					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/AFD/AFD.cpp">
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/AFD.cpp">
 			<Option target="AFD"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/AFD/AFD.h">
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/AFD.h">
 			<Option target="AFD"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/AFD/Estado.cpp">
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/APila.cpp">
 			<Option target="AFD"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/AFD/Estado.h">
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/APila.h">
 			<Option target="AFD"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/AFD/main.cpp">
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Automata.cpp">
 			<Option target="AFD"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/AFD/CMakeLists.txt">
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Automata.h">
+			<Option target="AFD"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Data_Structures/Node.h">
+			<Option target="AFD"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Data_Structures/Stack.h">
+			<Option target="AFD"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Estado.cpp">
+			<Option target="AFD"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Estado.h">
+			<Option target="AFD"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/main.cpp">
+			<Option target="AFD"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

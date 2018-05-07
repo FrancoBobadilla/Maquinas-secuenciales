@@ -48,10 +48,10 @@ RM = /cygdrive/c/Users/f_bob/.CLion2018.1/system/cygwin_cmake/bin/cmake.exe -E r
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cygdrive/c/Users/f_bob/CLionProjects/AFD
+CMAKE_SOURCE_DIR = /cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug
+CMAKE_BINARY_DIR = /cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/CMakeFiles /cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/CMakeFiles /cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/f_bob/CLionProjects/AFD/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -150,6 +150,60 @@ AFD.cpp.s:
 	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/AFD.cpp.s
 .PHONY : AFD.cpp.s
 
+APila.o: APila.cpp.o
+
+.PHONY : APila.o
+
+# target to build an object file
+APila.cpp.o:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APila.cpp.o
+.PHONY : APila.cpp.o
+
+APila.i: APila.cpp.i
+
+.PHONY : APila.i
+
+# target to preprocess a source file
+APila.cpp.i:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APila.cpp.i
+.PHONY : APila.cpp.i
+
+APila.s: APila.cpp.s
+
+.PHONY : APila.s
+
+# target to generate assembly for a file
+APila.cpp.s:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/APila.cpp.s
+.PHONY : APila.cpp.s
+
+Automata.o: Automata.cpp.o
+
+.PHONY : Automata.o
+
+# target to build an object file
+Automata.cpp.o:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/Automata.cpp.o
+.PHONY : Automata.cpp.o
+
+Automata.i: Automata.cpp.i
+
+.PHONY : Automata.i
+
+# target to preprocess a source file
+Automata.cpp.i:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/Automata.cpp.i
+.PHONY : Automata.cpp.i
+
+Automata.s: Automata.cpp.s
+
+.PHONY : Automata.s
+
+# target to generate assembly for a file
+Automata.cpp.s:
+	$(MAKE) -f CMakeFiles/AFD.dir/build.make CMakeFiles/AFD.dir/Automata.cpp.s
+.PHONY : Automata.cpp.s
+
 Estado.o: Estado.cpp.o
 
 .PHONY : Estado.o
@@ -216,6 +270,12 @@ help:
 	@echo "... AFD.o"
 	@echo "... AFD.i"
 	@echo "... AFD.s"
+	@echo "... APila.o"
+	@echo "... APila.i"
+	@echo "... APila.s"
+	@echo "... Automata.o"
+	@echo "... Automata.i"
+	@echo "... Automata.s"
 	@echo "... Estado.o"
 	@echo "... Estado.i"
 	@echo "... Estado.s"
