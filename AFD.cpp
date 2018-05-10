@@ -42,7 +42,7 @@ void AFD::setF(std::string nombreEstadoSalida, char entrada, std::string nombreE
     *this->f[ESalida][entIndex] = this->estados[EDestino];
 }
 
-Estado AFD::transicion(char entrada) {
+void AFD::transicion(char entrada) {
     if (!this->Determinado)
         if (!this->isReadyF())
             throw -8;
@@ -52,7 +52,6 @@ Estado AFD::transicion(char entrada) {
         if (-1 == exc)
             throw -21;
     }
-    return *estadoActual;
 }
 
 bool AFD::isReadyF() {

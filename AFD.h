@@ -18,7 +18,7 @@ public:
 
     void setF(std::string nombreEstadoSalida, char entrada, std::string nombreEstadoDestino);
 
-    virtual Estado transicion(char);
+    virtual void transicion(char);
 };
 
 

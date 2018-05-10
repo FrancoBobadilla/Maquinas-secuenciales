@@ -32,12 +32,14 @@ private:
 public:
     APila(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoPila);
 
-    virtual Estado transicion(char);
+    virtual void transicion(char);
 
     void setF(std::string nombreEstadoSalida, char entrada, char valorPila, std::string nombreEstadoDestino,
               bool conservarTope, char apilamiento);
 
     void setAlfabetoPila(char);
+
+    char getTopeDePila();
 };
 
 

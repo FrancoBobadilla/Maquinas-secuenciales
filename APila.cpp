@@ -91,7 +91,7 @@ void APila::setAlfabetoPila(char c) {
     throw -2;
 }
 
-Estado APila::transicion(char entrada) {
+void APila::transicion(char entrada) {
     // se deberia guardar una constante para que una vez efectuada la primer transicion no se pueda
     // modificar la funcion de transicion
     char topeDePila;
@@ -117,8 +117,6 @@ Estado APila::transicion(char entrada) {
     pila.push(salidaF->apilamiento);
 
     *estadoActual = salidaF->estado;
-
-    return *estadoActual;
 }
 
 unsigned int APila::getAlfabetoPilaIndex(char s) {
@@ -127,5 +125,11 @@ unsigned int APila::getAlfabetoPilaIndex(char s) {
             return i;
     }
     throw -1;
+}
+
+char APila::getTopeDePila() {
+    char tmp = this->pila.pop();
+    this->pila.push(tmp);
+    return tmp;
 }
 

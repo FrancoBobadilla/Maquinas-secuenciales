@@ -11,6 +11,7 @@ using namespace std;
 // todas estas funciones podrían formar parte de la clase Automata,
 // proveen una forma estandar de interactuar con el automata.
 
+
 void cargarEstados(Automata *a) {
     Estado e;
     int tmp;
@@ -89,14 +90,21 @@ void cargarEstadoInicial(Automata *a) {
     }
 }
 
+void MostrarSalida(Automata *a) {
+    cout << "Se ha alcanzado el estado: " << a->getNombreEstadoActual() << "\n";
+    if (a->getSituacionEstadoActual()) {
+        cout << " \t SALIDA\n ";
+    }
+    //Se deberia considerar querer mostrrar el tope de pila para automatas de pila
+}
+
 void efectuarTransicion(Automata *a) {
     char ent;
     cout << "Efectuando nueva transicion\n";
     cout << "\tIngresar la entrada: ";
     cin >> ent;
-    Estado tmp;
     try {
-        tmp = a->transicion(ent);
+        a->transicion(ent);
     } catch (int exc) {
         if (-8 == exc)
             cout << " \n\tLa función de transicion no está completamente cargada\n";
@@ -108,10 +116,8 @@ void efectuarTransicion(Automata *a) {
         }
     }
 
-    cout << "Se ha alcanzado el estado: " << tmp.nombre << "\n";
-    if (tmp.situacion) {
-        cout << " \t SALIDA\n ";
-    }
+
+    MostrarSalida(a);
 }
 //esta funcion puede ser la misma para AFD y AP si se oculta la pila en el segundo caso
 
@@ -257,7 +263,6 @@ void cargarFTransicion(APila *p) {
         cin >> t;
     } while ('1' == t);
 }
-
 
 //funciones del main
 void ProbarAFD();

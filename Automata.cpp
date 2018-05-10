@@ -15,8 +15,6 @@ Automata::Automata(unsigned int cantEstados, unsigned int tamAlfabeto) {
     this->nroElementosAlfabeto = tamAlfabeto;
     this->cantActualElementosAlfabeto = 0;
     this->alfabeto = new char[tamAlfabeto];     //podria considerarse que sean strings
-
-    this->isCargado = false;
 }
 
 void Automata::setEstado(Estado e) {
@@ -44,8 +42,12 @@ void Automata::setEstadoActual(std::string nombreEstado) {
     *this->estadoActual = this->estados[getEstadoIndex(nombreEstado)];
 }
 
-std::string Automata::getEstadoActual() const {
+std::string Automata::getNombreEstadoActual() const {
     return this->estadoActual->nombre;
+}
+
+bool Automata::getSituacionEstadoActual() const {
+    return this->estadoActual->situacion;
 }
 
 /*

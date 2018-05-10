@@ -26,7 +26,7 @@ protected:
 public:
     Automata(unsigned int cantidadEstados, unsigned int tamanoAlfabeto);
 
-    virtual Estado transicion(char) =0;
+    virtual void transicion(char) =0;
     // como hacer para que las funciones derivadas deban implementarla con distintos parametros;
 
     unsigned int getNroEstados() const;
@@ -37,7 +37,9 @@ protected:
     void setEstadoActual(std::string nombreEstado);
 
 public:
-    std::string getEstadoActual() const;
+    std::string getNombreEstadoActual() const;
+
+    bool getSituacionEstadoActual() const;
 
     unsigned int getNroElementosAlfabeto() const;
 
