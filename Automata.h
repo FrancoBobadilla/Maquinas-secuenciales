@@ -12,14 +12,18 @@ protected:
     unsigned int nroEstados;
     unsigned int cantActualEstados;
     Estado *estados;
-    Estado *estadoActual;
+    const Estado *estadoActual;
+
+    /* const int * ptr;         Declares a pointer to const int type. You may modify ptr, but not its data
+     * int * const ptr;         Declares a const pointer to int type. You're not allowed to modify ptr, but the data pointed
+     * */
 
     unsigned int nroElementosAlfabeto;
     unsigned int cantActualElementosAlfabeto;
     char *alfabeto;
 
     //metodos auxiliares
-    unsigned int getEstadoIndex(std::string nombreEstado);
+    unsigned int getEstadoIndex(const std::string &nombreEstado);
 
     unsigned int getAlfabetoIndex(char elementoAlfabeto);
 
@@ -34,7 +38,7 @@ public:
     void setEstado(Estado);
 
 protected:
-    void setEstadoActual(std::string nombreEstado);
+    void setEstadoActual(const std::string &nombreEstado);
 
 public:
     std::string getNombreEstadoActual() const;

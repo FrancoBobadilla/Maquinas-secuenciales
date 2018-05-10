@@ -111,15 +111,15 @@ void APila::transicion(char entrada) {
             throw -21;
     }
 
-    if (true == salidaF->conservarTope)
+    if (salidaF->conservarTope)
         pila.push(topeDePila);
 
     pila.push(salidaF->apilamiento);
 
-    *estadoActual = salidaF->estado;
+    estadoActual = &salidaF->estado;
 }
 
-unsigned int APila::getAlfabetoPilaIndex(char s) {
+unsigned int APila::getAlfabetoPilaIndex(const char &s) {
     for (unsigned int i = 0; i < this->nroElementosAlfabetoPila; ++i) {
         if (s == this->alfabetoPila[i])
             return i;

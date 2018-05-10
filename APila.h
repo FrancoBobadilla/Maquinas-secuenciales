@@ -27,7 +27,7 @@ private:
     Stack<char> pila;
 
     //métodos auxiliares
-    unsigned int getAlfabetoPilaIndex(char simboloEntradaPila);
+    unsigned int getAlfabetoPilaIndex(const char &simboloEntradaPila);
 
 public:
     APila(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoPila);

@@ -38,8 +38,21 @@ unsigned int Automata::getNroEstados() const {
     return this->nroEstados;
 }
 
-void Automata::setEstadoActual(std::string nombreEstado) {
-    *this->estadoActual = this->estados[getEstadoIndex(nombreEstado)];
+void Automata::setEstadoActual(const std::string &nombreEstado) {
+    this->estadoActual = &this->estados[getEstadoIndex(nombreEstado)];
+    /*
+     *     Hablamos sobre esto, ahora me doy cuenta por qué no seria conveniente
+     *     *this->estadoActual = this->estados[getEstadoIndex(nombreEstado)];
+     *     La sentencia copia el valor del estado particular al estado actual, sería equivalente a
+     *     *this->estadoActual.nombre = this->estados[getEstadoIndex(nombreEstado)].nombre;
+     *     *this->estadoActual.situacion = this->estados[getEstadoIndex(nombreEstado)].situacion;
+     *     seria esquivalente a modificar el valor de los datos, no el """apuntamiento"""
+     *
+     *     this->estadoActual = &this->estados[getEstadoIndex(nombreEstado)];
+     *     Esta sentencia cambia la dirección a la que apunta el puntero.
+     *
+     * */
+
 }
 
 std::string Automata::getNombreEstadoActual() const {
@@ -89,7 +102,7 @@ unsigned int Automata::getNroElementosAlfabeto() const {
     return this->nroElementosAlfabeto;
 }
 
-unsigned int Automata::getEstadoIndex(std::string e) {
+unsigned int Automata::getEstadoIndex(const std::string &e) {
     for (unsigned int i = 0; i < this->cantActualEstados; ++i) {
         if (e == this->estados[i].nombre)
             return i;

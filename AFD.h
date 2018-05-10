@@ -11,6 +11,7 @@ class AFD : public Automata {
 private:
     Estado ***f;        // para poder ser nullptr
     bool Determinado;
+
     bool isReadyF();
 
 public:
