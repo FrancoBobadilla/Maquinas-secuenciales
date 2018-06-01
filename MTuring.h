@@ -18,7 +18,7 @@ class MTuring : public Automata {
 private:
     SalidaFuncMaqTuring ****f;
 
-    Cinta<char> cinta;
+    Cinta<char> *cinta;
 
     unsigned int nroElementosAlfabetoCinta;
     unsigned int cantActualElementosAlfabetoCinta;
