@@ -2,12 +2,10 @@
 // Created by FrancoBobadilla on 31/5/2018.
 //
 
-#ifndef AFD_CABEZAL_H
-#define AFD_CABEZAL_H
+#ifndef AFD_CINTA_H
+#define AFD_CINTA_H
 
 #include "Celda.h"
-
-#define BLANCO '/'
 
 template<class T>
 class Cinta {
@@ -29,7 +27,7 @@ public:
 };
 
 template<class T>
-Cinta::Cinta(T blanco) {
+Cinta<T>::Cinta(T blanco) {
     this->blanco = blanco;
     this->cabezal = new Celda<T>(blanco);
 }
@@ -40,14 +38,14 @@ void Cinta<T>::escribir(T dato) {
 }
 
 template<class T>
-void Cinta<T>::leer() {
+T Cinta<T>::leer() {
     return cabezal->getData();
 }
 
 template<class T>
 void Cinta<T>::desplazarIzquierda() {
     if (cabezal->getLeft() == nullptr) {
-        Celda<T> nn = new Celda<T>(blanco);
+        Celda<T> *nn = new Celda<T>(blanco);
         nn->setRight(cabezal);
         cabezal->setLeft(nn);
     }
@@ -57,7 +55,7 @@ void Cinta<T>::desplazarIzquierda() {
 template<class T>
 void Cinta<T>::desplazarDerecha() {
     if (cabezal->getRight() == nullptr) {
-        Celda<T> nn = new Celda<T>(blanco);
+        Celda<T> *nn = new Celda<T>(blanco);
         nn->setLeft(cabezal);
         cabezal->setRight(nn);
     }
@@ -65,7 +63,7 @@ void Cinta<T>::desplazarDerecha() {
 }
 
 template<class T>
-void Cinta::~Cinta() {
+Cinta<T>::~Cinta() {
     while (cabezal->getLeft() != nullptr)
         cabezal = cabezal->getLeft();
     Celda<T> *ant;
@@ -76,4 +74,4 @@ void Cinta::~Cinta() {
     }
 }
 
-#endif //AFD_CABEZAL_H
+#endif //AFD_CINTA_H

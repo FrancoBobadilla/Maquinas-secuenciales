@@ -5,6 +5,7 @@
 #ifndef AFD_CELDA_H
 #define AFD_CELDA_H
 
+template<class T>
 class Celda {
 private:
     T data;
@@ -12,7 +13,6 @@ private:
     Celda<T> *right;
 
 public:
-
     Celda<T>(T dato);
 
     T getData();
@@ -23,9 +23,9 @@ public:
 
     Celda<T> *getRight();
 
-    void setLeft(Celda<T> *ptr);
+    void setLeft(Celda<T> *p);
 
-    void setRight(Celda<T> *ptr);
+    void setRight(Celda<T> *p);
 };
 
 template<class T>
