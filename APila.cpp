@@ -120,7 +120,7 @@ void APila::transicion(char entrada) {
 }
 
 unsigned int APila::getAlfabetoPilaIndex(const char &s) {
-    for (unsigned int i = 0; i < this->nroElementosAlfabetoPila; ++i) {
+    for (unsigned int i = 0; i < this->cantActualElementosAlfabetoPila; ++i) {
         if (s == this->alfabetoPila[i])
             return i;
     }
