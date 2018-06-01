@@ -87,6 +87,7 @@ class MTuring{
 -nroElementosAlfabetoCinta
 -cantActualElementosAlfabetoCinta
 -alfabetoCinta
+-isCintaLista
 
 -getAlfabetoCintaIndex(simboloEntradaCinta)
 
@@ -95,7 +96,11 @@ class MTuring{
 +setF(nombreEstadoSalida, entrada, valorCinta, nombreEstadoDestino, direccion, escritura)
 +setAlfabetoCinta(char)
 +getLecturaCabezal()
++setSimboloEnCinta(char)
++setCintaLista()
++lecturaTransicion()
 }
+
 
 class Cinta{
 -cabezal
@@ -105,6 +110,7 @@ class Cinta{
 +desplazarIzquierda()
 +desplazarDerecha()
 +leer()
++getBlanco()
 +~Cinta()
 }
 

@@ -4,7 +4,7 @@
 
 #include "MTuring.h"
 
-MTuring::MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoCinta)
+MTuring::MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoCinta, char blanco)
         : Automata(cantidadEstados, tamanoAlfabeto) {
     if (0 >= tamanoAlfabetoCinta)
         throw 0;
@@ -13,29 +13,28 @@ MTuring::MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsi
     this->cantActualElementosAlfabetoCinta = 0;
     this->alfabetoCinta = new char[this->nroElementosAlfabetoCinta];
 
-    //f [ESTADO ACTUAL] [ENTRADA] [VALOR CINTA] = SalidaFuncMaqTuring*
-    f = new SalidaFuncMaqTuring ***[this->nroEstados];
+    // f [ESTADO ACTUAL] [ENTRADA DESDE CINTA]
+    this->f = new SalidaFuncMaqTuring **[this->nroEstados];
     for (int i = 0; i < this->nroEstados; ++i) {
-        f[i] = new SalidaFuncMaqTuring **[this->nroElementosAlfabeto];
-        for (int j = 0; j < this->nroElementosAlfabeto; ++j) {
-            f[i][j] = new SalidaFuncMaqTuring *[this->nroElementosAlfabetoCinta];
-            for (int k = 0; k < this->nroElementosAlfabetoCinta; ++k) {
-                f[i][j][k] = nullptr;
-            }
+        this->f[i] = new SalidaFuncMaqTuring *[this->nroElementosAlfabetoCinta];
+        for (int j = 0; j < this->nroElementosAlfabetoCinta; ++j) {
+            this->f[i][j] = nullptr;
         }
     }
 
-    this->cinta = new Cinta<char>('/');
+    this->cinta = new Cinta<char>(blanco);
     /*
      * Se debe modificar el prototipo de constructor para admitir que el usuario elija el blanco
      * La clase Cinta debe implementar el metodo getBlanco() para la expresión final
      * Se debería replantear la misma situación para el automata de Pila con el fin de pila
      * */
+
+    this->isCintaLista = false;
 }
 
-void MTuring::setF(std::string nombreEstadoSalida, char entrada, char valorCinta, std::string nombreEstadoDestino,
+void MTuring::setF(std::string nombreEstadoSalida, char entradaCinta, std::string nombreEstadoDestino,
                    char direccion, char escritura) {
-    unsigned int ESalidaIndex, entradaIndex, valorCintaIndex, EDestinoIndex, escrituraIndex;
+    unsigned int ESalidaIndex, entradaCintaIndex, EDestinoIndex, escrituraIndex;
     try {
         ESalidaIndex = this->getEstadoIndex(nombreEstadoSalida);
     } catch (int exc) {
@@ -50,19 +49,13 @@ void MTuring::setF(std::string nombreEstadoSalida, char entrada, char valorCinta
         }
     }
     try {
-        entradaIndex = this->getAlfabetoIndex(entrada);
-    } catch (int exc) {
-        if (-1 == exc)
-            throw -13;
-    }
-    try {
-        valorCintaIndex = getAlfabetoCintaIndex(valorCinta);
+        entradaCintaIndex = getAlfabetoCintaIndex(entradaCinta);
     } catch (int exc) {
         if (-1 == exc)
             throw -14;
     }
     try {
-        escrituraIndex = getAlfabetoCintaIndex(valorCinta);
+        escrituraIndex = getAlfabetoCintaIndex(escritura);
     } catch (int exc) {
         if (-1 == exc)
             throw -15;
@@ -74,14 +67,14 @@ void MTuring::setF(std::string nombreEstadoSalida, char entrada, char valorCinta
     if ('p' != direccion && 'i' != direccion && 'd' != direccion)
         throw -17;
 
-    if (nullptr != f[ESalidaIndex][entradaIndex][valorCintaIndex])
+    if (nullptr != f[ESalidaIndex][entradaCintaIndex])
         throw -16;
 
     // tiene que haber una forma prolija de hacerlo
-    this->f[ESalidaIndex][entradaIndex][valorCintaIndex]->estado.nombre = this->estados[EDestinoIndex].nombre;
-    this->f[ESalidaIndex][entradaIndex][valorCintaIndex]->estado.situacion = this->estados[EDestinoIndex].situacion;
-    this->f[ESalidaIndex][entradaIndex][valorCintaIndex]->direccion = direccion;
-    this->f[ESalidaIndex][entradaIndex][valorCintaIndex]->escritura = this->alfabetoCinta[escrituraIndex];
+    this->f[ESalidaIndex][entradaCintaIndex]->estado.nombre = this->estados[EDestinoIndex].nombre;
+    this->f[ESalidaIndex][entradaCintaIndex]->estado.situacion = this->estados[EDestinoIndex].situacion;
+    this->f[ESalidaIndex][entradaCintaIndex]->direccion = direccion;
+    this->f[ESalidaIndex][entradaCintaIndex]->escritura = this->alfabetoCinta[escrituraIndex];
 }
 
 void MTuring::setAlfabetoCinta(char c) {
@@ -112,10 +105,78 @@ void MTuring::setAlfabetoCinta(char c) {
     this->alfabetoCinta[this->cantActualElementosAlfabetoCinta] = c;
     this->cantActualElementosAlfabetoCinta++;
     // puede fallar dijo Tusam*/
+
+/*
+    Opcion 2
+
+    try{
+        cIndex = this.getAlfabetoCintaIndex(c);
+    } catch (int exc){
+    }
+
+    if(this->alfabetoCinta[cIndex] == c)
+        throw -2;
+    else{
+        this->alfabetoCinta[this->cantActualElementosAlfabetoCinta] = c;
+        this->cantActualElementosAlfabetoCinta++;
+    }
+*/
+// dejame esto para más adelante Bob
 }
 
-void MTuring::transicion(char) {
+void MTuring::setSimboloEnCinta(char c) {
+    if (this->isCintaLista)
+        throw -2;   //Cinta ya estaba lista
+    try {
+        this->getAlfabetoCintaIndex(c);
+    } catch (int exc) {
+        if (-1 == exc)
+            throw -1;   //No pertenece al alfabeto de entrada
+    }
+    this->cinta->desplazarDerecha();
+    this->cinta->escribir(c);
+    //podría considerarse el hecho de llenar la cinta con los indices del arreglo de entradas, para no controlar tantas veces
+}
 
+void MTuring::setCintaLista() {
+    if (this->isCintaLista)
+        throw -2;   //Cinta ya estaba lista
+    this->cinta->desplazarDerecha();
+    // Cinta debería ser iterable
+    do {
+        this->cinta->desplazarIzquierda();
+    } while (this->cinta->leer() != this->cinta->getBlanco());
+    // muy acoplado
+    //asume que se quiere dejar el cabezal sobre el primer blanco antes de la cadena de la cinta
+    this->isCintaLista = true;
+}
+
+// no me gusta que se llame de otra forma
+// conceptualmente un usuario solicita una transicion a cualquier máquina secuencial
+void MTuring::lecturaTransicion() {
+    try {
+        this->transicion(this->cinta->leer());
+    } catch (int exc) {
+        throw exc;
+    }
+}
+
+void MTuring::transicion(char lectura) {
+    if (!this->isCintaLista)
+        throw -2;       // no se puede hacer tranciciones hasta que la cinta no este lista
+    SalidaFuncMaqTuring *salidaF;
+    try {
+        salidaF = this->f[this->getEstadoIndex(this->estadoActual->nombre)][this->getAlfabetoCintaIndex(lectura)]
+    } catch (int exc) {
+        if (-1 == exc)
+            throw -21;
+    }
+    this->estadoActual = &salidaF->estado;
+    this->cinta->escribir(salidaF->escritura);
+    if ('d' == salidaF->direccion)
+        this->cinta->desplazarDerecha();
+    if ('i' == salidaF->direccion)
+        this->cinta->desplazarIzquierda();
 }
 
 unsigned int MTuring::getAlfabetoCintaIndex(const char &s) {

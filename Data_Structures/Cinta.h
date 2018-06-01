@@ -23,6 +23,8 @@ public:
 
     T leer();
 
+    T getBlanco();
+
     ~Cinta();
 };
 
@@ -60,6 +62,11 @@ void Cinta<T>::desplazarDerecha() {
         cabezal->setRight(nn);
     }
     cabezal = cabezal->getRight();
+}
+
+template <class T>
+T Cinta<T>::getBlanco() {
+    return this->blanco;
 }
 
 template<class T>

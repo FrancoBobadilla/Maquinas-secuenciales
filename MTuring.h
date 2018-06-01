@@ -16,7 +16,7 @@ struct SalidaFuncMaqTuring {
 
 class MTuring : public Automata {
 private:
-    SalidaFuncMaqTuring ****f;
+    SalidaFuncMaqTuring ***f;
 
     Cinta<char> *cinta;
 
@@ -26,17 +26,25 @@ private:
 
     unsigned int getAlfabetoCintaIndex(const char &simboloEntradaCinta);
 
+    bool isCintaLista;
+
 public:
-    MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoCinta);
+    MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoCinta, char blanco);
 
     virtual void transicion(char);
 
-    void setF(std::string nombreEstadoSalida, char entrada, char valorCinta, std::string nombreEstadoDestino,
+    void setF(std::string nombreEstadoSalida, char entradaCinta, std::string nombreEstadoDestino,
               char direccion, char escritura);
 
     void setAlfabetoCinta(char);
 
     char getLecturaCabezal();
-};
+
+    void setSimboloEnCinta(char);    //escribe uno a uno los elementos de la cinta
+
+    void setCintaLista();
+
+    void lecturaTransicion();
+};  
 
 #endif //AFD_MTURING_H
