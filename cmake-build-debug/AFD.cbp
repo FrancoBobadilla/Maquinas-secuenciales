@@ -98,6 +98,12 @@
 		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Automata.h">
 			<Option target="AFD"/>
 		</Unit>
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Data_Structures/Celda.h">
+			<Option target="AFD"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Data_Structures/Cinta.h">
+			<Option target="AFD"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/f_bob/CLionProjects/Maquinas-secuenciales/Data_Structures/Node.h">
 			<Option target="AFD"/>
 		</Unit>
