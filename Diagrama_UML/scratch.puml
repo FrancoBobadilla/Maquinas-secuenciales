@@ -1,0 +1,123 @@
+@startuml
+
+Automata <|-- AFD
+Automata <|-- APila
+Automata <|-- MTuring
+
+APila o-- Stack : 1..1
+Stack o-- Node : 1..*
+
+MTuring o-- Cinta : 1..1
+Cinta o-- Celda : 1..*
+
+Abstract Class Automata {
+#nroEstados
+#cantActualEstados
+#estados
+#estadoActual
+#nroElementosAlfabeto
+#cantActualElementosAlfabeto
+#alfabeto
+#getEstadoIndex(nombreEstado)
+#getAlfabetoIndex(elemtoAlfabeto)
+
++Automata(cantidadEstados, tamanoAlfabeto)
++virtual transicion(char)=0
++getNroEstados()
++setEstado(Estado)
+
+#setEstadoActual(nombreEstado)
+
++getNombreEstadoActual()
++getSituacionEstadoActual()
++getNroElementosAlfabeto()
++setAlfabeto(char)
++setEstadoInicial(nombreEstadoInicial)
+}
+
+class AFD{
+- f
+-Determinado
+-isReadyF()
+
++ADF(cantidadEstados, tamanoAlfabeto)
++setF(nombreEstadoSalida, entrada, nombreEstadoDestino)
++virtual transicion(char)
+}
+
+class APila{
+- f
+-nroElementosAlfabetoPila
+-cantActualElementosAlfabetoPila
+-alfabetoPila
+
+-pila
+-getAlfabetoPilaIndex(simboloEntradaPila)
+
++APila(cantidadEstados, tamanoAlfabeto, tamanoAlfabetoPila)
++virtual transicion(char)
++setF(nombreEstadoSalida, entrada, valorPila, nombreEstadoDestino, conservarTope, apilamiento)
++setAlfabetoPila(char)
++getTopeDePila()
+}
+
+class Stack{
+-top
++Stack()
++~Stack()
++push(dato)
++pop()
++isEmpty()
+}
+
+class Node {
+-data
+-next
++Node(dato, siguiente)
++Node(dato)
++getData()
++setData(dato)
++getNext()
++setNext(Node)
+}
+
+class MTuring{
+- f
+-cinta
+-nroElementosAlfabetoCinta
+-cantActualElementosAlfabetoCinta
+-alfabetoCinta
+
+-getAlfabetoCintaIndex(simboloEntradaCinta)
+
++MTuring(cantidadEstados, tamanoAlfabeto, tamanoAlfabetoCinta)
++virtual transicion(char)
++setF(nombreEstadoSalida, entrada, valorCinta, nombreEstadoDestino, direccion, escritura)
++setAlfabetoCinta(char)
++getLecturaCabezal()
+}
+
+class Cinta{
+-cabezal
+-blanco
++Cinta(blanco)
++escribir(dato)
++desplazarIzquierda()
++desplazarDerecha()
++leer()
++~Cinta()
+}
+
+class Celda{
+-data
+-left
+-right
++Celda(dato)
++getData()
++getLeft()
++getRight()
++setLeft(Celda)
++setRight(Celda)
+}
+
+@enduml
