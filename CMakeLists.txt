@@ -3,6 +3,6 @@ project(AFD)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(AFD main.cpp AFD.cpp AFD.h Estado.cpp Estado.h Data_Structures/Stack.h Data_Structures/Node.h Automata.cpp Automata.h APila.cpp APila.h Data_Structures/Celda.h Data_Structures/Cinta.h)
+add_executable(AFD main.cpp AFD.cpp AFD.h Estado.cpp Estado.h Data_Structures/Stack.h Data_Structures/Node.h Automata.cpp Automata.h APila.cpp APila.h Data_Structures/Celda.h Data_Structures/Cinta.h MTuring.h MTuring.cpp)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
