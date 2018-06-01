@@ -1,6 +1,7 @@
 #include <iostream>
 #include "AFD.h"
 #include "APila.h"
+#include "MTuring.h"
 // o solo include de clase Automata abs?
 
 #define LEERSTRING(X) fflush(stdin); cin >> X; fflush(stdin);
@@ -198,6 +199,32 @@ void cargarAlfabetoEntradasPila(APila *p) {
     } while ('1' == t);
 }
 
+void cargarAlfabetoEntradasCinta(MTuring *p) {
+    char n;
+    char t;
+
+    cout << "Ingresar el alfabeto de Entrada de Cinta" << endl;
+    do {
+        cout << "Ingresando nueva Entrada\n";
+        cout << "\tSímbolo de entrada de cinta: ";
+        cin >> n;
+        try {
+            p->setAlfabetoCinta(n);
+        } catch (int exc) {
+            if (-1 == exc)
+                cout << "\n\tEl autómata ya tiene su alfabeto de entrada de cinta definido\n";
+            else {
+                if (-2 == exc)
+                    cout << "\n\tYa existe la entrada\n";
+                else
+                    cout << "\n\tERROR: " << exc << "\n";
+            }
+        }
+        cout << "Ingrese 1 para nueva Entrada o cualquier tecla para cancelar\n";
+        cin >> t;
+    } while ('1' == t);
+}
+
 void cargarFTransicion(APila *p) {
     char t, ent, pil, nuevoTope;
     string ESalida, EDestino;
@@ -269,9 +296,12 @@ void ProbarAFD();
 
 void ProbarAPila();
 
+void ProbarMT();
+
 int main() {
+    ProbarMT();
 //    ProbarAFD();
-    ProbarAPila();
+//    ProbarAPila();
     return 0;
 }
 
@@ -328,4 +358,27 @@ void ProbarAPila() {
         cin >> t;
     } while ('1' == t);
 
+}
+
+void ProbarMT() {
+    unsigned int cantEst, cantAlf, cantAlfCinta;
+    cout << "Ingresar cantidad de Estados del automata\n";
+    cin >> cantEst;
+    cout << "Ingresar cantidad de elementos de entrada del automata\n";
+    cin >> cantAlf;
+    cout << "Ingresar cantidad de elementos de la cinta del automata\n";
+    cin >> cantAlfCinta;
+
+    MTuring M(cantEst, cantAlf, cantAlfCinta);
+    cout << "Cargando todos los estados\n";
+    cargarEstados(&M);
+    cout << "Cargando todas las entradas\n";
+    cargarAlfabetoEntradas(&M);
+    cout << "Cargando todos los símbolos de cinta\n";
+    cargarAlfabetoEntradasCinta(&M);
+    cout << "Cargando la función de transicion\n";
+    /*
+    cargarFTransicion(&M);
+    cargarEstadoInicial(&M);
+    */
 }
