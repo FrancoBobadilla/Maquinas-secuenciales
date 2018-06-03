@@ -12,6 +12,7 @@ class Cinta {
 private:
     Celda<T> *cabezal;
     T blanco;
+    unsigned int tamano;
 public:
     Cinta(T blanco);
 
@@ -25,6 +26,8 @@ public:
 
     T getBlanco();
 
+    unsigned int getTamano();
+
     ~Cinta();
 };
 
@@ -32,6 +35,7 @@ template<class T>
 Cinta<T>::Cinta(T blanco) {
     this->blanco = blanco;
     this->cabezal = new Celda<T>(blanco);
+    this->tamano = 1;
 }
 
 template<class T>
@@ -48,6 +52,7 @@ template<class T>
 void Cinta<T>::desplazarIzquierda() {
     if (cabezal->getLeft() == nullptr) {
         Celda<T> *nn = new Celda<T>(blanco);
+        this->tamano++;
         nn->setRight(cabezal);
         cabezal->setLeft(nn);
     }
@@ -58,15 +63,21 @@ template<class T>
 void Cinta<T>::desplazarDerecha() {
     if (cabezal->getRight() == nullptr) {
         Celda<T> *nn = new Celda<T>(blanco);
+        this->tamano++;
         nn->setLeft(cabezal);
         cabezal->setRight(nn);
     }
     cabezal = cabezal->getRight();
 }
 
-template <class T>
+template<class T>
 T Cinta<T>::getBlanco() {
     return this->blanco;
+}
+
+template<class T>
+unsigned int Cinta<T>::getTamano() {
+    return this->tamano;
 }
 
 template<class T>
