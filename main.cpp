@@ -8,10 +8,8 @@
 
 using namespace std;
 
-
 // todas estas funciones podrían formar parte de la clase Automata,
 // proveen una forma estandar de interactuar con el automata.
-
 
 void cargarEstados(Automata *a) {
     Estado e;
@@ -75,7 +73,7 @@ void cargarAlfabetoEntradas(Automata *a) {
 }
 
 void cargarEstadoInicial(Automata *a) {
-    std::string nom;
+    string nom;
     cout << "Ingresando el Estado Inicial del Autómata\n";
     cout << "Ingrese el nombre del estado inicial\n";
     LEERSTRING(nom);
@@ -291,6 +289,160 @@ void cargarFTransicion(APila *p) {
     } while ('1' == t);
 }
 
+void cargarFTransicion(MTuring *p) {
+    string ESalida, EDestino;
+    char lec, esc, t, dir;
+
+    cout << "Ingresar Transiciones\n";
+    do {
+        cout << "Ingresar nueva Transicion\n";
+
+        cout << "\tNombre del Estado del cual se parte: ";
+        LEERSTRING(ESalida);
+
+        cout << "\tSímbolo que lee de la cinta: ";
+        cin >> lec;
+
+        cout << "\tSímbolo que escribe en la cinta: ";
+        cin >> esc;
+
+        cout << "\tDirección del cabezal (d, i, p): ";
+        cin >> dir;
+
+        cout << "\tNombre del Estado al cual se llega: ";
+        LEERSTRING(EDestino);
+
+        try {
+            p->setF(ESalida, lec, EDestino, dir, esc);
+        } catch (int exc) {
+            switch (exc) {
+                case -11:
+                    cout << " \n\tNo existe un estado con el nombre " << ESalida << "\n";
+                    break;
+                case -12:
+                    cout << "\n\tNo existe un estado con el nombre " << EDestino << "\n";
+                    break;
+                case -14:
+                    cout << "\n\tNo existe un símbolo de cinta " << lec << "\n";
+                    break;
+                case -15:
+                    cout << "\n\tNo existe un símbolo de cinta " << esc << "\n";
+                    break;
+                case -16:
+                    cout << "\n\tYa se ha definido la transicion previamente \n";
+                    break;
+                case -17:
+                    cout << "\n\tNo existe una dirección de cinta " << dir << "\n";
+                    break;
+                default:
+                    cout << "\n\tERROR: " << exc << "\n";
+                    break;
+            }
+        }
+
+        cout << "Ingrese 1 para nueva Transicion o cualquier tecla para cancelar\n";
+        cin >> t;
+    } while ('1' == t);
+}
+
+void cargarCinta(MTuring *p) {
+    char t, c;
+    cout << "Cargando la cinta para la Maquina de Turing\n";
+
+    do {
+        cout << "\nIngrese el siguiente simbolo de la cinta: ";
+        cin >> c;
+        try {
+            p->escribirSimboloEnCinta(c);
+        } catch (int exc) {
+            if (-2 == exc) {
+                cout << "\n\tLa cinta ha sido cargada previamente";
+            } else {
+                if (-1 == exc) {
+                    cout << "\n\tLa cinta no reconoce el simbolo " << c;
+                } else {
+                    cout << "\n\t ERROR: " << exc << "\n";
+                }
+            }
+        }
+        cout << "\nIngrese 1 para escribir otro símbolo en la cinta";
+        cout << "\nIngrese 0 para marcar la cinta como cargada\n";
+        cin >> t;
+        while ('0' != t && '1' != t) {
+            cout << "\nEntrada Inválida";
+            cout << "\n\tIngrese 1 para escribir otro símbolo en la cinta";
+            cout << "\n\tIngrese 0 para marcar la cinta como cargada\n";
+            cin >> t;
+        }
+    } while ('1' == t);
+    try {
+        p->setCintaLista();
+    } catch (int exc) {
+        if (-2 == exc) {
+            cout << "\n\tLa cinta ha sido cargada previamente";
+        } else {
+            cout << "\n\t ERROR: " << exc << "\n";
+        }
+    }
+}
+
+void efectuarTransicion(MTuring *p) {
+    cout << "Efectuando nueva transicion\n";
+    cout << "La máquina leyó " << p->getLecturaCabezal() << " en la cinta";
+    try {
+        p->transicion();
+    } catch (int exc) {
+        if (-1 == exc) {
+            cout << "\nLa máquina se encuentra detenida";
+        } else {
+            if (-2 == exc) {
+                cout << "\nLa cinta no está lista para usarse";
+            } else {
+                if (-3 == exc) {
+                    cout << "\nEl cabezal no ha sido colocado todavía";
+                } else {
+                    if (-5 == exc) {
+                        cout << "\nLa transicion no está definida";
+                    } else {
+                        if (-21 == exc) {
+                            cout << "\nEl simbolo de la cinta no es reconocido por la maquina";
+                        } else {
+                            cout << "\nERROR: " << exc << "\n";
+                        }
+                    }
+                }
+            }
+        }
+    }
+//    cout << "\nLa máquina escribió " << p->getLecturaCabezal() << " en la cinta\n";
+//    no funciona devuelve el valor nuevo porque el cabezal ya se desplazó en la transicion
+    MostrarSalida(p);
+}
+
+void cargarCabezal(MTuring *p) {
+    unsigned int pos;
+    cout << "\nAqui usted futuramente verá la cinta";
+    cout << "\nIngrese la posición en donde comienza el cabezal\n";
+    cin >> pos;
+    try {
+        p->ponerCabezal(pos);
+    } catch (int exc) {
+        if (-1 == exc) {
+            cout << "\nNo se puede situar el cabezal hasta que la cinta no esté cargada";
+        } else {
+            if (-2 == exc) {
+                cout << "\nEl cabezal ya ha sido puesto anteriormente";
+            } else {
+                if (-3 == exc) {
+                    cout << "\nLa posición ingresada excede la cinta";
+                } else {
+                    cout << "\nERROR: " << exc << "\n";
+                }
+            }
+        }
+    }
+}
+
 //funciones del main
 void ProbarAFD();
 
@@ -362,14 +514,18 @@ void ProbarAPila() {
 
 void ProbarMT() {
     unsigned int cantEst, cantAlf, cantAlfCinta;
+    char blanc;
     cout << "Ingresar cantidad de Estados del automata\n";
     cin >> cantEst;
     cout << "Ingresar cantidad de elementos de entrada del automata\n";
     cin >> cantAlf;
     cout << "Ingresar cantidad de elementos de la cinta del automata\n";
     cin >> cantAlfCinta;
+    cout << "Ingresar el símbolo de blanco del automata\n";
+    cin >> blanc;
 
-    MTuring M(cantEst, cantAlf, cantAlfCinta);
+
+    MTuring M(cantEst, cantAlf, cantAlfCinta, blanc);
     cout << "Cargando todos los estados\n";
     cargarEstados(&M);
     cout << "Cargando todas las entradas\n";
@@ -377,8 +533,14 @@ void ProbarMT() {
     cout << "Cargando todos los símbolos de cinta\n";
     cargarAlfabetoEntradasCinta(&M);
     cout << "Cargando la función de transicion\n";
-    /*
     cargarFTransicion(&M);
     cargarEstadoInicial(&M);
-    */
+    cargarCinta(&M);
+    cargarCabezal(&M);
+    char tmp;
+    while (!M.isMaquinaParada()) {
+        cout << "\nPresione cualquier tecla para hacer una transicion\n";
+        cin >> tmp;
+        efectuarTransicion(&M);
+    }
 }
