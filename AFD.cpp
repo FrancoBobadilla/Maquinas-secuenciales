@@ -39,7 +39,10 @@ void AFD::setF(std::string nombreEstadoSalida, char entrada, std::string nombreE
     if (nullptr != this->f[ESalida][entIndex])
         throw -14;
 
-    *this->f[ESalida][entIndex] = this->estados[EDestino];
+    this->f[ESalida][entIndex] = new Estado();
+    this->f[ESalida][entIndex]->nombre = this->estados[EDestino].nombre;
+    this->f[ESalida][entIndex]->situacion = this->estados[EDestino].situacion;
+
 }
 
 void AFD::transicion(char entrada) {

@@ -63,6 +63,7 @@ void APila::setF(std::string nombreEstadoSalida, char entrada, char valorPila, s
         throw -16;      // sólo se puede definir una
 
     // tiene que haber una forma prolija de hacerlo
+    this->f[ESalidaIndex][entradaIndex][valorPilaIndex] = new ElementosTransicionPila;
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->estado.nombre = this->estados[EDestinoIndex].nombre;
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->estado.situacion = this->estados[EDestinoIndex].situacion;
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->conservarTope = conservarTope;
@@ -111,6 +112,9 @@ void APila::transicion(char entrada) {
             throw -21;
     }
 
+    if (nullptr == salidaF)
+        throw -5;   // transicion no definida
+
     if (salidaF->conservarTope)
         pila.push(topeDePila);
 
@@ -132,4 +136,3 @@ char APila::getTopeDePila() {
     this->pila.push(tmp);
     return tmp;
 }
-
