@@ -10,7 +10,7 @@ Stack o-- Node : 1..*
 MTuring o-- Cinta : 1..1
 Cinta o-- Celda : 1..*
 
-Abstract Class Automata {
+abstract class Automata {
 #nroEstados
 #cantActualEstados
 #estados
@@ -88,6 +88,8 @@ class MTuring{
 -cantActualElementosAlfabetoCinta
 -alfabetoCinta
 -isCintaLista
+-isCabezalListo
+-maquinaParada
 
 -getAlfabetoCintaIndex(simboloEntradaCinta)
 
@@ -96,9 +98,11 @@ class MTuring{
 +setF(nombreEstadoSalida, entrada, valorCinta, nombreEstadoDestino, direccion, escritura)
 +setAlfabetoCinta(char)
 +getLecturaCabezal()
-+setSimboloEnCinta(char)
++escribirSimboloEnCinta(char)
 +setCintaLista()
-+lecturaTransicion()
++transicion()
++isMaquinaParada()
++ponerCabezal(position)
 }
 
 
