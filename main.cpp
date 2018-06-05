@@ -123,6 +123,31 @@ void efectuarTransicion(Automata *a) {
 // todas estas funciones podrían formar parte de la clase Automata Finito Determinista,
 // proveen una forma estandar de interactuar con el automata.
 
+void efectuarTransicion(APila *a) {
+    char ent;
+    cout << "Efectuando nueva transicion\n";
+    cout << "\tIngresar la entrada: ";
+    cin >> ent;
+    try {
+        a->transicion(ent);
+    } catch (int exc) {
+        if (-8 == exc)
+            cout << " \n\tLa función de transicion no está completamente cargada\n";
+        else {
+            if (-21 == exc)
+                cout << "\n\tLa entrada no es válida para el autómata\n";
+            else {
+                if (-5 == exc)
+                    cout << "\n\t No se ha definido dicha transición como exitosa \n";
+                else if (-20 == exc)
+                    cout << "\n\t Desbordamiento negativo de pila \n";
+                else
+                    cout << "ERROR: " << exc << "\n";
+            }
+        }
+    }
+    MostrarSalida(a);
+}
 
 void cargarFTransicion(AFD *f) {
     char t, ent;
@@ -345,6 +370,19 @@ void cargarFTransicion(MTuring *p) {
     } while ('1' == t);
 }
 
+void finalizarTransicion(APila *p) {
+    try {
+        p->terminarTransicion();
+        MostrarSalida(p);
+    } catch (int exc) {
+        if (-11 == exc){
+            cout<<"\n Hubo desbordamiento negativo de pila\n";
+        } else {
+            cout << "\n\tERROR: " << exc << "\n";
+        }
+    }
+}
+
 void cargarCinta(MTuring *p) {
     char t, c;
     cout << "Cargando la cinta para la Maquina de Turing\n";
@@ -451,9 +489,9 @@ void ProbarAPila();
 void ProbarMT();
 
 int main() {
-    ProbarMT();
+//    ProbarMT();
 //    ProbarAFD();
-//    ProbarAPila();
+    ProbarAPila();
     return 0;
 }
 
@@ -484,14 +522,17 @@ void ProbarAFD() {
 
 void ProbarAPila() {
     unsigned int cantEst, cantAlf, cantAlfPila;
+    char pilaVac, finPila;
     cout << "Ingresar cantidad de Estados del automata\n";
     cin >> cantEst;
     cout << "Ingresar cantidad de elementos de entrada del automata\n";
     cin >> cantAlf;
     cout << "Ingresar cantidad de elementos de la pila del automata\n";
     cin >> cantAlfPila;
+    cout << "Ingresar el simbolo que identifica el fin de pila\n";
+    cin >> finPila;
 
-    APila P(cantEst, cantAlf, cantAlfPila);
+    APila P(cantEst, cantAlf, cantAlfPila, finPila);
     cout << "Cargando todos los estados\n";
     cargarEstados(&P);
     cout << "Cargando todas las entradas\n";
@@ -509,7 +550,9 @@ void ProbarAPila() {
         cout << "\nIngrese 1 si desea una nueva transicion\n";
         cin >> t;
     } while ('1' == t);
-
+    cout << "Ha finalizado las trancisiones del automata de pila\n";
+    finalizarTransicion(&P);
+    cin >> t;       //system pause multiplataforma
 }
 
 void ProbarMT() {

@@ -4,14 +4,32 @@
 
 #include "APila.h"
 
-APila::APila(unsigned int nroEst, unsigned int nroAlfEnt, unsigned int nroAlfPila) : Automata(nroEst, nroAlfEnt) {
+APila::APila(unsigned int nroEst, unsigned int nroAlfEnt, unsigned int nroAlfPila, char finDePila) : Automata(
+        nroEst, nroAlfEnt) {
     if (0 >= nroAlfPila)
         throw 0;
 
-    this->nroElementosAlfabetoPila = nroAlfPila;               // ahora el símbolo de pila vacia es isEmpty()
-    this->cantActualElementosAlfabetoPila = 0;                 // se debería considerar una columna mas para pila vacia
+    /*
+     * Se asume que el automata de pila es indeterminado solo por no definir todas las posibles transiciones
+     *
+     * Dicho esto
+     *      la pila comienza con el simbolo de fin de pila cargado
+     *      el usuario no puede ingresar una entrada lambda
+     */
+
+    this->nroElementosAlfabetoPila = nroAlfPila + 1;
+    this->cantActualElementosAlfabetoPila = 0;
     this->alfabetoPila = new char[this->nroElementosAlfabetoPila];
 
+    this->finDePila = finDePila;
+    this->setAlfabetoPila(this->finDePila);
+
+    // este bloque no requiere try and catch
+    // porque el tamanio de alfabeto de pila siempre es mayor a cero
+    // porque no hay elementos con los que el fin de pila pueda estar repetido
+
+    this->pila = new Stack<char>;
+    this->pila->push(this->finDePila);
 
     //f [ESTADO ACTUAL] [ENTRADA] [TOPE DE PILA] = EstadoYPila*
     f = new ElementosTransicionPila ***[this->nroEstados];
@@ -28,6 +46,7 @@ APila::APila(unsigned int nroEst, unsigned int nroAlfEnt, unsigned int nroAlfPil
 void APila::setF(std::string nombreEstadoSalida, char entrada, char valorPila, std::string nombreEstadoDestino,
                  bool conservarTope, char apilamiento) {
     unsigned int ESalidaIndex, entradaIndex, valorPilaIndex, EDestinoIndex, apilamientoIndex;
+    char apilamientoTMP;
     try {
         ESalidaIndex = this->getEstadoIndex(nombreEstadoSalida);
     } catch (int exc) {
@@ -52,11 +71,16 @@ void APila::setF(std::string nombreEstadoSalida, char entrada, char valorPila, s
         if (-1 == exc)
             throw -14;
     }
-    try {
-        apilamientoIndex = this->getAlfabetoPilaIndex(apilamiento);
-    } catch (int exc) {
-        if (-1 == exc)
-            throw -15;
+    if ((char) 0 != apilamiento) {
+        try {
+            apilamientoIndex = this->getAlfabetoPilaIndex(apilamiento);
+        } catch (int exc) {
+            if (-1 == exc)
+                throw -15;
+        }
+        apilamientoTMP = this->alfabetoPila[apilamientoIndex];
+    } else {        // si el usuario no quiene ingresar un nuevo simbolo a la pila
+        apilamientoTMP = apilamiento;
     }
 
     if (nullptr != this->f[ESalidaIndex][entradaIndex][valorPilaIndex])
@@ -67,7 +91,7 @@ void APila::setF(std::string nombreEstadoSalida, char entrada, char valorPila, s
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->estado.nombre = this->estados[EDestinoIndex].nombre;
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->estado.situacion = this->estados[EDestinoIndex].situacion;
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->conservarTope = conservarTope;
-    this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->apilamiento = this->alfabetoPila[apilamientoIndex];
+    this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->apilamiento = apilamientoTMP;
 }
 
 /*
@@ -79,10 +103,8 @@ void APila::setAlfabetoPila(char c) {
     if (this->cantActualElementosAlfabetoPila >= this->nroElementosAlfabetoPila)
         throw -1;       // ya está lleno
 
-    unsigned int cIndex;
-
     try {
-        cIndex = this->getAlfabetoPilaIndex(c);
+        this->getAlfabetoPilaIndex(c);
     } catch (int exc) {
         this->alfabetoPila[this->cantActualElementosAlfabetoPila] = c;
         this->cantActualElementosAlfabetoPila++;
@@ -95,9 +117,11 @@ void APila::setAlfabetoPila(char c) {
 void APila::transicion(char entrada) {
     // se deberia guardar una constante para que una vez efectuada la primer transicion no se pueda
     // modificar la funcion de transicion
+
     char topeDePila;
     try {
-        topeDePila = pila.pop();
+        topeDePila = this->pila->pop();
+        this->pila->push(topeDePila);
     } catch (int exc) {
         if (-11 == exc)
             throw -20;
@@ -112,13 +136,24 @@ void APila::transicion(char entrada) {
             throw -21;
     }
 
-    if (nullptr == salidaF)
+    if (nullptr == salidaF) {
         throw -5;   // transicion no definida
+        //definir automata como no usable
+    }
+
+    this->pila->pop();
+    /*
+     * El tope de pila es necesario para determinar el estado resultante de la transicion
+     * sin embargo en caso de que la entrada sea erronea la funcion retorna y se debe conservar el tope de
+     * la pila como estaba
+     * el mismo caso para las transiciones no definidas
+     * */
 
     if (salidaF->conservarTope)
-        pila.push(topeDePila);
+        pila->push(topeDePila);
 
-    pila.push(salidaF->apilamiento);
+    if ((char) 0 != salidaF->apilamiento)
+        pila->push(salidaF->apilamiento);
 
     estadoActual = &salidaF->estado;
 }
@@ -131,8 +166,30 @@ unsigned int APila::getAlfabetoPilaIndex(const char &s) {
     throw -1;
 }
 
+void APila::terminarTransicion() {
+    // set as unable to work in the future...
+    try {
+        char tmp = this->pila->pop();
+        this->pila->push(tmp);
+        if (this->finDePila == tmp) {
+            estadoActual = this->buscarEstadoFinal();
+        }
+    } catch (int exc){
+        throw exc;
+    }
+}
+
+Estado *APila::buscarEstadoFinal() {
+    for (int i = 0; i < this->cantActualEstados; ++i) {
+        if (this->estados[i].situacion)
+            return &this->estados[i];
+    }
+    // exception por si no hay estado final?
+}
+
+
 char APila::getTopeDePila() {
-    char tmp = this->pila.pop();
-    this->pila.push(tmp);
+    char tmp = this->pila->pop();
+    this->pila->push(tmp);
     return tmp;
 }

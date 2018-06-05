@@ -24,13 +24,18 @@ private:
     unsigned int cantActualElementosAlfabetoPila;
     char *alfabetoPila;
 
-    Stack<char> pila;
+    Stack<char> *pila;
 
     //métodos auxiliares
     unsigned int getAlfabetoPilaIndex(const char &simboloEntradaPila);
 
+    char finDePila;
+
+    Estado* buscarEstadoFinal();
+
 public:
-    APila(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoPila);
+    APila(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoPila,
+          char finDePila);
 
     virtual void transicion(char);
 
@@ -40,6 +45,8 @@ public:
     void setAlfabetoPila(char);
 
     char getTopeDePila();
+
+    void terminarTransicion();
 };
 
 
