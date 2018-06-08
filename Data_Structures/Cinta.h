@@ -5,9 +5,8 @@
 #ifndef AFD_CINTA_H
 #define AFD_CINTA_H
 
-#include <w32api/d2d1helper.h>
 #include "Celda.h"
-
+#include <iostream>
 template<class T>
 class Cinta {
 private:
@@ -17,8 +16,6 @@ private:
     unsigned int tamano;
 public:
     Cinta(T blanco);
-
-    Cinta(const Cinta<T> &);
 
     void escribir(T dato);
 
@@ -32,6 +29,8 @@ public:
 
     unsigned int getTamano();
 
+    std::string devolverCopiaCinta();
+
     ~Cinta();
 };
 
@@ -44,39 +43,8 @@ Cinta<T>::Cinta(T blanco) {
 }
 
 template<class T>
-Cinta<T>::Cinta(const Cinta<T> &O) {
-    this->blanco = O.blanco;
-    this->tamano = O.tamano;
-
-    this->cabezal = new Celda<T>(O.cabezal->getData());
-    Celda<T> *tmpOriginal = O.cabezal;              // recorren la original cinta
-    Celda<T> *tmpCopia = this->cabezal;             // recorren la nueva cinta
-
-    while (tmpOriginal->getData() != this->blanco) {
-        tmpOriginal = tmpOriginal->getRight();
-        Celda<T> *nn = new Celda<T>(tmpOriginal->getData());
-        nn->setLeft(tmpCopia);
-        tmpCopia->setRight(nn);
-        tmpCopia = nn;
-    }
-
-    tmpOriginal = O.cabezal;
-    tmpCopia = this->cabezal;
-
-    while (tmpOriginal->getData() != this->blanco) {
-        tmpOriginal = tmpOriginal->getLeft();
-        Celda<T> *nn = new Celda<T>(tmpOriginal->getData());
-        nn->setRight(tmpCopia);
-        tmpCopia->setLeft(nn);
-        tmpCopia = nn;
-    }
-
-    this->inicio = tmpCopia;
-}
-
-template<class T>
 void Cinta<T>::escribir(T dato) {
-    cabezal->setData(dato);
+    this->cabezal->setData(dato);
 }
 
 template<class T>
@@ -115,6 +83,19 @@ T Cinta<T>::getBlanco() {
 template<class T>
 unsigned int Cinta<T>::getTamano() {
     return this->tamano;
+}
+
+template <class T>
+std::string Cinta<T>::devolverCopiaCinta() {
+    Celda<T> *currentPtr = this->inicio;
+    std::string r;
+    unsigned int tmpTamano = this->getTamano();
+
+    while(nullptr != currentPtr){
+        r += currentPtr->getData();
+        currentPtr = currentPtr->getRight();
+    }
+    return r;
 }
 
 template<class T>
