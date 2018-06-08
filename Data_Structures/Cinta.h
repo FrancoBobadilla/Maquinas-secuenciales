@@ -5,16 +5,20 @@
 #ifndef AFD_CINTA_H
 #define AFD_CINTA_H
 
+#include <w32api/d2d1helper.h>
 #include "Celda.h"
 
 template<class T>
 class Cinta {
 private:
+    Celda<T> *inicio;
     Celda<T> *cabezal;
     T blanco;
     unsigned int tamano;
 public:
     Cinta(T blanco);
+
+    Cinta(const Cinta<T> &);
 
     void escribir(T dato);
 
@@ -36,6 +40,38 @@ Cinta<T>::Cinta(T blanco) {
     this->blanco = blanco;
     this->cabezal = new Celda<T>(blanco);
     this->tamano = 1;
+    this->inicio = this->cabezal;
+}
+
+template<class T>
+Cinta<T>::Cinta(const Cinta<T> &O) {
+    this->blanco = O.blanco;
+    this->tamano = O.tamano;
+
+    this->cabezal = new Celda<T>(O.cabezal->getData());
+    Celda<T> *tmpOriginal = O.cabezal;              // recorren la original cinta
+    Celda<T> *tmpCopia = this->cabezal;             // recorren la nueva cinta
+
+    while (tmpOriginal->getData() != this->blanco) {
+        tmpOriginal = tmpOriginal->getRight();
+        Celda<T> *nn = new Celda<T>(tmpOriginal->getData());
+        nn->setLeft(tmpCopia);
+        tmpCopia->setRight(nn);
+        tmpCopia = nn;
+    }
+
+    tmpOriginal = O.cabezal;
+    tmpCopia = this->cabezal;
+
+    while (tmpOriginal->getData() != this->blanco) {
+        tmpOriginal = tmpOriginal->getLeft();
+        Celda<T> *nn = new Celda<T>(tmpOriginal->getData());
+        nn->setRight(tmpCopia);
+        tmpCopia->setLeft(nn);
+        tmpCopia = nn;
+    }
+
+    this->inicio = tmpCopia;
 }
 
 template<class T>
@@ -45,18 +81,19 @@ void Cinta<T>::escribir(T dato) {
 
 template<class T>
 T Cinta<T>::leer() {
-    return cabezal->getData();
+    return this->cabezal->getData();
 }
 
 template<class T>
 void Cinta<T>::desplazarIzquierda() {
-    if (cabezal->getLeft() == nullptr) {
+    if (this->cabezal->getLeft() == nullptr) {
         Celda<T> *nn = new Celda<T>(blanco);
         this->tamano++;
         nn->setRight(cabezal);
-        cabezal->setLeft(nn);
+        this->cabezal->setLeft(nn);
+        this->inicio = nn;
     }
-    cabezal = cabezal->getLeft();
+    this->cabezal = this->cabezal->getLeft();
 }
 
 template<class T>
@@ -65,9 +102,9 @@ void Cinta<T>::desplazarDerecha() {
         Celda<T> *nn = new Celda<T>(blanco);
         this->tamano++;
         nn->setLeft(cabezal);
-        cabezal->setRight(nn);
+        this->cabezal->setRight(nn);
     }
-    cabezal = cabezal->getRight();
+    this->cabezal = this->cabezal->getRight();
 }
 
 template<class T>
@@ -82,14 +119,15 @@ unsigned int Cinta<T>::getTamano() {
 
 template<class T>
 Cinta<T>::~Cinta() {
-    while (cabezal->getLeft() != nullptr)
-        cabezal = cabezal->getLeft();
+    while (this->cabezal->getLeft() != nullptr)
+        this->cabezal = this->cabezal->getLeft();
     Celda<T> *ant;
-    while (cabezal != nullptr) {
-        ant = cabezal;
-        cabezal = cabezal->getRight();
+    while (this->cabezal != nullptr) {
+        ant = this->cabezal;
+        this->cabezal = this->cabezal->getRight();
         delete ant;
     }
+//    delete inicio;
 }
 
 #endif //AFD_CINTA_H
