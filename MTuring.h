@@ -34,6 +34,9 @@ private:
 
     virtual void transicion(char);
 
+    void escribirSimboloEnCinta(char c);    //escribe uno a uno los elementos de la cinta
+
+
     //controlar en todas las maquinas que se hayan cargado todas las entradas y estados ...
 
 public:
@@ -46,7 +49,9 @@ public:
 
     char getLecturaCabezal();
 
-    void escribirSimboloEnCinta(char c);    //escribe uno a uno los elementos de la cinta
+    void escribirCinta(std::string);
+
+    std::string devolverCopiaCinta();
 
     void setCintaLista();
 

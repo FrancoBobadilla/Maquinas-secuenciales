@@ -375,8 +375,8 @@ void finalizarTransicion(APila *p) {
         p->terminarTransicion();
         MostrarSalida(p);
     } catch (int exc) {
-        if (-11 == exc){
-            cout<<"\n Hubo desbordamiento negativo de pila\n";
+        if (-11 == exc) {
+            cout << "\n Hubo desbordamiento negativo de pila\n";
         } else {
             cout << "\n\tERROR: " << exc << "\n";
         }
@@ -384,26 +384,27 @@ void finalizarTransicion(APila *p) {
 }
 
 void cargarCinta(MTuring *p) {
-    char t, c;
+    char t;
+    string c;
     cout << "Cargando la cinta para la Maquina de Turing\n";
 
     do {
-        cout << "\nIngrese el siguiente simbolo de la cinta: ";
-        cin >> c;
+        cout << "\nIngrese la cadena de simbolos de la cinta: ";
+        LEERSTRING(c);
         try {
-            p->escribirSimboloEnCinta(c);
+            p->escribirCinta(c);
         } catch (int exc) {
             if (-2 == exc) {
                 cout << "\n\tLa cinta ha sido cargada previamente";
             } else {
                 if (-1 == exc) {
-                    cout << "\n\tLa cinta no reconoce el simbolo " << c;
+                    cout << "\n\tLa cinta no reconoce la cadena " << c;
                 } else {
                     cout << "\n\t ERROR: " << exc << "\n";
                 }
             }
         }
-        cout << "\nIngrese 1 para escribir otro símbolo en la cinta";
+        cout << "\nIngrese 1 para escribir otra cadena de símbolos en la cinta";
         cout << "\nIngrese 0 para marcar la cinta como cargada\n";
         cin >> t;
         while ('0' != t && '1' != t) {
@@ -422,6 +423,8 @@ void cargarCinta(MTuring *p) {
             cout << "\n\t ERROR: " << exc << "\n";
         }
     }
+    cout << "La máquina de Turing recibió la siguiente cadena en la cinta\n";
+    cout << p->devolverCopiaCinta() << endl;
 }
 
 void efectuarTransicion(MTuring *p) {
@@ -459,8 +462,9 @@ void efectuarTransicion(MTuring *p) {
 
 void cargarCabezal(MTuring *p) {
     unsigned int pos;
-    cout << "\nAqui usted futuramente verá la cinta";
     cout << "\nIngrese la posición en donde comienza el cabezal\n";
+    cout << "La cinta actualmente se encuentra así:\n";
+    cout << p->devolverCopiaCinta();
     cin >> pos;
     try {
         p->ponerCabezal(pos);
@@ -489,9 +493,9 @@ void ProbarAPila();
 void ProbarMT();
 
 int main() {
-//    ProbarMT();
+    ProbarMT();
 //    ProbarAFD();
-    ProbarAPila();
+//    ProbarAPila();
     return 0;
 }
 

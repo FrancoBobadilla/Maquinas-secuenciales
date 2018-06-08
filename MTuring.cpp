@@ -108,6 +108,22 @@ void MTuring::escribirSimboloEnCinta(char c) {
     //podría considerarse el hecho de llenar la cinta con los indices del arreglo de entradas, para no controlar tantas veces
 }
 
+void MTuring::escribirCinta(std::string s) {
+    unsigned int i = 0;
+    while ('\0' != s[i]) {
+        try {
+            this->escribirSimboloEnCinta(s[i]);
+        } catch (int exc) {
+            throw exc;
+        }
+        i++;
+    }
+}
+
+std::string MTuring::devolverCopiaCinta() {
+    return this->cinta->devolverCopiaCinta();
+}
+
 void MTuring::setCintaLista() {
     if (this->isCintaLista)
         throw -2;   //Cinta ya estaba lista
