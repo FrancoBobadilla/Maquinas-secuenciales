@@ -17,15 +17,18 @@ Automata::Automata(unsigned int cantEstados, unsigned int tamAlfabeto) {
     this->alfabeto = new char[tamAlfabeto];     //podria considerarse que sean strings
 }
 
-void Automata::setEstado(Estado e) {
+void Automata::setEstado(std::string nombreEstado, bool estadoSalida) {
     if (this->cantActualEstados >= this->nroEstados)
         throw -1;           // ya está lleno
 
     unsigned int eIndex;
 
     try {
-        eIndex = this->getEstadoIndex(e.nombre);
+        eIndex = this->getEstadoIndex(nombreEstado);
     } catch (int exc) {
+        Estado e;
+        e.nombre = nombreEstado;
+        e.situacion = estadoSalida;
         this->estados[this->cantActualEstados] = e;
         this->cantActualEstados++;
         return;

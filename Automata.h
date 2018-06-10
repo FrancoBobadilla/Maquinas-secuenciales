@@ -35,7 +35,7 @@ public:
 
     unsigned int getNroEstados() const;
 
-    void setEstado(Estado);
+    void setEstado(std::string nombreEstado, bool estadoSalida);
 
 protected:
     void setEstadoActual(const std::string &nombreEstado);

@@ -12,22 +12,21 @@ using namespace std;
 // proveen una forma estandar de interactuar con el automata.
 
 void cargarEstados(Automata *a) {
-    Estado e;
-    int tmp;
+    std::string nombre;
+    int salida;
     char t;
     do {
         cout << "Ingresando nuevo Estado\n";
         cout << "\tNombre del Estado: ";
-        LEERSTRING(e.nombre);
+        LEERSTRING(nombre);
 
         do {
             cout << "\n\tIngrese 1 si es de salida (0 si no): ";
-            cin >> tmp;
-        } while (tmp != 0 && tmp != 1);
-        e.situacion = (bool) tmp;
+            cin >> salida;
+        } while (salida != 0 && salida != 1);
 
         try {
-            a->setEstado(e);
+            a->setEstado(nombre, (bool) salida);
         } catch (int exc) {
             if (-1 == exc)
                 cout << "\n\tEl autómata ya tiene todos sus estados definidos\n";
