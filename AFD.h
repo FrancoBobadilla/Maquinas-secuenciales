@@ -10,7 +10,6 @@
 class AFD : public Automata {
 private:
     Estado ***f;        // para poder ser nullptr
-    bool Determinado;
 
     bool isReadyF();
 
@@ -20,6 +19,10 @@ public:
     void setF(std::string nombreEstadoSalida, char entrada, std::string nombreEstadoDestino);
 
     virtual void transicion(char);
+
+    virtual void setAutomataListo();
+
+    virtual std::string getExpresionFormal();
 };
 
 

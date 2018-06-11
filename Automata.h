@@ -13,19 +13,31 @@ protected:
     unsigned int cantActualEstados;
     Estado *estados;
     const Estado *estadoActual;
-
-    /* const int * ptr;         Declares a pointer to const int type. You may modify ptr, but not its data
-     * int * const ptr;         Declares a const pointer to int type. You're not allowed to modify ptr, but the data pointed
-     * */
+    const Estado *estadoInicial; // int * const ptr;         Declares a const pointer to int type. You're not allowed to modify ptr, but the data pointed
 
     unsigned int nroElementosAlfabeto;
     unsigned int cantActualElementosAlfabeto;
     char *alfabeto;
 
+    // banderas del automata
+    bool automataListo;       // true cuando se puede hacer transiciones
+    bool tieneEstadoInicial;
+    bool tieneEstadoSalida;
+    bool tieneEstadosDefinidos; //true cuando el usuario tiene tantos estados como ha establecido en el constructor
+    bool tieneEntradasDefinidas; //true cuando el usuario tiene tantos simbolos de entrada como declarados
+    bool tieneFDeterminada;           // true si la funcion de transición está definida o usada por primera vez
+
+    virtual void setAutomataListo() =0;
+
+    virtual std::string getExpresionFormal() =0;
+
     //metodos auxiliares
     unsigned int getEstadoIndex(const std::string &nombreEstado);
 
     unsigned int getAlfabetoIndex(char elementoAlfabeto);
+
+//    bool nombreEstadoDisponible(std::string n);
+//    bool simboloEntradaDisponible(char c);
 
 public:
     Automata(unsigned int cantidadEstados, unsigned int tamanoAlfabeto);
@@ -35,7 +47,7 @@ public:
 
     unsigned int getNroEstados() const;
 
-    void setEstado(std::string nombreEstado, bool estadoSalida);
+    void setEstado(const std::string &nombreEstado, bool estadoSalida);
 
 protected:
     void setEstadoActual(const std::string &nombreEstado);
@@ -50,6 +62,8 @@ public:
     void setAlfabeto(char);
 
     void setEstadoInicial(std::string nombreEstadoInicial);
+
+    std::string getNombreEstadoInicial();
 
 //    ~Automata(); //virtual?
 };

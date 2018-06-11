@@ -15,22 +15,36 @@ Automata::Automata(unsigned int cantEstados, unsigned int tamAlfabeto) {
     this->nroElementosAlfabeto = tamAlfabeto;
     this->cantActualElementosAlfabeto = 0;
     this->alfabeto = new char[tamAlfabeto];     //podria considerarse que sean strings
+
+    //seteo de banderas
+    this->automataListo = false;
+    this->tieneEstadoInicial = false;
+    this->tieneEstadoSalida = false;
+    this->tieneEstadosDefinidos = false;
+    this->tieneEntradasDefinidas = false;
+    this->tieneFDeterminada = false;
 }
 
-void Automata::setEstado(std::string nombreEstado, bool estadoSalida) {
-    if (this->cantActualEstados >= this->nroEstados)
-        throw -1;           // ya está lleno
+void Automata::setEstado(const std::string &nombreEstado, bool estadoSalida) {
+    if (this->tieneEstadosDefinidos)
+        throw -1;           // ya tiene todos los estados ocupados
 
     unsigned int eIndex;
 
     try {
         eIndex = this->getEstadoIndex(nombreEstado);
     } catch (int exc) {
-        Estado e;
-        e.nombre = nombreEstado;
-        e.situacion = estadoSalida;
-        this->estados[this->cantActualEstados] = e;
+        this->estados[this->cantActualEstados].nombre = nombreEstado;
+        this->estados[this->cantActualEstados].situacion = estadoSalida;
         this->cantActualEstados++;
+
+        if (estadoSalida)
+            this->tieneEstadoSalida = true;
+
+        if (this->cantActualEstados == this->nroEstados) {
+            this->tieneEstadosDefinidos = true;
+            this->setAutomataListo();
+        }
         return;
     }
     // conceptualmente esta mal: esta tomando como excepcion algo que esta bien
@@ -43,26 +57,17 @@ unsigned int Automata::getNroEstados() const {
 
 void Automata::setEstadoActual(const std::string &nombreEstado) {
     this->estadoActual = &this->estados[getEstadoIndex(nombreEstado)];
-    /*
-     *     Hablamos sobre esto, ahora me doy cuenta por qué no seria conveniente
-     *     *this->estadoActual = this->estados[getEstadoIndex(nombreEstado)];
-     *     La sentencia copia el valor del estado particular al estado actual, sería equivalente a
-     *     *this->estadoActual.nombre = this->estados[getEstadoIndex(nombreEstado)].nombre;
-     *     *this->estadoActual.situacion = this->estados[getEstadoIndex(nombreEstado)].situacion;
-     *     seria esquivalente a modificar el valor de los datos, no el """apuntamiento"""
-     *
-     *     this->estadoActual = &this->estados[getEstadoIndex(nombreEstado)];
-     *     Esta sentencia cambia la dirección a la que apunta el puntero.
-     *
-     * */
-
 }
 
 std::string Automata::getNombreEstadoActual() const {
+    if(!this->tieneEstadoInicial)
+        throw -85;
     return this->estadoActual->nombre;
 }
 
 bool Automata::getSituacionEstadoActual() const {
+    if(!this->tieneEstadoInicial)
+        throw -85;
     return this->estadoActual->situacion;
 }
 
@@ -71,8 +76,17 @@ bool Automata::getSituacionEstadoActual() const {
    * que pertenece a est[]
    */
 void Automata::setEstadoInicial(std::string nombreEstadoInicial) {
-    if (nullptr != estadoActual)
-        throw -1;       //ya está lleno
+    if (this->tieneEstadoInicial)
+        throw -1;
+
+    try {
+        this->estadoInicial = &this->estados[getEstadoIndex(nombreEstadoInicial)];
+    } catch (int exc) {
+        throw exc;
+    }
+    this->tieneEstadoInicial = true;
+    this->setAutomataListo();
+
     this->setEstadoActual(nombreEstadoInicial);
 }
 
@@ -81,9 +95,8 @@ void Automata::setEstadoInicial(std::string nombreEstadoInicial) {
      * y tampoco se admiten entradas repetidas
      *
      */
-
 void Automata::setAlfabeto(char c) {
-    if (this->cantActualElementosAlfabeto >= this->nroElementosAlfabeto)
+    if (this->tieneEntradasDefinidas)
         throw -1;       // ya está lleno
 
     unsigned int cIndex;
@@ -93,6 +106,11 @@ void Automata::setAlfabeto(char c) {
     } catch (int exc) {
         this->alfabeto[this->cantActualElementosAlfabeto] = c;
         this->cantActualElementosAlfabeto++;
+
+        if (this->nroElementosAlfabeto == this->cantActualElementosAlfabeto) {
+            this->tieneEntradasDefinidas = true;
+            this->setAutomataListo();
+        }
         return;
     }
     // conceptualmente esta mal: esta tomando como excepcion algo que esta bien
@@ -103,6 +121,12 @@ void Automata::setAlfabeto(char c) {
 
 unsigned int Automata::getNroElementosAlfabeto() const {
     return this->nroElementosAlfabeto;
+}
+
+std::string Automata::getNombreEstadoInicial() {
+    if(!this->tieneEstadoInicial)
+        throw -85;
+    return this->estadoInicial->nombre;
 }
 
 unsigned int Automata::getEstadoIndex(const std::string &e) {
