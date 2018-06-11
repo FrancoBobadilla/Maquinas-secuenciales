@@ -1,0 +1,62 @@
+Automata constructor
+    0: cantidad de estados o entradas seteado a 0
+
+Automata setEstado
+    -1: tiene todos los estados ocupados
+    + arreglar chanchada
+
+Automata setEstadoInicial
+    -1 si ya hay estado inicial
+    -1 si no hay estado con ese nombre
+
+Automata setAlfabeto
+    -1 tiene todos los simbolos de entrada definidos
+    + chanchada
+
+Automata getNombreEstadoInicial
+Automata getNombreEstadoActual
+Automata getSituacionEstadoActual
+    -85 no tiene estado inicial
+
+AFD setF
+    -11 no encuentra estado origen
+    -12 no encuentra estado destino
+    -13 no encuentra simbolo entrada
+    -14 transicion definida previamente
+
+    -21 no tiene todos los estados definidos
+    -22 no tiene todas las entradas definidas
+    -23 la funcion ya fue definida
+
+AFD transicion
+    -8 el automata no está listo para funcionar
+    -21 no encuentra simbolo entrada
+
+AFD getExpresionFormal
+    -55 falta definirse completente el automata
+
+APila Constructor
+    0 alfabeto de pila nulo
+
+APila setF
+    -11 no encuentra estado origen
+    -12 no encuentra estado destino
+    -13 no encuentra simbolo entrada
+    -14 no encuentra simbolo de pila (en la pila)
+    -15 no encuentra simbolo de pila (a apliar)
+    -16 transicion definida previamente
+
+    -23 la funcion ya fue usada
+
+APila setAlfabetoPila
+    -1 tiene todos los simbolos de pila definidos
+    + chanchada
+
+APila transicion
+    -10 automata apagado
+    -20 stack underflow
+    -21 no encuentra simbolo de entrada
+    -30 no tiene simbolos o estados definidos
+
+APila getExpresionFormal
+    -55 falta definirse completente el automata
