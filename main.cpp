@@ -371,7 +371,7 @@ void cargarFTransicion(MTuring *p) {
 
 void finalizarTransicion(APila *p) {
     try {
-        p->terminarTransicion();
+        p->apagarAutomata();
         MostrarSalida(p);
     } catch (int exc) {
         if (-11 == exc) {

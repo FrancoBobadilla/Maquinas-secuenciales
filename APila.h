@@ -23,20 +23,25 @@ private:
     unsigned int nroElementosAlfabetoPila;
     unsigned int cantActualElementosAlfabetoPila;
     char *alfabetoPila;
+    char finDePila;
 
     Stack<char> *pila;
+
+    //banderas
+    bool tieneSimbolosPilaDefinidos;
+    bool automataApagado;       // que tal ponerlo en la abs
 
     //métodos auxiliares
     unsigned int getAlfabetoPilaIndex(const char &simboloEntradaPila);
 
-    char finDePila;
+    Estado *buscarEstadoFinal();
 
-    Estado* buscarEstadoFinal();
+    virtual void setAutomataListo();
 
 public:
+
     APila(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoPila,
           char finDePila);
-
     virtual void transicion(char);
 
     void setF(std::string nombreEstadoSalida, char entrada, char valorPila, std::string nombreEstadoDestino,
@@ -46,7 +51,11 @@ public:
 
     char getTopeDePila();
 
-    void terminarTransicion();
+    void apagarAutomata();
+
+    virtual std::string getExpresionFormal();
+
+    unsigned int getNroElementosAlfabetoPila();
 };
 
 
