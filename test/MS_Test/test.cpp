@@ -58,7 +58,7 @@ TEST(test_prueba, AFD_Exceptions) {
 
     ASSERT_NO_THROW(F->setF("q1", 'a', "q1"));
     ASSERT_ANY_THROW(F->setF("q1", 'a', "q1"));
-    ASSERT_ANY_THROW(F->transicion(2));
+    ASSERT_ANY_THROW(F->transicion('a'));
     ASSERT_ANY_THROW(F->getExpresionFormal());
 
     ASSERT_NO_THROW(F->setEstado("q2", true));
@@ -117,6 +117,98 @@ TEST(test_prueba, AFD_Exceptions) {
 
 }
 
+TEST(test_prueba, APila_Exceptions) {
+    P = new APila(4, 2, 1, '#');
+    ASSERT_ANY_THROW(P->transicion('2'));
+    ASSERT_ANY_THROW(P->getExpresionFormal());
+    ASSERT_ANY_THROW(P->getNombreEstadoInicial());
+    ASSERT_ANY_THROW(P->getNombreEstadoActual());
+    ASSERT_ANY_THROW(P->getSituacionEstadoActual());
+    ASSERT_ANY_THROW(P->setEstadoInicial("q1"));
+
+    ASSERT_EQ(P->getNroEstados(), 4);
+    ASSERT_EQ(P->getNroElementosAlfabeto(), 2);
+    EXPECT_EQ(P->getNroElementosAlfabetoPila(), 1);
+
+    EXPECT_EQ(P->getTopeDePila(), '#');
+    ASSERT_ANY_THROW(P->setAlfabetoPila('#'));
+
+    ASSERT_NO_THROW(P->setEstado("q1", false));
+    ASSERT_ANY_THROW(P->setEstado("q1", true));
+
+    ASSERT_NO_THROW(P->setEstadoInicial("q1"));
+    ASSERT_EQ(P->getNombreEstadoInicial(), "q1");
+    ASSERT_EQ(P->getNombreEstadoActual(), "q1");
+    ASSERT_FALSE(P->getSituacionEstadoActual());
+
+    ASSERT_NO_THROW(P->setAlfabeto('a'));
+    ASSERT_ANY_THROW(P->setAlfabeto('a'));
+
+    ASSERT_ANY_THROW(P->setEstadoInicial("q1"));
+    ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q2", true, 'a'));
+    ASSERT_ANY_THROW(P->transicion('2'));
+//    ASSERT_NO_THROW(P->transicion('a'));
+    ASSERT_ANY_THROW(P->getExpresionFormal());
+
+    ASSERT_NO_THROW(P->setEstado("q2", false));
+    ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q2", true, 'a'));
+    ASSERT_NO_THROW(P->setAlfabetoPila('a'));
+    ASSERT_NO_THROW(P->setF("q1", 'a', '#', "q2", true, 'a'));
+    ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q2", true, 'a'));
+
+    ASSERT_NO_THROW(P->setEstado("q3", false));
+    ASSERT_NO_THROW(P->setEstado("q4", true));
+    ASSERT_ANY_THROW(P->setEstado("q5", true));
+
+    ASSERT_ANY_THROW(P->transicion('a'));
+
+    ASSERT_NO_THROW(P->setAlfabeto('b'));
+    ASSERT_ANY_THROW(P->setAlfabeto('c'));
+
+    ASSERT_NO_THROW(P->setF("q2", 'a', 'a', "q2", true, 'a'));
+    ASSERT_NO_THROW(P->setF("q2", 'b', 'a', "q3", false, (char) 0));
+    ASSERT_ANY_THROW(P->setF("q2", 'b', 'a', "q3", false, 'a'));
+    ASSERT_NO_THROW(P->setF("q3", 'b', 'a', "q3", false, (char) 0));
+
+    ASSERT_EQ(P->getNombreEstadoActual(), "q1");
+    ASSERT_FALSE(P->getSituacionEstadoActual());
+    ASSERT_EQ(P->getTopeDePila(), '#');
+
+    ASSERT_NO_THROW(P->transicion('a'));
+
+    ASSERT_EQ(P->getNombreEstadoActual(), "q2");
+    ASSERT_FALSE(P->getSituacionEstadoActual());
+    ASSERT_EQ(P->getTopeDePila(), 'a');
+
+    ASSERT_NO_THROW(P->transicion('a'));
+
+    ASSERT_EQ(P->getNombreEstadoActual(), "q2");
+    ASSERT_FALSE(P->getSituacionEstadoActual());
+    ASSERT_EQ(P->getTopeDePila(), 'a');
+
+    ASSERT_NO_THROW(P->transicion('b'));
+
+    ASSERT_EQ(P->getNombreEstadoActual(), "q3");
+    ASSERT_FALSE(P->getSituacionEstadoActual());
+    ASSERT_EQ(P->getTopeDePila(), 'a');
+
+    ASSERT_NO_THROW(P->transicion('b'));
+    ASSERT_EQ(P->getNombreEstadoActual(), "q3");
+    ASSERT_FALSE(P->getSituacionEstadoActual());
+    EXPECT_EQ(P->getTopeDePila(), '#');
+
+    ASSERT_ANY_THROW(P->setF("q1", 'b', '#', "q3", true, 'a'));
+
+    ASSERT_NO_THROW(P->apagarAutomata());
+
+    ASSERT_ANY_THROW(P->transicion('b'));
+    ASSERT_ANY_THROW(P->setAlfabetoPila('b'));
+    ASSERT_ANY_THROW(P->setAlfabeto('z'));
+    ASSERT_ANY_THROW(P->setEstado("b", false));
+
+    ASSERT_EQ(P->getNombreEstadoActual(), "q4");
+    ASSERT_TRUE(P->getSituacionEstadoActual());
+}
 
 //TEST(test_prueba, MTuring_ParOImpar) {
 //// escribe P en la cinta si hay una cantidad par de 0

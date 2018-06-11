@@ -9,5 +9,5 @@ set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 add_subdirectory(test)
 
-set(MS_TEST_SOURCE_FILES Automata.h Automata.cpp AFD.h AFD.cpp)
+set(MS_TEST_SOURCE_FILES Automata.h Automata.cpp AFD.h AFD.cpp APila.h APila.cpp)
 add_executable(MS_Test ${MS_TEST_SOURCE_FILES})
