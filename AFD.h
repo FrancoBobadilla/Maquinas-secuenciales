@@ -13,14 +13,14 @@ private:
 
     bool isReadyF();
 
+    virtual void setAutomataListo();
 public:
+
     AFD(unsigned int cantidadEstados, unsigned int tamanoAlfabeto);
 
     void setF(std::string nombreEstadoSalida, char entrada, std::string nombreEstadoDestino);
 
     virtual void transicion(char);
-
-    virtual void setAutomataListo();
 
     virtual std::string getExpresionFormal();
 };
