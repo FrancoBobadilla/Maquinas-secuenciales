@@ -19,7 +19,7 @@
 
 AFD *F;
 APila *P;
-MTuring *M;
+MTuring *T;
 
 TEST(test_prueba, test_trivialmente_verdadero) {
     EXPECT_EQ(1, 1);
@@ -220,4 +220,123 @@ TEST(test_prueba, APila_Exceptions) {
 
     ASSERT_EQ(P->getNombreEstadoActual(), "q4");
     ASSERT_TRUE(P->getSituacionEstadoActual());
+}
+
+TEST(test_prueba, MTuring_Exceptions) {
+    T = new MTuring(3, 2, 4, 'b');
+    ASSERT_ANY_THROW(T->transicion());
+    ASSERT_ANY_THROW(T->getExpresionFormal());
+    ASSERT_ANY_THROW(T->getNombreEstadoInicial());
+    ASSERT_ANY_THROW(T->getNombreEstadoActual());
+    ASSERT_ANY_THROW(T->getSituacionEstadoActual());
+    ASSERT_ANY_THROW(T->setEstadoInicial("q1"));
+
+    ASSERT_EQ(T->getNroEstados(), 3);
+    ASSERT_EQ(T->getNroElementosAlfabeto(), 2);
+    EXPECT_EQ(T->getNroElementosAlfabetoCinta(), 4);
+
+    ASSERT_EQ(T->getCopiaCinta(), "b");
+    ASSERT_ANY_THROW(T->setAlfabetoCinta('b'));
+
+    ASSERT_NO_THROW(T->setEstado("q0", false));
+    ASSERT_ANY_THROW(T->setEstado("q0", true));
+
+    ASSERT_NO_THROW(T->setEstadoInicial("q0"));
+    ASSERT_EQ(T->getNombreEstadoInicial(), "q0");
+    ASSERT_EQ(T->getNombreEstadoActual(), "q0");
+    ASSERT_FALSE(T->getSituacionEstadoActual());
+
+    ASSERT_NO_THROW(T->setAlfabeto('0'));
+    ASSERT_ANY_THROW(T->setAlfabeto('0'));
+
+    ASSERT_ANY_THROW(T->setEstadoInicial("q1"));
+    ASSERT_ANY_THROW(T->setF("q0", '0', "q1", 'd', '0'));
+    ASSERT_ANY_THROW(T->transicion());
+    ASSERT_ANY_THROW(T->getExpresionFormal());
+
+    ASSERT_NO_THROW(T->setEstado("q1", false));
+    ASSERT_ANY_THROW(T->setF("q0", '0', "q1", 'd', '0'));
+
+    ASSERT_NO_THROW(T->setAlfabetoCinta('0'));
+    ASSERT_NO_THROW(T->setF("q0", '0', "q1", 'd', '0'));
+    ASSERT_ANY_THROW(T->setF("q0", '0', "q1", 'd', '0'));
+
+    ASSERT_NO_THROW(T->setEstado("q3", true));
+    ASSERT_ANY_THROW(T->setEstado("q4", true));
+    ASSERT_ANY_THROW(T->setEstado("q3", false));
+
+    ASSERT_ANY_THROW(T->transicion());
+
+    ASSERT_NO_THROW(T->setAlfabeto('1'));
+    ASSERT_ANY_THROW(T->setAlfabeto('2'));
+
+    ASSERT_ANY_THROW(T->setF("q0", '1', "q0", 'd', '1'));
+    ASSERT_NO_THROW(T->setAlfabetoCinta('1'));
+    ASSERT_NO_THROW(T->setF("q0", '1', "q0", 'd', '1'));
+    ASSERT_ANY_THROW(T->setF("q0", '1', "q0", 'D', '1'));
+
+    ASSERT_ANY_THROW(T->setF("q0", 'b', "q3", 'P', 'p'));
+    ASSERT_NO_THROW(T->setAlfabetoCinta('p'));
+    ASSERT_NO_THROW(T->setF("q0", 'b', "q3", 'P', 'p'));
+
+    ASSERT_NO_THROW(T->setAlfabetoCinta('i'));
+    ASSERT_ANY_THROW(T->setAlfabetoCinta('j'));
+    ASSERT_ANY_THROW(T->setAlfabeto('j'));
+
+    EXPECT_NO_THROW(T->getExpresionFormal());
+
+    ASSERT_ANY_THROW(T->setF("q1", 'b', "q3", 'd', '1'));
+    ASSERT_ANY_THROW(T->setF("q1", 'b', "q0", 'p', '1'));
+    ASSERT_NO_THROW(T->setF("q1", 'b', "q3", 'p', 'i'));
+
+    ASSERT_NO_THROW(T->setF("q1", '0', "q0", 'd', '0'));
+    ASSERT_NO_THROW(T->setF("q1", '1', "q1", 'd', '1'));
+
+    ASSERT_EQ(T->getCopiaCinta(), "b");
+    //hasta ahora está definida toda la máquina que escribe i o p segun 0 pares o impares
+
+    ASSERT_ANY_THROW(T->transicion());
+
+    ASSERT_ANY_THROW(T->escribirCinta("1003"));
+    ASSERT_EQ(T->getCopiaCinta(), "b");
+
+    ASSERT_NO_THROW(T->escribirCinta("100"));
+    ASSERT_EQ(T->getCopiaCinta(), "b100");
+
+    ASSERT_ANY_THROW(T->escribirCinta("1003"));
+    ASSERT_EQ(T->getCopiaCinta(), "b100");
+
+    ASSERT_NO_THROW(T->escribirCinta("101"));
+    ASSERT_EQ(T->getCopiaCinta(), "b100101");
+
+    ASSERT_ANY_THROW(T->transicion());
+
+
+    ASSERT_ANY_THROW(T->ponerCabezal(0));
+    ASSERT_NO_THROW(T->setCintaLista());
+    ASSERT_EQ(T->getCopiaCinta(), "b100101b");
+
+    ASSERT_ANY_THROW(T->escribirCinta("10"));
+    ASSERT_ANY_THROW(T->setCintaLista());
+    ASSERT_ANY_THROW(T->transicion());
+
+    EXPECT_EQ(T->getLecturaCabezal(), 'b');
+    EXPECT_FALSE(T->isMaquinaParada());
+
+    ASSERT_ANY_THROW(T->ponerCabezal(80));
+    ASSERT_NO_THROW(T->ponerCabezal(1));
+    ASSERT_ANY_THROW(T->ponerCabezal(2));
+    EXPECT_EQ(T->getLecturaCabezal(), '1');
+
+    ASSERT_NO_THROW(T->transicion());
+    ASSERT_EQ(T->getLecturaCabezal(), '0');
+
+    while (!T->isMaquinaParada()) {
+        ASSERT_NO_THROW(T->transicion());
+    }
+
+    ASSERT_EQ("b100101ib", T->getCopiaCinta());
+
+    ASSERT_ANY_THROW(T->transicion());
+    ASSERT_ANY_THROW(T->setCintaLista());
 }
