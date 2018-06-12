@@ -24,20 +24,19 @@ private:
     unsigned int cantActualElementosAlfabetoCinta;
     char *alfabetoCinta;
 
-    unsigned int getAlfabetoCintaIndex(const char &simboloEntradaCinta);
-
+    //banderas
     bool isCintaLista;
-
     bool isCabezalListo;    // solo se puede ubicar el cabezal una vez
+    bool maquinaApagada;     // una vez el cabezal se ha detenido, la maquina no trabaja más
+    bool tieneSimbolosCintaDefinidos;
 
-    bool maquinaParada;     // una vez el cabezal se ha detenido, la maquina no trabaja más
+
+    //metodos auxiliares
+    unsigned int getAlfabetoCintaIndex(const char &simboloEntradaCinta);
 
     virtual void transicion(char);
 
-    void escribirSimboloEnCinta(char c);    //escribe uno a uno los elementos de la cinta
-
-
-    //controlar en todas las maquinas que se hayan cargado todas las entradas y estados ...
+    virtual void setAutomataListo();
 
 public:
     MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoCinta, char blanco);
@@ -51,7 +50,7 @@ public:
 
     void escribirCinta(std::string);
 
-    std::string devolverCopiaCinta();
+    std::string getCopiaCinta();
 
     void setCintaLista();
 
@@ -61,7 +60,9 @@ public:
 
     void ponerCabezal(unsigned int);
 
-    // ver cinta?
+    virtual std::string getExpresionFormal();
+
+    unsigned int getNroElementosAlfabetoCinta();
 };
 
 #endif //AFD_MTURING_H

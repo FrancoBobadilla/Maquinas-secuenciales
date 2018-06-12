@@ -66,3 +66,53 @@ APila transicion
 
 APila getExpresionFormal
     -55 falta definirse completente el automata
+
+MTuring constructor
+    0 alfabeto de cinta nulo
+
+MTuring setF
+    -11 no encuentra estado origen
+    -12 no encuentra estado destino
+
+    -16 transicion definida previamente
+    -17 dirección de cabezal no reconocida
+    -18 no encuentra simbolo entrada desde cinta
+    -19 no encuentra simbolo entrada para cinta
+
+    -23 la funcion ya fue usada
+
+    -50 se esperaba estado de no salida
+    -51 se eseprada estado de salida
+
+MTuring setAlfabetoCinta
+    -1 tiene todos los simbolos de cinta definidos
+    + chanchada
+
+MTuring escribirSimboloEnCinta
+    -1 el simbolo a escribir no pertenece al alfabeto de entrada
+    -2 ya cinta ya estaba lista
+
+MTuring escribirCinta
+    -1 un simbolo a escribir no pertenece al alfabeto de entrada
+    -2 ya cinta ya estaba lista
+
+MTuring setCintaLista
+    -2 la cinta ya estaba lista
+
+MTuring transicion
+    los mismos que MTuring transicion(char)
+
+MTuring transicion(char)
+    -1 la máquina está apagada
+    -2 la cinta no está lista
+    -3 el cabezal no está listo
+
+    -21 no encuentra simbolo en cinta
+
+MTuring ponerCabezal
+    -1 la cinta no está lista
+    -2 el cabezal ya fue colocado
+    -3 la posición no existe
+
+MTuring getExpresionFormal
+    -55 falta definirse completente el automata

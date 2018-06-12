@@ -423,7 +423,7 @@ void cargarCinta(MTuring *p) {
         }
     }
     cout << "La máquina de Turing recibió la siguiente cadena en la cinta\n";
-    cout << p->devolverCopiaCinta() << endl;
+    cout << p->getCopiaCinta() << endl;
 }
 
 void efectuarTransicion(MTuring *p) {
@@ -463,7 +463,7 @@ void cargarCabezal(MTuring *p) {
     unsigned int pos;
     cout << "\nIngrese la posición en donde comienza el cabezal\n";
     cout << "La cinta actualmente se encuentra así:\n";
-    cout << p->devolverCopiaCinta();
+    cout << p->getCopiaCinta();
     cin >> pos;
     try {
         p->ponerCabezal(pos);

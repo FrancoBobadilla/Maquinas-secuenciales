@@ -14,6 +14,16 @@ MTuring::MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsi
     this->cantActualElementosAlfabetoCinta = 0;
     this->alfabetoCinta = new char[this->nroElementosAlfabetoCinta];
 
+    //seteo de banderas
+    this->isCintaLista = false;
+    this->isCabezalListo = false;
+    this->tieneSimbolosCintaDefinidos = false;
+    this->maquinaApagada = false;
+
+    this->cinta = new Cinta<char>(blanco);
+    // el blanco cuenta como simbolo del alfabeto de cinta?
+    this->setAlfabetoCinta(blanco);
+
     // f [ESTADO ACTUAL] [ENTRADA DESDE CINTA]
     this->f = new SalidaFuncMaqTuring **[this->nroEstados];
     for (int i = 0; i < this->nroEstados; ++i) {
@@ -22,19 +32,15 @@ MTuring::MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsi
             this->f[i][j] = nullptr;
         }
     }
-
-    this->cinta = new Cinta<char>(blanco);
-    // el blanco cuenta como simbolo del alfabeto de cinta?
-    this->setAlfabetoCinta(blanco);
-
-    this->isCintaLista = false;
-    this->maquinaParada = false;
-    this->isCabezalListo = false;
 }
 
 void MTuring::setF(std::string nombreEstadoSalida, char entradaCinta, std::string nombreEstadoDestino,
                    char direccion, char escritura) {
     unsigned int ESalidaIndex, entradaCintaIndex, EDestinoIndex, escrituraIndex;
+
+    if (this->tieneFDeterminada)
+        throw -23;
+
     try {
         ESalidaIndex = this->getEstadoIndex(nombreEstadoSalida);
     } catch (int exc) {
@@ -52,20 +58,27 @@ void MTuring::setF(std::string nombreEstadoSalida, char entradaCinta, std::strin
         entradaCintaIndex = getAlfabetoCintaIndex(entradaCinta);
     } catch (int exc) {
         if (-1 == exc)
-            throw -14;
+            throw -18;
     }
     try {
         escrituraIndex = getAlfabetoCintaIndex(escritura);
     } catch (int exc) {
         if (-1 == exc)
-            throw -15;
+            throw -19;
     }
 
     //(p: mantener, i:izquierda, d:derecha)
     // direccion no valida
-    // se deberia castear mejor con toUpper etc. o solicitar al usuario que increse sus direcciones
-    if ('p' != direccion && 'i' != direccion && 'd' != direccion)
+    if ('p' != tolower(direccion) && 'i' != tolower(direccion) && 'd' != tolower(direccion))
         throw -17;
+
+    // controla que sólo se alcanza salida cuando el cabezal para
+    if ('p' != tolower(direccion) && this->estados[EDestinoIndex].situacion)
+        throw -50;
+
+    // controla que el cabezal puede pararse sólo al alcanzar salida
+    if ('p' == tolower(direccion) && !this->estados[EDestinoIndex].situacion)
+        throw -51;
 
     if (nullptr != f[ESalidaIndex][entradaCintaIndex])
         throw -16;
@@ -74,12 +87,12 @@ void MTuring::setF(std::string nombreEstadoSalida, char entradaCinta, std::strin
     this->f[ESalidaIndex][entradaCintaIndex] = new SalidaFuncMaqTuring;
     this->f[ESalidaIndex][entradaCintaIndex]->estado.nombre = this->estados[EDestinoIndex].nombre;
     this->f[ESalidaIndex][entradaCintaIndex]->estado.situacion = this->estados[EDestinoIndex].situacion;
-    this->f[ESalidaIndex][entradaCintaIndex]->direccion = direccion;
+    this->f[ESalidaIndex][entradaCintaIndex]->direccion = (char) tolower(direccion);
     this->f[ESalidaIndex][entradaCintaIndex]->escritura = this->alfabetoCinta[escrituraIndex];
 }
 
 void MTuring::setAlfabetoCinta(char c) {
-    if (this->cantActualElementosAlfabetoCinta >= this->nroElementosAlfabetoCinta)
+    if (this->tieneSimbolosCintaDefinidos)
         throw -1;          //ya esta lleno
 
     try {
@@ -87,6 +100,10 @@ void MTuring::setAlfabetoCinta(char c) {
     } catch (int exc) {
         this->alfabetoCinta[this->cantActualElementosAlfabetoCinta] = c;
         this->cantActualElementosAlfabetoCinta++;
+        if (this->cantActualElementosAlfabetoCinta == this->nroElementosAlfabetoCinta) {
+            this->tieneSimbolosCintaDefinidos = true;
+            this->setAutomataListo();
+        }
         return;
     }
     // conceptualmente esta mal: esta tomando como excepcion algo que esta bien
@@ -94,33 +111,32 @@ void MTuring::setAlfabetoCinta(char c) {
     // dejame esto para más adelante Bob
 }
 
-void MTuring::escribirSimboloEnCinta(char c) {
+void MTuring::escribirCinta(std::string s) {
     if (this->isCintaLista)
         throw -2;   //Cinta ya estaba lista
-    try {
-        this->getAlfabetoIndex(c);      //al comienzo  sólo debe haber simbolos del alf de entrada, no del de cinta
-    } catch (int exc) {
-        if (-1 == exc)
-            throw -1;   //No pertenece al alfabeto de entrada
-    }
-    this->cinta->desplazarDerecha();
-    this->cinta->escribir(c);
-    //podría considerarse el hecho de llenar la cinta con los indices del arreglo de entradas, para no controlar tantas veces
-}
 
-void MTuring::escribirCinta(std::string s) {
     unsigned int i = 0;
+
     while ('\0' != s[i]) {
         try {
-            this->escribirSimboloEnCinta(s[i]);
+            this->getAlfabetoIndex(s[i]);
         } catch (int exc) {
-            throw exc;
+            if (-1 == exc)
+                throw -1;   //No pertenece al alfabeto de entrada
         }
+        //cambiar despues por funcion existe();
+        i++;
+    }
+
+    i = 0;
+    while ('\0' != s[i]) {
+        this->cinta->desplazarDerecha();
+        this->cinta->escribir(s[i]);
         i++;
     }
 }
 
-std::string MTuring::devolverCopiaCinta() {
+std::string MTuring::getCopiaCinta() {
     return this->cinta->devolverCopiaCinta();
 }
 
@@ -128,11 +144,8 @@ void MTuring::setCintaLista() {
     if (this->isCintaLista)
         throw -2;   //Cinta ya estaba lista
     this->cinta->desplazarDerecha(); // crea un blanco al final de la cinta
-    do {
-        this->cinta->desplazarIzquierda();
-    } while (this->cinta->leer() != this->cinta->getBlanco());
-    // es un esfuerzo inutil volver al comienzo si luego el usuario elige donde dejar el cabezal
     this->isCintaLista = true;
+    this->setAutomataListo();
 }
 
 // no me gusta que tenga parámetros distintos
@@ -145,34 +158,57 @@ void MTuring::transicion() {
 }
 
 void MTuring::transicion(char lectura) {
-    if (this->maquinaParada)
+    if (this->maquinaApagada)
         throw -1;
     if (!this->isCintaLista)
         throw -2;       // no se puede hacer tranciciones hasta que la cinta no este lista
     if (!this->isCabezalListo)
         throw -3;
+
     SalidaFuncMaqTuring *salidaF;
     try {
         salidaF = this->f[this->getEstadoIndex(this->estadoActual->nombre)][this->getAlfabetoCintaIndex(lectura)];
     } catch (int exc) {
         if (-1 == exc)
             throw -21;
+        // se da en caso de que el alfabeto de entrada no esté comprendido en el de cinta
     }
 
-    if (nullptr == salidaF)
-        throw -5;   // transicion no definida
-
-    this->estadoActual = &salidaF->estado;
-    if (this->estadoActual->situacion)
-        this->maquinaParada = true;
-    this->cinta->escribir(salidaF->escritura);
-    if ('d' == salidaF->direccion) {
-        this->cinta->desplazarDerecha();
+    if (nullptr == salidaF) {
+        Estado *tmpEstado = new Estado();
+        tmpEstado->nombre = "ESTADO DE ERROR";
+        tmpEstado->situacion = false;
+        this->estadoActual = tmpEstado;
+        this->maquinaApagada = true;
+        //define automata como no usable
     } else {
-        if ('i' == salidaF->direccion)
+        this->estadoActual = &salidaF->estado;
+        if (this->estadoActual->situacion)
+            this->maquinaApagada = true;
+
+        this->cinta->escribir(salidaF->escritura);
+
+        //en caso de que se reemplace un blanco por otro simbolo
+        //el cabezal se mueve hacia la izquierda y la derecha
+        //colocando un blanco en el lado correspondiente
+        if (lectura == this->cinta->getBlanco()
+            && salidaF->escritura != this->cinta->getBlanco()) {
+            this->cinta->desplazarDerecha();
             this->cinta->desplazarIzquierda();
-        else {
-            this->maquinaParada = true;
+            this->cinta->desplazarIzquierda();
+            this->cinta->desplazarDerecha();
+        }
+
+        if ('d' == salidaF->direccion) {
+            this->cinta->desplazarDerecha();
+        } else {
+            if ('i' == salidaF->direccion)
+                this->cinta->desplazarIzquierda();
+        }
+
+        if (!this->tieneFDeterminada) {
+            this->tieneFDeterminada = true;
+            this->setAutomataListo();
         }
     }
 }
@@ -190,7 +226,7 @@ char MTuring::getLecturaCabezal() {
 }
 
 bool MTuring::isMaquinaParada() {
-    return this->maquinaParada;
+    return this->maquinaApagada;
 }
 
 void MTuring::ponerCabezal(unsigned int pos) {
@@ -201,10 +237,36 @@ void MTuring::ponerCabezal(unsigned int pos) {
     if (this->cinta->getTamano() <= pos)
         throw -3;   // la cinta es mas chica
 
-    unsigned int i = pos;
+    //el cabezal está sobre el último blanco
+    //el cabezal está en la posición tamano-1
+
+    unsigned int i = this->cinta->getTamano() - 1 - pos;
     while (0 != i) {
-        this->cinta->desplazarDerecha();
+        this->cinta->desplazarIzquierda();
         i--;
     }
     this->isCabezalListo = true;
+    this->setAutomataListo();
+}
+
+unsigned int MTuring::getNroElementosAlfabetoCinta() {
+    return this->nroElementosAlfabetoCinta;
+}
+
+std::string MTuring::getExpresionFormal() {
+    if (!this->tieneEstadoInicial || !this->tieneEstadoSalida || !this->tieneEstadosDefinidos ||
+        !this->tieneEntradasDefinidas || !this->tieneSimbolosCintaDefinidos)
+        throw -55;
+    return "";
+}
+
+void MTuring::setAutomataListo() {
+    this->automataListo = this->tieneEstadoInicial &&
+                          this->tieneEstadoSalida &&
+                          this->tieneEstadosDefinidos &&
+                          this->tieneEntradasDefinidas &&
+                          this->tieneFDeterminada &&
+                          this->tieneSimbolosCintaDefinidos &&
+                          this->isCintaLista &&
+                          this->isCabezalListo;
 }
