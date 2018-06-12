@@ -128,7 +128,7 @@ TEST(test_prueba, APila_Exceptions) {
 
     ASSERT_EQ(P->getNroEstados(), 4);
     ASSERT_EQ(P->getNroElementosAlfabeto(), 2);
-    EXPECT_EQ(P->getNroElementosAlfabetoPila(), 1);
+//    EXPECT_EQ(P->getNroElementosAlfabetoPila(), 1);
 
     EXPECT_EQ(P->getTopeDePila(), '#');
     ASSERT_ANY_THROW(P->setAlfabetoPila('#'));
@@ -166,6 +166,18 @@ TEST(test_prueba, APila_Exceptions) {
     ASSERT_ANY_THROW(P->setAlfabeto('c'));
 
     ASSERT_NO_THROW(P->setF("q2", 'a', 'a', "q2", true, 'a'));
+
+    ASSERT_ANY_THROW(P->setF("q2", 'b', 'a', "q4", false, 'a'));
+    ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q2", false, 'a'));
+    ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q2", false, (char) 0));
+    ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q4", true, (char) 0));
+    ASSERT_ANY_THROW(P->setF("q3", 'a', '#', "q3", false, (char) 0));
+
+    ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q2", true, '#'));
+    ASSERT_ANY_THROW(P->setF("q1", 'a', 'a', "q2", true, '#'));
+    ASSERT_ANY_THROW(P->setF("q1", 'a', 'a', "q2", false, '#'));
+    //quedamos en verificar que no se puedan anadir dos #
+
     ASSERT_NO_THROW(P->setF("q2", 'b', 'a', "q3", false, (char) 0));
     ASSERT_ANY_THROW(P->setF("q2", 'b', 'a', "q3", false, 'a'));
     ASSERT_NO_THROW(P->setF("q3", 'b', 'a', "q3", false, (char) 0));
@@ -209,23 +221,3 @@ TEST(test_prueba, APila_Exceptions) {
     ASSERT_EQ(P->getNombreEstadoActual(), "q4");
     ASSERT_TRUE(P->getSituacionEstadoActual());
 }
-
-//TEST(test_prueba, MTuring_ParOImpar) {
-//// escribe P en la cinta si hay una cantidad par de 0
-//    // escribe I si la cantidade de 0 es impar
-//
-//    M = new MTuring(1, 2, 4, '/');
-//    ASSERT_EQ(1, M->getNroEstados());
-//    ASSERT_EQ(2, M->getNroElementosAlfabeto());
-////    ASSERT_EQ(4, M->getNroElementosAlfabetoCinta());
-////    ASSERT_EQ('/', M.getBlanco());
-//    ASSERT_EQ(M->getLecturaCabezal(), '/');
-//}
-//
-//
-//TEST(test_prueba, Automata_general) {
-//    F = new AFD(2, 2);
-//    ASSERT_EQ(F->getNroEstados(), 2);
-//    ASSERT_EQ(F->getNroElementosAlfabeto(), 2);
-//
-//}
