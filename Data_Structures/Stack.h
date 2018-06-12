@@ -26,6 +26,8 @@ public:
     T pop();
 
     bool isEmpty();
+
+    T peek();
 };
 
 template<class T>
@@ -60,6 +62,13 @@ T Stack<T>::pop() {
 template<class T>
 bool Stack<T>::isEmpty() {
     return nullptr == this->top;
+}
+
+template <class T>
+T Stack<T>::peek() {
+    if(this->isEmpty())
+        throw -11;
+    return top->getData();
 }
 
 #endif //AFD_STACK_H
