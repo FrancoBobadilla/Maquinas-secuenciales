@@ -48,6 +48,12 @@ APila setF
 
     -23 la funcion ya fue usada
 
+    -50 se esperaba estado de no salida
+    -51 se eseprada estado de salida
+    -52 no se puede reemplazar el fin de pila
+    -53 no se puede colocar otro fin de pila
+
+
 APila setAlfabetoPila
     -1 tiene todos los simbolos de pila definidos
     + chanchada
@@ -55,7 +61,7 @@ APila setAlfabetoPila
 APila transicion
     -10 automata apagado
     -20 stack underflow
-    -21 no encuentra simbolo de entrada
+    -21 no encuentra simbolo de entrada o pila
     -30 no tiene simbolos o estados definidos
 
 APila getExpresionFormal

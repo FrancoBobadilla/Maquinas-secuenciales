@@ -86,10 +86,57 @@ void APila::setF(std::string nombreEstadoSalida, char entrada, char valorPila, s
         apilamientoTMP = apilamiento;
     }
 
+    /*
+     * Este bloque verifica que no haya dos fines de pila al mismo tiempo
+     * */
+    if (apilamiento == this->finDePila) {
+        if (conservarTope)
+            throw -53;
+        else {
+            if (valorPila != this->finDePila)
+                throw -53;
+        }
+    }
+
+    /*
+     * El siguiente bloque de instrucciones verifica
+     * Que siempre que se quite el fin de pila se alcance un estado de salida
+     * Que siempre que esté al menos el simbolo de pila se alcance un estado que no sea de salida
+     * Que no se reemplace el fin de pila por cualquier otro simbolo
+     *
+     * */
+    if (conservarTope) {
+        // si se conserva el tope, hay al menos un elemento en la pila
+        // por ende sólo se puede alcanzar estados que no sean de salida
+        if (this->estados[EDestinoIndex].situacion)
+            throw -50;
+    } else {
+        // si se desapila
+        if ((char) 0 == apilamiento) {
+            // si se desapila el fin de pila
+            if (valorPila == this->finDePila) {
+                // solo se puede alcanzar salida
+                if (!this->estados[EDestinoIndex].situacion)
+                    throw -51;
+            } else {
+                // no se puede alcanzar salida
+                if (this->estados[EDestinoIndex].situacion)
+                    throw -50;
+            }
+        } else {
+            // en este caso algo se apila
+            // no se puede reemplazar el tope de pila por otro simbolo
+            if (valorPila == this->finDePila && apilamiento != this->finDePila) {
+                throw -52;
+            }
+            if (this->estados[EDestinoIndex].situacion)
+                throw -50;
+        }
+    }
+    //fin bloque
+
     if (nullptr != this->f[ESalidaIndex][entradaIndex][valorPilaIndex])
         throw -16;      // sólo se puede definir una
-
-    // se puede setear transicion a estado de salida?
 
     // tiene que haber una forma prolija de hacerlo
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex] = new ElementosTransicionPila;
@@ -134,23 +181,17 @@ void APila::transicion(char entrada) {
             throw -30;
     }
 
-    char topeDePila;
-    try {
-        topeDePila = this->pila->pop();
-        this->pila->push(topeDePila);
-    } catch (int exc) {
-        if (-11 == exc)
-            throw -20;
-    }
-
     ElementosTransicionPila *salidaF;
     try {
-        salidaF = this->f[this->getEstadoIndex(estadoActual->nombre)][this->getAlfabetoIndex(
-                entrada)][this->getAlfabetoPilaIndex(topeDePila)];
+        salidaF = this->f[this->getEstadoIndex(this->estadoActual->nombre)][this->getAlfabetoIndex(
+                entrada)][this->getAlfabetoPilaIndex(this->pila->peek())];
     } catch (int exc) {
         if (-1 == exc)
             throw -21;
     }
+
+    // En caso de efectuarse una transicion quita simbolo de la pila. Porque si no se hace la
+    // transicion se perdería el tope de pila
 
     if (nullptr == salidaF) {
         Estado *tmpEstado = new Estado();
@@ -159,27 +200,19 @@ void APila::transicion(char entrada) {
         this->estadoActual = tmpEstado;
         this->automataApagado = true;
         //define automata como no usable
-    }
+    } else {
+        if (!salidaF->conservarTope)
+            pila->pop();
 
-    this->pila->pop();
-    /*
-     * El tope de pila es necesario para determinar el estado resultante de la transicion
-     * sin embargo en caso de que la entrada sea erronea la funcion retorna y se debe conservar el tope de
-     * la pila como estaba
-     * el mismo caso para las transiciones no definidas
-     * */
+        if ((char) 0 != salidaF->apilamiento)
+            pila->push(salidaF->apilamiento);
 
-    if (salidaF->conservarTope)
-        pila->push(topeDePila);
+        estadoActual = &salidaF->estado;
 
-    if ((char) 0 != salidaF->apilamiento)
-        pila->push(salidaF->apilamiento);
-
-    estadoActual = &salidaF->estado;
-
-    if (!this->tieneFDeterminada) {
-        this->tieneFDeterminada = true;
-        this->setAutomataListo();
+        if (!this->tieneFDeterminada) {
+            this->tieneFDeterminada = true;
+            this->setAutomataListo();
+        }
     }
 }
 
@@ -191,12 +224,12 @@ unsigned int APila::getAlfabetoPilaIndex(const char &s) {
     throw -1;
 }
 
+// método para reemplazar la transición lambda entre útlimo estado alcanzado
+// por el usuario y el estado de salida
 void APila::apagarAutomata() {
     this->automataApagado = true;
     try {
-        char tmp = this->pila->pop();
-        this->pila->push(tmp);
-        if (this->finDePila == tmp) {
+        if (this->finDePila == this->pila->peek()) {
             this->estadoActual = this->buscarEstadoFinal();
         }
     } catch (int exc) {
@@ -209,7 +242,7 @@ Estado *APila::buscarEstadoFinal() {
         if (this->estados[i].situacion)
             return &this->estados[i];
     }
-    // exception por si no hay estado final?
+    throw -5;
 }
 
 unsigned int APila::getNroElementosAlfabetoPila() {
