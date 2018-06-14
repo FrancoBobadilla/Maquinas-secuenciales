@@ -96,13 +96,13 @@ void MostrarSalida(Automata *a) {
     //Se deberia considerar querer mostrrar el tope de pila para automatas de pila
 }
 
-void efectuarTransicion(Automata *a) {
+void efectuarTransicion(AFD *a) {
     char ent;
     cout << "Efectuando nueva transicion\n";
     cout << "\tIngresar la entrada: ";
     cin >> ent;
     try {
-        a->transicion(ent);
+        a->transicion();
     } catch (int exc) {
         if (-8 == exc)
             cout << " \n\tLa función de transicion no está completamente cargada\n";
@@ -113,7 +113,6 @@ void efectuarTransicion(Automata *a) {
                 cout << "ERROR: " << exc << "\n";
         }
     }
-
 
     MostrarSalida(a);
 }
@@ -128,7 +127,7 @@ void efectuarTransicion(APila *a) {
     cout << "\tIngresar la entrada: ";
     cin >> ent;
     try {
-        a->transicion(ent);
+        a->transicion();
     } catch (int exc) {
         if (-8 == exc)
             cout << " \n\tLa función de transicion no está completamente cargada\n";
@@ -369,19 +368,6 @@ void cargarFTransicion(MTuring *p) {
     } while ('1' == t);
 }
 
-void finalizarTransicion(APila *p) {
-    try {
-        p->apagarAutomata();
-        MostrarSalida(p);
-    } catch (int exc) {
-        if (-11 == exc) {
-            cout << "\n Hubo desbordamiento negativo de pila\n";
-        } else {
-            cout << "\n\tERROR: " << exc << "\n";
-        }
-    }
-}
-
 void cargarCinta(MTuring *p) {
     char t;
     string c;
@@ -391,7 +377,7 @@ void cargarCinta(MTuring *p) {
         cout << "\nIngrese la cadena de simbolos de la cinta: ";
         LEERSTRING(c);
         try {
-            p->escribirCinta(c);
+            p->setCadenaAnalizar(c);
         } catch (int exc) {
             if (-2 == exc) {
                 cout << "\n\tLa cinta ha sido cargada previamente";
@@ -413,15 +399,6 @@ void cargarCinta(MTuring *p) {
             cin >> t;
         }
     } while ('1' == t);
-    try {
-        p->setCintaLista();
-    } catch (int exc) {
-        if (-2 == exc) {
-            cout << "\n\tLa cinta ha sido cargada previamente";
-        } else {
-            cout << "\n\t ERROR: " << exc << "\n";
-        }
-    }
     cout << "La máquina de Turing recibió la siguiente cadena en la cinta\n";
     cout << p->getCopiaCinta() << endl;
 }
@@ -491,8 +468,13 @@ void ProbarAPila();
 
 void ProbarMT();
 
+void Probar_FD_aImpar_bPar();
+
+void hacerTrancisiones(AFD);
+
 int main() {
-    ProbarMT();
+    Probar_FD_aImpar_bPar();
+//    ProbarMT();
 //    ProbarAFD();
 //    ProbarAPila();
     return 0;
@@ -514,13 +496,10 @@ void ProbarAFD() {
     cargarFTransicion(&A);
     cargarEstadoInicial(&A);
 
-    char t;
-    do {
+    while (!A.isAutomataApagado()) {
         cout << "Efectuando transición\n";
         efectuarTransicion(&A);
-        cout << "\nIngrese 1 si desea una nueva transicion\n";
-        cin >> t;
-    } while ('1' == t);
+    }
 }
 
 void ProbarAPila() {
@@ -546,16 +525,10 @@ void ProbarAPila() {
     cargarFTransicion(&P);
     cargarEstadoInicial(&P);
 
-    char t;
-    do {
+    while (!P.isAutomataApagado()) {
         cout << "Efectuando transición\n";
         efectuarTransicion(&P);
-        cout << "\nIngrese 1 si desea una nueva transicion\n";
-        cin >> t;
-    } while ('1' == t);
-    cout << "Ha finalizado las trancisiones del automata de pila\n";
-    finalizarTransicion(&P);
-    cin >> t;       //system pause multiplataforma
+    }
 }
 
 void ProbarMT() {
@@ -583,10 +556,54 @@ void ProbarMT() {
     cargarEstadoInicial(&M);
     cargarCinta(&M);
     cargarCabezal(&M);
-    char tmp;
-    while (!M.isMaquinaParada()) {
-        cout << "\nPresione cualquier tecla para hacer una transicion\n";
-        cin >> tmp;
+
+    while (!M.isAutomataApagado()) {
+        cout << "Efectuando transición\n";
         efectuarTransicion(&M);
     }
 }
+
+void Probar_FD_aImpar_bPar() {
+    AFD F(4, 2);
+
+    F.setEstado("C0", false);
+    F.setEstado("C1", false);
+    F.setEstado("C2", false);
+    F.setEstado("C3", true);
+
+    F.setAlfabeto('a');
+    F.setAlfabeto('b');
+
+    F.setF("C0", 'a', "C3");
+    F.setF("C0", 'b', "C1");
+
+    F.setF("C1", 'a', "C2");
+    F.setF("C1", 'b', "C0");
+
+    F.setF("C2", 'a', "C1");
+    F.setF("C2", 'b', "C3");
+
+    F.setF("C3", 'a', "C0");
+    F.setF("C3", 'b', "C2");
+
+    F.setCadenaAnalizar("aaabbbb");
+
+    F.setEstadoInicial("C0");
+
+
+    hacerTrancisiones(F);
+
+
+    F.getNombreEstadoActual();
+    F.getSituacionEstadoActual();
+    F.isAutomataApagado();
+
+    cout << F.getExpresionFormal();
+}
+
+void hacerTrancisiones(AFD F) {
+    while (!F.isAutomataApagado()) {
+        cout << F.getNombreEstadoActual() << "\n";
+        F.transicion();
+    }
+};
