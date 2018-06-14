@@ -238,8 +238,8 @@ Automata::Automata(const Automata &x) {
 }
 
 Automata::~Automata() {
-    delete estados;
-    delete alfabeto;
+//    delete this->estados; // Estado ya no es mas un objeto
+    delete this->alfabeto;
     std::cout << "saliendo de Automata::destructor\n";
 }
 

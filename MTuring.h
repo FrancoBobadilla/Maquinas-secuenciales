@@ -25,7 +25,7 @@ private:
     char *alfabetoCinta;
 
     //banderas
-    bool isCabezalListo;    // solo se puede ubicar el cabezal una vez
+    bool isCabezalListo;
     bool tieneSimbolosCintaDefinidos;
 
     //metodos auxiliares
@@ -61,6 +61,10 @@ public:
     std::string tipoAutomata() override;
 
     std::string expresionEspecifica() override;
+
+    MTuring(const MTuring &);
+
+    ~MTuring();
 };
 
 #endif //AFD_MTURING_H

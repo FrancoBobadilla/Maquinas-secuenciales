@@ -102,7 +102,6 @@ void MTuring::setAlfabetoCinta(char c) {
         this->tieneSimbolosCintaDefinidos = true;
         this->setAutomataListo();
     }
-
 }
 
 void MTuring::setCadenaAnalizar(std::string s) {
@@ -268,4 +267,50 @@ std::string MTuring::expresionEspecifica() {
     r += ", ";
 
     return r;
+}
+
+MTuring::MTuring(const MTuring &x) : Automata(x) {
+    this->nroElementosAlfabetoCinta = x.nroElementosAlfabetoCinta;
+    this->cantActualElementosAlfabetoCinta = x.cantActualElementosAlfabetoCinta;
+
+    this->alfabetoCinta = new char[this->nroElementosAlfabetoCinta];
+    for (int l = 0; l < this->cantActualElementosAlfabetoCinta; ++l)
+        this->alfabetoCinta[l] = x.alfabetoCinta[l];
+
+    this->tieneSimbolosCintaDefinidos = x.tieneEntradasDefinidas;
+
+    this->cinta = new Cinta<char>(*x.cinta);
+
+    this->isCabezalListo = false;
+    this->isCabezalListo = x.isCabezalListo;
+
+    this->f = new SalidaFuncMaqTuring **[this->nroEstados];
+    for (int i = 0; i < this->nroEstados; ++i) {
+        this->f[i] = new SalidaFuncMaqTuring *[this->nroElementosAlfabetoCinta];
+        for (int j = 0; j < this->nroElementosAlfabetoCinta; ++j) {
+            if (nullptr == x.f[i][j])
+                this->f[i][j] = nullptr;
+            else {
+                this->f[i][j] = new SalidaFuncMaqTuring;
+                this->f[i][j]->estado.nombre = x.f[i][j]->estado.nombre;
+                this->f[i][j]->estado.situacion = x.f[i][j]->estado.situacion;
+                this->f[i][j]->escritura = x.f[i][j]->escritura;
+                this->f[i][j]->direccion = x.f[i][j]->direccion;
+            }
+        }
+    }
+    std::cout << "Saliendo de MTuring:constructor por copia\n";
+}
+
+MTuring::~MTuring() {
+    delete this->alfabetoCinta;
+    delete this->cinta;
+
+    for (int i = 0; i < this->nroEstados; ++i) {
+        for (int j = 0; j < this->nroElementosAlfabetoCinta; ++j)
+            delete f[i][j];
+        delete this->f[i];
+    }
+    delete this->f;
+    std::cout << "Saliendo de MTuring:destructor\n";
 }

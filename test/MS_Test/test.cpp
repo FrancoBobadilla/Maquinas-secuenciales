@@ -46,6 +46,20 @@ void haciendoTenCopia(APila F) {
     }
 };
 
+void haciendoT(MTuring &F) {
+    while (!F.isAutomataApagado()) {
+        cout << F.getNombreEstadoActual() << "\n";
+        F.transicion();
+    }
+};
+
+void haciendoTenCopia(MTuring F) {
+    while (!F.isAutomataApagado()) {
+        cout << F.getNombreEstadoActual() << "\n";
+        F.transicion();
+    }
+};
+
 TEST(test_prueba, AFD_Exceptions) {
     F = new AFD(2, 3);
     ASSERT_ANY_THROW(F->transicion());
@@ -614,4 +628,73 @@ TEST(Ejercicios_Guia, MT_incremento) {
     EXPECT_EQ(T->getCopiaCinta(), "b10000b");
 
     string tmp = T->getExpresionFormal();
+}
+
+TEST(Ejercicios_Guia, MT_incremento_sinPTR) {
+    MTuring Q(6, 3, 3, 'b');
+    Q.setEstado("q0", false);
+    Q.setEstado("q1", false);
+    Q.setEstado("q2", false);
+    Q.setEstado("q3", false);
+    Q.setEstado("q4", true);
+    Q.setEstado("q5", false);
+
+    Q.setEstadoInicial("q0");
+
+    Q.setAlfabeto('0');
+    Q.setAlfabeto('1');
+    Q.setAlfabeto('$');
+    Q.setAlfabetoCinta('0');
+    Q.setAlfabetoCinta('1');
+    Q.setAlfabetoCinta('$');
+
+    Q.setF("q0", '0', "q0", 'd', '0');
+    Q.setF("q0", '1', "q0", 'd', '1');
+    Q.setF("q0", 'b', "q1", 'i', 'b');
+    Q.setF("q0", '$', "q0", 'd', '$');
+
+    Q.setF("q1", '0', "q2", 'i', '1');
+    Q.setF("q1", '1', "q3", 'i', '0');
+
+    Q.setF("q2", '0', "q2", 'i', '0');
+    Q.setF("q2", '1', "q2", 'i', '1');
+    Q.setF("q2", '$', "q5", 'd', '$');
+
+    Q.setF("q3", '0', "q2", 'i', '1');
+    Q.setF("q3", '1', "q3", 'i', '0');
+    Q.setF("q3", '$', "q4", 'p', '1');
+
+    Q.setF("q5", '0', "q4", 'p', '0');
+    Q.setF("q5", '1', "q4", 'p', '1');
+
+    Q.setCadenaAnalizar("$1111");
+    Q.ponerCabezal(1);
+
+    cout << Q.getNombreEstadoActual() << "\n";
+    cout << Q.getCopiaCinta() << "\n";
+
+    MTuring QCopia(Q);
+
+    EXPECT_EQ(Q.getCopiaCinta(), QCopia.getCopiaCinta());
+    EXPECT_EQ(Q.getLecturaCabezal(), Q.getLecturaCabezal());
+
+    haciendoTenCopia(QCopia);
+
+    EXPECT_EQ(QCopia.getNombreEstadoActual(), "q0");
+    EXPECT_FALSE(QCopia.getSituacionEstadoActual());
+    EXPECT_FALSE(QCopia.isAutomataApagado());
+    EXPECT_EQ(QCopia.getCopiaCinta(), "b$1111b");
+
+    haciendoT(Q);
+    haciendoT(QCopia);
+
+    EXPECT_EQ(Q.getNombreEstadoActual(), "q4");
+    EXPECT_TRUE(Q.getSituacionEstadoActual());
+    EXPECT_TRUE(Q.isAutomataApagado());
+    EXPECT_EQ(Q.getCopiaCinta(), "b10000b");
+
+    EXPECT_EQ(QCopia.getNombreEstadoActual(), "q4");
+    EXPECT_TRUE(QCopia.getSituacionEstadoActual());
+    EXPECT_TRUE(QCopia.isAutomataApagado());
+    EXPECT_EQ(QCopia.getCopiaCinta(), "b10000b");
 }
