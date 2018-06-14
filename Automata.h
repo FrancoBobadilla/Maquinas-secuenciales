@@ -88,6 +88,8 @@ public:
 
     bool isAutomataApagado();
 
+    virtual void reiniciarAutomata() =0;
+
     // metodos para expresion formal
     virtual std::string tipoAutomata() =0;
 
@@ -95,7 +97,7 @@ public:
 
     virtual std::string expresionEspecifica() =0;
 
-    Automata(const Automata&);
+    Automata(const Automata &);
 
     virtual~Automata(); //virtual?
 };

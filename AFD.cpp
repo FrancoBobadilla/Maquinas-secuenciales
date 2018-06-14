@@ -98,6 +98,16 @@ std::string AFD::expresionEspecifica() {
     return "";
 }
 
+void AFD::reiniciarAutomata() {
+    this->automataListo = false;
+    this->automataApagado = false;
+
+    this->cadenaAnalizar = "";
+    this->tieneCadenaAnalizar = false;
+
+    this->estadoActual = this->estadoInicial;
+}
+
 AFD::AFD(const AFD &x) : Automata(x) {
     this->f = new Estado **[this->nroEstados];
     for (int i = 0; i < this->nroEstados; ++i) {

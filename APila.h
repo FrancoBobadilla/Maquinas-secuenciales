@@ -48,6 +48,8 @@ public:
 
     void transicion() override;
 
+    void reiniciarAutomata() override;
+
     // metodos para simbolos del alfabeto de entrade de pila
     void setAlfabetoPila(char);
 

@@ -410,18 +410,36 @@ TEST(Ejercicios_Guia, AFD_aImpar_bPar) {
 
     ASSERT_NO_THROW(F->setCadenaAnalizar("aaabbbb"));
 
+    cout << "\nSe analiza la cadena aaabbbb" << endl;
+
     ASSERT_NO_THROW(F->setEstadoInicial("C0"));
 
     while (!F->isAutomataApagado()) {
-        cout << F->getNombreEstadoActual() << "\n";
+        cout << F->getNombreEstadoActual() << "  ";
         F->transicion();
     }
 
+    cout << endl << "Estado y situacion salida finales: ";
     EXPECT_EQ(F->getNombreEstadoActual(), "C3");
     EXPECT_TRUE(F->getSituacionEstadoActual());
     EXPECT_TRUE(F->isAutomataApagado());
 
     string tmp = F->getExpresionFormal();
+
+    ASSERT_NO_THROW(F->reiniciarAutomata());
+
+    ASSERT_NO_THROW(F->setCadenaAnalizar("aaabbb"));
+
+    cout << "Se analiza la cadena aaabbb" << endl;
+
+    while (!F->isAutomataApagado()) {
+        cout << F->getNombreEstadoActual() << "  ";
+        F->transicion();
+    }
+    cout << "Estado y situacion salida finales:\n ";
+    EXPECT_EQ(F->getNombreEstadoActual(), "C2");
+    EXPECT_FALSE(F->getSituacionEstadoActual());
+    EXPECT_TRUE(F->isAutomataApagado());
 }
 
 TEST(Ejercicios_Guia, AFD_aImpar_bPar_noPTR) {
@@ -503,13 +521,16 @@ TEST(Ejercicios_Guia, APila_nibbles) {
 
     ASSERT_ANY_THROW(P->setF("q2", '0', '#', "q3", true, char(0)));
 
+
+    cout << " \nSe analiza la cadena 1110*0100\n";
     P->setCadenaAnalizar("1110*0100");
 
-    cout << P->getNombreEstadoActual() << "\n";
+
+    cout << P->getNombreEstadoActual() << " ";
 
     while (!P->isAutomataApagado()) {
         ASSERT_NO_THROW(P->transicion());
-        cout << P->getNombreEstadoActual() << "\n";
+        cout << P->getNombreEstadoActual() << " ";
     }
 
     EXPECT_EQ(P->getNombreEstadoActual(), "q3");
@@ -517,6 +538,23 @@ TEST(Ejercicios_Guia, APila_nibbles) {
     EXPECT_TRUE(P->isAutomataApagado());
 
     string tmp = P->getExpresionFormal();
+
+    P->reiniciarAutomata();
+
+    cout << " \nSe analiza la cadena 1111*0100\n";
+    P->setCadenaAnalizar("1111*0100");
+
+    cout << P->getNombreEstadoActual() << " ";
+    while (!P->isAutomataApagado()) {
+        ASSERT_NO_THROW(P->transicion());
+        cout << P->getNombreEstadoActual() << " ";
+    }
+
+    cout << endl;
+    EXPECT_EQ(P->getNombreEstadoActual(), "ESTADO DE ERROR");
+    EXPECT_FALSE(P->getSituacionEstadoActual());
+    EXPECT_TRUE(P->isAutomataApagado());
+
 }
 
 TEST(Ejercicios_Guia, APila_nibbles_noPTR) {
@@ -613,19 +651,65 @@ TEST(Ejercicios_Guia, MT_incremento) {
     T->setCadenaAnalizar("$1111");
     T->ponerCabezal(1);
 
+    cout << " \nSe analiza la cadena $1111\n";
+
     cout << T->getNombreEstadoActual() << "\n";
     cout << T->getCopiaCinta() << "\n";
 
+    cout << T->getNombreEstadoActual() << " ";
+
     while (!T->isAutomataApagado()) {
         ASSERT_NO_THROW(T->transicion());
-        cout << T->getNombreEstadoActual() << "\n";
-        cout << T->getCopiaCinta() << "\n";
+        cout << T->getNombreEstadoActual() << " ";
+//        cout << T->getCopiaCinta() << "\n";
     }
 
     EXPECT_EQ(T->getNombreEstadoActual(), "q4");
     EXPECT_TRUE(T->getSituacionEstadoActual());
     EXPECT_TRUE(T->isAutomataApagado());
     EXPECT_EQ(T->getCopiaCinta(), "b10000b");
+
+    T->reiniciarAutomata();
+    T->setCadenaAnalizar("$111100");
+    T->ponerCabezal(1);
+
+    cout << " \nSe analiza la cadena $111100\n";
+
+    cout << T->getNombreEstadoActual() << " ";
+
+    while (!T->isAutomataApagado()) {
+        ASSERT_NO_THROW(T->transicion());
+        cout << T->getNombreEstadoActual() << " ";
+//        cout << T->getCopiaCinta() << "\n";
+    }
+
+    EXPECT_EQ(T->getNombreEstadoActual(), "q4");
+    EXPECT_TRUE(T->getSituacionEstadoActual());
+    EXPECT_TRUE(T->isAutomataApagado());
+    EXPECT_EQ(T->getCopiaCinta(), "b$111101b");
+
+    cout << "\nEl resultado fue " << T->getCopiaCinta() << endl;
+
+    T->reiniciarAutomata();
+    T->setCadenaAnalizar("$110011");
+    T->ponerCabezal(1);
+
+    cout << " \nSe analiza la cadena $110011\n";
+
+    cout << T->getNombreEstadoActual() << " ";
+
+    while (!T->isAutomataApagado()) {
+        ASSERT_NO_THROW(T->transicion());
+        cout << T->getNombreEstadoActual() << " ";
+//        cout << T->getCopiaCinta() << "\n";
+    }
+
+    EXPECT_EQ(T->getNombreEstadoActual(), "q4");
+    EXPECT_TRUE(T->getSituacionEstadoActual());
+    EXPECT_TRUE(T->isAutomataApagado());
+    EXPECT_EQ(T->getCopiaCinta(), "b$110100b");
+
+    cout << "\nEl resultado fue " << T->getCopiaCinta() << endl;
 
     string tmp = T->getExpresionFormal();
 }

@@ -22,6 +22,8 @@ public:
 
     void transicion() override;
 
+    void reiniciarAutomata() override;
+
     bool expresionFormalLista() override;
 
     std::string tipoAutomata() override;

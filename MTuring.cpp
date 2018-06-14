@@ -195,6 +195,19 @@ void MTuring::transicion() {
     }
 }
 
+void MTuring::reiniciarAutomata() {
+    this->automataListo = false;
+    this->automataApagado = false;
+    this->cadenaAnalizar = "";
+    this->tieneCadenaAnalizar = false;
+    this->estadoActual = this->estadoInicial;
+    this->isCabezalListo = false;
+
+    char tmpBlanco = this->cinta->getBlanco();
+    delete this->cinta;
+    this->cinta = new Cinta<char>(tmpBlanco);
+}
+
 unsigned int MTuring::getAlfabetoCintaIndex(const char &s) {
     for (unsigned int i = 0; i < this->cantActualElementosAlfabetoCinta; ++i) {
         if (s == this->alfabetoCinta[i])

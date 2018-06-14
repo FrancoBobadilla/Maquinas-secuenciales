@@ -223,6 +223,17 @@ void APila::transicion() {
     }
 }
 
+void APila::reiniciarAutomata() {
+    this->automataListo = false;
+    this->automataApagado = false;
+    this->cadenaAnalizar = "";
+    this->tieneCadenaAnalizar = false;
+    this->estadoActual = this->estadoInicial;
+
+    while (this->pila->peek() != this->finDePila)
+        this->pila->pop();
+}
+
 unsigned int APila::getAlfabetoPilaIndex(const char &s) {
     for (unsigned int i = 0; i < this->cantActualElementosAlfabetoPila; ++i) {
         if (s == this->alfabetoPila[i])
@@ -238,6 +249,11 @@ void APila::apagarAutomata() {
     try {
         if (this->finDePila == this->pila->peek()) {
             this->estadoActual = this->buscarEstadoFinal();
+        } else {
+            Estado *tmpEstado = new Estado();
+            tmpEstado->nombre = "ESTADO DE ERROR";
+            tmpEstado->situacion = false;
+            this->estadoActual = tmpEstado;
         }
     } catch (int exc) {
         throw exc;

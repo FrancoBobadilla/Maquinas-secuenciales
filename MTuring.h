@@ -43,6 +43,8 @@ public:
 
     void transicion() override;
 
+    void reiniciarAutomata() override;
+
     void setCadenaAnalizar(std::string) override;
 
     // métodos para simbolos del alfabeto de entrada de cinta
