@@ -49,6 +49,10 @@ protected:
     unsigned int getEstadoIndex(const std::string &nombreEstado);
 
     unsigned int getAlfabetoIndex(char elementoAlfabeto);
+    
+    bool existsIn(const std::string &, const Estado*, unsigned int);
+    
+    bool existsIn(char , const char *, unsigned int);
 
 //    bool nombreEstadoDisponible(std::string n);
 //    bool simboloEntradaDisponible(char c);

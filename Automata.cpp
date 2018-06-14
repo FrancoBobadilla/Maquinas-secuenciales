@@ -34,26 +34,20 @@ void Automata::setEstado(const std::string &nombreEstado, bool estadoSalida) {
     if (this->tieneEstadosDefinidos)
         throw -1;           // ya tiene todos los estados ocupados
 
-    unsigned int eIndex;
+    if (this->existsIn(nombreEstado, this->estados, this->cantActualEstados))
+        throw -2;
 
-    try {
-        eIndex = this->getEstadoIndex(nombreEstado);
-    } catch (int exc) {
-        this->estados[this->cantActualEstados].nombre = nombreEstado;
-        this->estados[this->cantActualEstados].situacion = estadoSalida;
-        this->cantActualEstados++;
+    this->estados[this->cantActualEstados].nombre = nombreEstado;
+    this->estados[this->cantActualEstados].situacion = estadoSalida;
+    this->cantActualEstados++;
 
-        if (estadoSalida)
-            this->tieneEstadoSalida = true;
+    if (estadoSalida)
+        this->tieneEstadoSalida = true;
 
-        if (this->cantActualEstados == this->nroEstados) {
-            this->tieneEstadosDefinidos = true;
-            this->setAutomataListo();
-        }
-        return;
+    if (this->cantActualEstados == this->nroEstados) {
+        this->tieneEstadosDefinidos = true;
+        this->setAutomataListo();
     }
-    // conceptualmente esta mal: esta tomando como excepcion algo que esta bien
-    throw -2;
 }
 
 unsigned int Automata::getNroEstados() const {
@@ -76,10 +70,6 @@ bool Automata::getSituacionEstadoActual() const {
     return this->estadoActual->situacion;
 }
 
-/*
-   * Este bloque es para definir el estado inicial del automata,
-   * que pertenece a est[]
-   */
 void Automata::setEstadoInicial(std::string nombreEstadoInicial) {
     if (this->tieneEstadoInicial)
         throw -1;
@@ -95,34 +85,21 @@ void Automata::setEstadoInicial(std::string nombreEstadoInicial) {
     this->setEstadoActual(nombreEstadoInicial);
 }
 
-/*
-     * El siguiente bloque es para cargar el alfabeto de entrada de tamaño nEAlf en alf[],
-     * y tampoco se admiten entradas repetidas
-     *
-     */
 void Automata::setAlfabeto(char c) {
     if (this->tieneEntradasDefinidas)
         throw -1;       // ya está lleno
 
-    unsigned int cIndex;
+    if (existsIn(c, this->alfabeto, this->cantActualElementosAlfabeto))
+        throw -2;
 
-    try {
-        cIndex = this->getAlfabetoIndex(c);
-    } catch (int exc) {
-        this->alfabeto[this->cantActualElementosAlfabeto] = c;
-        this->cantActualElementosAlfabeto++;
+    this->alfabeto[this->cantActualElementosAlfabeto] = c;
+    this->cantActualElementosAlfabeto++;
 
-        if (this->nroElementosAlfabeto == this->cantActualElementosAlfabeto) {
-            this->tieneEntradasDefinidas = true;
-            this->setAutomataListo();
-        }
-        return;
+    if (this->nroElementosAlfabeto == this->cantActualElementosAlfabeto) {
+        this->tieneEntradasDefinidas = true;
+        this->setAutomataListo();
     }
-    // conceptualmente esta mal: esta tomando como excepcion algo que esta bien
-    throw -2;
 }
-// ERROR 1 lleno
-// ERROR 2 Repetido
 
 unsigned int Automata::getNroElementosAlfabeto() const {
     return this->nroElementosAlfabeto;
@@ -150,6 +127,22 @@ unsigned int Automata::getAlfabetoIndex(char c) {
     throw -1;
 }
 
+bool Automata::existsIn(const std::string &s, const Estado *e, unsigned int t) {
+    for (unsigned int i = 0; i < t; ++i) {
+        if (s == e[i].nombre)
+            return true;
+    }
+    return false;
+}
+
+bool Automata::existsIn(char c, const char *a, unsigned int t) {
+    for (unsigned int i = 0; i < t; ++i) {
+        if (c == a[i])
+            return true;
+    }
+    return false;
+}
+
 void Automata::setCadenaAnalizar(std::string s) {
     if (this->tieneCadenaAnalizar)
         throw -2;
@@ -158,16 +151,10 @@ void Automata::setCadenaAnalizar(std::string s) {
 
     unsigned int i = 0;
     while ('\0' != s[i]) {
-        try {
-            this->getAlfabetoIndex(s[i]); // si existe la entreada
-        } catch (int exc) {
-            if (-1 == exc) {
-                this->cadenaAnalizar = "";
-                throw -21;   //No pertenece al alfabeto de entrada
-            }
+        if (!this->existsIn(s[i], this->alfabeto, this->cantActualElementosAlfabeto)) {
+            this->cadenaAnalizar = "";
+            throw -21;
         }
-        //cambiar despues por funcion existe();
-
         this->cadenaAnalizar += s[i];
         i++;
     }

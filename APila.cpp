@@ -153,20 +153,16 @@ void APila::setAlfabetoPila(char c) {
     if (this->tieneSimbolosPilaDefinidos)
         throw -1;       // ya está lleno
 
-    try {
-        this->getAlfabetoPilaIndex(c);
-    } catch (int exc) {
-        this->alfabetoPila[this->cantActualElementosAlfabetoPila] = c;
-        this->cantActualElementosAlfabetoPila++;
+    if (this->existsIn(c, this->alfabetoPila, this->cantActualElementosAlfabetoPila))
+        throw -2;
 
-        if (this->cantActualElementosAlfabetoPila == this->nroElementosAlfabetoPila) {
-            this->tieneSimbolosPilaDefinidos = true;
-            this->setAutomataListo();
-        }
-        return;
+    this->alfabetoPila[this->cantActualElementosAlfabetoPila] = c;
+    this->cantActualElementosAlfabetoPila++;
+
+    if (this->cantActualElementosAlfabetoPila == this->nroElementosAlfabetoPila) {
+        this->tieneSimbolosPilaDefinidos = true;
+        this->setAutomataListo();
     }
-    // conceptualmente esta mal: esta tomando como excepcion algo que esta bien
-    throw -2;
 }
 
 void APila::transicion() {

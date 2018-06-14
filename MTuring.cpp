@@ -93,38 +93,30 @@ void MTuring::setAlfabetoCinta(char c) {
     if (this->tieneSimbolosCintaDefinidos)
         throw -1;          //ya esta lleno
 
-    try {
-        this->getAlfabetoCintaIndex(c);
-    } catch (int exc) {
-        this->alfabetoCinta[this->cantActualElementosAlfabetoCinta] = c;
-        this->cantActualElementosAlfabetoCinta++;
-        if (this->cantActualElementosAlfabetoCinta == this->nroElementosAlfabetoCinta) {
-            this->tieneSimbolosCintaDefinidos = true;
-            this->setAutomataListo();
-        }
-        return;
+    if (this->existsIn(c, this->alfabetoCinta, this->cantActualElementosAlfabetoCinta))
+        throw -2;
+
+    this->alfabetoCinta[this->cantActualElementosAlfabetoCinta] = c;
+    this->cantActualElementosAlfabetoCinta++;
+    if (this->cantActualElementosAlfabetoCinta == this->nroElementosAlfabetoCinta) {
+        this->tieneSimbolosCintaDefinidos = true;
+        this->setAutomataListo();
     }
-    // conceptualmente esta mal: esta tomando como excepcion algo que esta bien
-    throw -2;   // ya existe en el alfabeto
-    // dejame esto para más adelante Bob
+
 }
 
 void MTuring::setCadenaAnalizar(std::string s) {
     if (this->tieneCadenaAnalizar)
         throw -2;
+    if ("" == s)
+        throw -5;
 
     unsigned int i = 0;
     while ('\0' != s[i]) {
-        try {
-            this->getAlfabetoIndex(s[i]); // si existe la entreada
-        } catch (int exc) {
-            if (-1 == exc) {
-                this->cadenaAnalizar = "";
-                throw -21;   //No pertenece al alfabeto de entrada
-            }
+        if (!this->existsIn(s[i], this->alfabeto, this->cantActualElementosAlfabeto)) {
+            this->cadenaAnalizar = "";
+            throw -21;   //No pertenece al alfabeto de entrada
         }
-        //cambiar despues por funcion existe();
-
         this->cadenaAnalizar += s[i];
         i++;
     }
@@ -275,5 +267,5 @@ std::string MTuring::expresionEspecifica() {
     r += this->cinta->getBlanco();
     r += ", ";
 
-    return  r;
+    return r;
 }
