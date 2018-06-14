@@ -49,10 +49,10 @@ protected:
     unsigned int getEstadoIndex(const std::string &nombreEstado);
 
     unsigned int getAlfabetoIndex(char elementoAlfabeto);
-    
-    bool existsIn(const std::string &, const Estado*, unsigned int);
-    
-    bool existsIn(char , const char *, unsigned int);
+
+    bool existsIn(const std::string &, const Estado *, unsigned int);
+
+    bool existsIn(char, const char *, unsigned int);
 
 //    bool nombreEstadoDisponible(std::string n);
 //    bool simboloEntradaDisponible(char c);
@@ -95,7 +95,9 @@ public:
 
     virtual std::string expresionEspecifica() =0;
 
-//    ~Automata(); //virtual?
+    Automata(const Automata&);
+
+    virtual~Automata(); //virtual?
 };
 
 

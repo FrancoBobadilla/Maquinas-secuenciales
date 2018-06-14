@@ -18,6 +18,20 @@ AFD *F;
 APila *P;
 MTuring *T;
 
+void haciendoT(AFD *F) {
+    while (!F->isAutomataApagado()) {
+        cout << F->getNombreEstadoActual() << "\n";
+        F->transicion();
+    }
+};
+
+void haciendoT(AFD &F) {
+    while (!F.isAutomataApagado()) {
+        cout << F.getNombreEstadoActual() << "\n";
+        F.transicion();
+    }
+};
+
 TEST(test_prueba, AFD_Exceptions) {
     F = new AFD(2, 3);
     ASSERT_ANY_THROW(F->transicion());
@@ -343,6 +357,42 @@ TEST(test_prueba, MTuring_Exceptions) {
     ASSERT_ANY_THROW(T->setCadenaAnalizar("111"));
 }
 
+TEST(Ejercicios_Guia, AFD_aImpar_bPar_noPTR) {
+    // consigna: hallar un AFD que acepte que w tenga un numero impar de a y par de b
+    AFD W(4, 2);
+    ASSERT_NO_THROW(W.setEstado("C0", false));
+    ASSERT_NO_THROW(W.setEstado("C1", false));
+    ASSERT_NO_THROW(W.setEstado("C2", false));
+    ASSERT_NO_THROW(W.setEstado("C3", true));
+
+    ASSERT_NO_THROW(W.setAlfabeto('a'));
+    ASSERT_NO_THROW(W.setAlfabeto('b'));
+
+    ASSERT_NO_THROW(W.setF("C0", 'a', "C3"));
+    ASSERT_NO_THROW(W.setF("C0", 'b', "C1"));
+
+    ASSERT_NO_THROW(W.setF("C1", 'a', "C2"));
+    ASSERT_NO_THROW(W.setF("C1", 'b', "C0"));
+
+    ASSERT_NO_THROW(W.setF("C2", 'a', "C1"));
+    ASSERT_NO_THROW(W.setF("C2", 'b', "C3"));
+
+    ASSERT_NO_THROW(W.setF("C3", 'a', "C0"));
+    ASSERT_NO_THROW(W.setF("C3", 'b', "C2"));
+
+    ASSERT_NO_THROW(W.setCadenaAnalizar("aaabbbb"));
+
+    ASSERT_NO_THROW(W.setEstadoInicial("C0"));
+
+    haciendoT(W);
+
+    EXPECT_EQ(W.getNombreEstadoActual(), "C3");
+    EXPECT_TRUE(W.getSituacionEstadoActual());
+    EXPECT_TRUE(W.isAutomataApagado());
+
+    string tmp = W.getExpresionFormal();
+}
+
 TEST(Ejercicios_Guia, AFD_aImpar_bPar) {
     // consigna: hallar un AFD que acepte que w tenga un numero impar de a y par de b
     F = new AFD(4, 2);
@@ -370,10 +420,7 @@ TEST(Ejercicios_Guia, AFD_aImpar_bPar) {
 
     ASSERT_NO_THROW(F->setEstadoInicial("C0"));
 
-    while (!F->isAutomataApagado()) {
-        cout << F->getNombreEstadoActual() << "\n";
-        F->transicion();
-    }
+    haciendoT(F);
 
     EXPECT_EQ(F->getNombreEstadoActual(), "C3");
     EXPECT_TRUE(F->getSituacionEstadoActual());

@@ -196,6 +196,50 @@ std::string Automata::getExpresionFormal() {
         estadosfinales += this->estados[i].nombre;
     // muestra una coma de mas;
 
-    r += " { " + estadosfinales + "}, f )";
+    r += " { " + estadosfinales + " }, f )";
     return r;
 }
+
+Automata::Automata(const Automata &x) {
+    this->nroEstados = x.nroEstados;
+    this->cantActualEstados = x.cantActualEstados;
+
+    this->estadoActual = nullptr;
+    this->estadoInicial = nullptr;
+
+    this->estados = new Estado[this->nroEstados];
+    for (int i = 0; i < this->cantActualEstados; ++i) {
+        this->estados[i].nombre = x.estados[i].nombre;
+        this->estados[i].situacion = x.estados[i].situacion;
+
+        if (&x.estados[i] == x.estadoActual)
+            this->estadoActual = &this->estados[i];
+        if (&x.estados[i] == x.estadoInicial)
+            this->estadoInicial = &this->estados[i];
+    }
+
+    this->nroElementosAlfabeto = x.nroElementosAlfabeto;
+    this->cantActualElementosAlfabeto = x.cantActualElementosAlfabeto;
+    this->alfabeto = new char[this->nroElementosAlfabeto];
+    for (int j = 0; j < this->cantActualElementosAlfabeto; ++j)
+        this->alfabeto[j] = x.alfabeto[j];
+
+    this->automataListo = x.automataListo;
+    this->tieneEstadoInicial = x.tieneEstadoInicial;
+    this->tieneEstadoSalida = x.tieneEstadoSalida;
+    this->tieneEstadosDefinidos = x.tieneEstadosDefinidos;
+    this->tieneEntradasDefinidas = x.tieneEntradasDefinidas;
+    this->tieneFDeterminada = x.tieneFDeterminada;
+
+    this->cadenaAnalizar = x.cadenaAnalizar;
+    this->tieneCadenaAnalizar = x.tieneCadenaAnalizar;
+    this->automataApagado = x.automataApagado;
+    std::cout << "saliendo del Automata::constructor por copia\n";
+}
+
+Automata::~Automata() {
+    delete estados;
+    delete alfabeto;
+    std::cout << "saliendo de Automata::destructor\n";
+}
+

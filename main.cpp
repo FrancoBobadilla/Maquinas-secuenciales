@@ -477,6 +477,8 @@ int main() {
 //    ProbarMT();
 //    ProbarAFD();
 //    ProbarAPila();
+
+    cout << "Saliendo bien de main\n";
     return 0;
 }
 
@@ -594,11 +596,12 @@ void Probar_FD_aImpar_bPar() {
     hacerTrancisiones(F);
 
 
-    F.getNombreEstadoActual();
-    F.getSituacionEstadoActual();
-    F.isAutomataApagado();
+    cout << endl << F.getNombreEstadoActual();
+    cout << endl << F.getSituacionEstadoActual();
+    cout << endl << F.isAutomataApagado();
 
-    cout << F.getExpresionFormal();
+    cout << endl << F.getExpresionFormal();
+    cout << "se sale bien\n" << endl;
 }
 
 void hacerTrancisiones(AFD F) {

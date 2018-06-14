@@ -27,6 +27,10 @@ public:
     std::string tipoAutomata() override;
 
     std::string expresionEspecifica() override;
+
+    AFD(const AFD &);
+
+    ~AFD();
 };
 
 #endif //AFD_AFD_H

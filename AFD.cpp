@@ -97,3 +97,30 @@ std::string AFD::tipoAutomata() {
 std::string AFD::expresionEspecifica() {
     return "";
 }
+
+AFD::AFD(const AFD &x) : Automata(x) {
+    this->f = new Estado **[this->nroEstados];
+    for (int i = 0; i < this->nroEstados; ++i) {
+        this->f[i] = new Estado *[this->nroElementosAlfabeto];
+        for (int j = 0; j < this->nroElementosAlfabeto; ++j) {
+            if (nullptr == x.f[i][j])
+                this->f[i][j] = nullptr;
+            else {
+                this->f[i][j] = new Estado;
+                this->f[i][j]->nombre = x.f[i][j]->nombre;
+                this->f[i][j]->situacion = x.f[i][j]->situacion;
+            }
+        }
+    }
+
+    cout << "Saliendo de AFD:constructor por copia\n";
+}
+
+AFD::~AFD() {
+    for (int i = 0; i < this->nroEstados; ++i)
+        for (int j = 0; j < this->nroElementosAlfabeto; ++j)
+            delete f[i][j];
+    delete f;
+
+    cout << "Saliendo de AFD:destructor\n";
+}
