@@ -120,7 +120,7 @@ TEST(test_prueba, APila_Exceptions) {
 
     ASSERT_EQ(P->getNroEstados(), 4);
     ASSERT_EQ(P->getNroElementosAlfabeto(), 2);
-    EXPECT_EQ(P->getNroElementosAlfabetoPila(), 1);
+    EXPECT_EQ(P->getNroElementosAlfabetoPila(), 2);
 
     EXPECT_EQ(P->getTopeDePila(), '#');
     ASSERT_ANY_THROW(P->setAlfabetoPila('#'));
@@ -233,7 +233,7 @@ TEST(test_prueba, MTuring_Exceptions) {
 
     ASSERT_EQ(T->getNroEstados(), 3);
     ASSERT_EQ(T->getNroElementosAlfabeto(), 2);
-    EXPECT_EQ(T->getNroElementosAlfabetoCinta(), 4);
+    EXPECT_EQ(T->getNroElementosAlfabetoCinta(), 5);
 
     ASSERT_EQ(T->getCopiaCinta(), "b");
     ASSERT_ANY_THROW(T->setAlfabetoCinta('b'));
