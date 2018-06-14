@@ -23,6 +23,9 @@ Automata setCadenaAnalizar
     -5 no se puede ingresar una cadena vacia
     -21 no encuentra simbolo entrada
 
+Automata getExpresionFormal()
+    -0 no existen los elementos suficientes para calcularlo
+
 AFD setF
     -11 no encuentra estado origen
     -12 no encuentra estado destino

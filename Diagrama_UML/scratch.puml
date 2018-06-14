@@ -34,7 +34,7 @@ abstract class Automata {
 
 #virtual setEstadoActual(nombreEstado)
 #virtual setAutomataListo() =0
-#virtual getExpresionFormal() =0
+#virtual getExpresionFormal()
 
 #getEstadoIndex(nombreEstado)
 #getAlfabetoIndex(elemtoAlfabeto)
@@ -54,7 +54,10 @@ abstract class Automata {
 +setAlfabeto(char)
 +getNroElementosAlfabeto()
 
-+isMaquinaParada()
++isAutomataApagado()
++virtual tipoAutomata()=0;
++virtual expresionFormalLista() =0
++virtual expresionEspecifica() =0;
 }
 
 class AFD{
@@ -65,7 +68,9 @@ class AFD{
 +ADF(cantidadEstados, tamanoAlfabeto)
 +setF(nombreEstadoSalida, entrada, nombreEstadoDestino)
 +transicion() override
-+getExpresionFormal()
++expresionFormalLista() override
++tipoAutomata() override
++expresionEspecifica() override
 }
 
 class APila{
@@ -94,6 +99,9 @@ class APila{
 +getTopeDePila()
 
 +apagarAutomata();
++expresionFormalLista() override
++tipoAutomata() override
++expresionEspecifica() override
 }
 
 class Stack{
@@ -140,6 +148,10 @@ class MTuring{
 +getCopiaCinta()
 +getLecturaCabezal()
 +ponerCabezal(position)
+
++expresionFormalLista() override
++tipoAutomata() override
++expresionEspecifica() override
 }
 
 

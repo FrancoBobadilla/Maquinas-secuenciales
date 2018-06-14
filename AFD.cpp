@@ -83,10 +83,17 @@ void AFD::setAutomataListo() {
                           this->tieneCadenaAnalizar;
 }
 
-std::string AFD::getExpresionFormal() {
-    if (!this->tieneEstadoInicial || !this->tieneEstadoSalida || !this->tieneEstadosDefinidos ||
-        !this->tieneEntradasDefinidas)
-        throw -55;
+bool AFD::expresionFormalLista() {
+    return !(!this->tieneEstadoInicial ||
+             !this->tieneEstadoSalida ||
+             !this->tieneEstadosDefinidos ||
+             !this->tieneEntradasDefinidas);
+}
 
+std::string AFD::tipoAutomata() {
+    return "AFD";
+}
+
+std::string AFD::expresionEspecifica() {
     return "";
 }

@@ -266,11 +266,12 @@ char APila::getTopeDePila() {
     return tmp;
 }
 
-std::string APila::getExpresionFormal() {
-    if (!this->tieneEstadoInicial || !this->tieneEstadoSalida || !this->tieneEstadosDefinidos ||
-        !this->tieneEntradasDefinidas || !this->tieneSimbolosPilaDefinidos)
-        throw -55;
-    return "";
+bool APila::expresionFormalLista() {
+    return !(!this->tieneEstadoInicial ||
+             !this->tieneEstadoSalida ||
+             !this->tieneEstadosDefinidos ||
+             !this->tieneEntradasDefinidas ||
+             !this->tieneSimbolosPilaDefinidos);
 }
 
 void APila::setAutomataListo() {
@@ -281,4 +282,23 @@ void APila::setAutomataListo() {
                           this->tieneFDeterminada &&
                           this->tieneSimbolosPilaDefinidos &&
                           this->tieneCadenaAnalizar;
+}
+
+std::string APila::tipoAutomata() {
+    return "AP";
+}
+
+std::string APila::expresionEspecifica() {
+    std::string r = "{ ";
+    char i;
+    for (i = 0; i < this->nroElementosAlfabetoPila - 1; i++) {
+        r += this->alfabetoPila[i];
+        r += ", ";
+    }
+    r += this->alfabetoPila[i];
+    r += " }, ";
+    r += this->finDePila;
+    r += ", ";
+
+    return r;
 }

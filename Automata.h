@@ -53,7 +53,7 @@ public:
 
     virtual void transicion() =0;
 
-    virtual std::string getExpresionFormal() =0;
+    std::string getExpresionFormal();
 
     virtual void setCadenaAnalizar(std::string);
 
@@ -78,6 +78,13 @@ public:
 
 
     bool isAutomataApagado();
+
+    // metodos para expresion formal
+    virtual std::string tipoAutomata() =0;
+
+    virtual bool expresionFormalLista() =0;
+
+    virtual std::string expresionEspecifica() =0;
 
 //    ~Automata(); //virtual?
 };

@@ -43,8 +43,6 @@ public:
 
     void transicion() override;
 
-    std::string getExpresionFormal() override;
-
     void setCadenaAnalizar(std::string) override;
 
     // métodos para simbolos del alfabeto de entrada de cinta
@@ -57,6 +55,12 @@ public:
     char getLecturaCabezal();
 
     void ponerCabezal(unsigned int);
+
+    bool expresionFormalLista() override;
+
+    std::string tipoAutomata() override;
+
+    std::string expresionEspecifica() override;
 };
 
 #endif //AFD_MTURING_H

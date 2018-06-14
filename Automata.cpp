@@ -155,7 +155,7 @@ void Automata::setCadenaAnalizar(std::string s) {
     if ("" == s)
         throw -5;
 
-        unsigned int i = 0;
+    unsigned int i = 0;
     while ('\0' != s[i]) {
         try {
             this->getAlfabetoIndex(s[i]); // si existe la entreada
@@ -176,4 +176,38 @@ void Automata::setCadenaAnalizar(std::string s) {
 
 bool Automata::isAutomataApagado() {
     return this->automataApagado;
+}
+
+std::string Automata::getExpresionFormal() {
+    if (!this->expresionFormalLista())
+        throw -0;
+    char i;
+    std::string r = "";
+    r += this->tipoAutomata() + " = ( { ";
+
+    for (i = 0; i < this->nroElementosAlfabeto - 1; i++) {
+        r += this->alfabeto[i];
+        r += ", ";
+    }
+    r += this->alfabeto[i];
+    r += " }, ";
+
+    r += this->expresionEspecifica();
+
+    r += this->estadoInicial->nombre + ", { " ;
+
+    std::string estadosfinales = "";
+
+    for (i = 0; i < this->getNroEstados() - 1; ++i) {
+        r += this->estados[i].nombre + ", ";
+        if (this->estados[i].situacion)
+            estadosfinales += this->estados[i].nombre + ", ";
+    }
+    r += this->estados[i].nombre + " },";
+    if (this->estados[i].situacion)
+        estadosfinales += this->estados[i].nombre;
+    // muestra una coma de mas;
+
+    r += " { " + estadosfinales + "}, f )";
+    return r;
 }

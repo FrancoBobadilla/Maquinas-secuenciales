@@ -87,8 +87,6 @@ TEST(test_prueba, AFD_Exceptions) {
     ASSERT_NO_THROW(F->setF("q2", 'a', "q2"));
     ASSERT_NO_THROW(F->setF("q2", 'c', "q2"));
 
-    EXPECT_EQ(F->getExpresionFormal(), "");
-
     //afd que da salida con b impares
 
     ASSERT_ANY_THROW(F->setF("q2", 'd', "q2"));
@@ -392,6 +390,8 @@ TEST(Ejercicios_Guia, AFD_aImpar_bPar) {
     EXPECT_EQ(F->getNombreEstadoActual(), "C3");
     EXPECT_TRUE(F->getSituacionEstadoActual());
     EXPECT_TRUE(F->isAutomataApagado());
+
+    string tmp = F->getExpresionFormal();
 }
 
 TEST(Ejercicios_Guia, APila_nibbles) {
@@ -439,13 +439,15 @@ TEST(Ejercicios_Guia, APila_nibbles) {
     EXPECT_EQ(P->getNombreEstadoActual(), "q3");
     EXPECT_TRUE(P->getSituacionEstadoActual());
     EXPECT_TRUE(P->isAutomataApagado());
+
+    string tmp = P->getExpresionFormal();
 }
 
 TEST(Ejercicios_Guia, MT_incremento) {
     T = new MTuring(6, 3, 3, 'b');
 
     string a[] = {"q0", "q1", "q2", "q3", "q4", "q5"};
-    for (int i = 0; i < 6 ; ++i)
+    for (int i = 0; i < 6; ++i)
         T->setEstado(a[i], i == 4);
     T->setEstadoInicial("q0");
 
@@ -491,4 +493,6 @@ TEST(Ejercicios_Guia, MT_incremento) {
     EXPECT_TRUE(T->getSituacionEstadoActual());
     EXPECT_TRUE(T->isAutomataApagado());
     EXPECT_EQ(T->getCopiaCinta(), "b10000b");
+
+    string tmp = T->getExpresionFormal();
 }

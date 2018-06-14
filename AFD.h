@@ -22,7 +22,11 @@ public:
 
     void transicion() override;
 
-    std::string getExpresionFormal() override;
+    bool expresionFormalLista() override;
+
+    std::string tipoAutomata() override;
+
+    std::string expresionEspecifica() override;
 };
 
 #endif //AFD_AFD_H

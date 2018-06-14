@@ -48,14 +48,18 @@ public:
 
     void transicion() override;
 
-    std::string getExpresionFormal() override;
-
     // metodos para simbolos del alfabeto de entrade de pila
     void setAlfabetoPila(char);
 
     unsigned int getNroElementosAlfabetoPila();
 
     char getTopeDePila();
+
+    bool expresionFormalLista() override;
+
+    std::string tipoAutomata() override;
+
+    std::string expresionEspecifica() override;
 };
 
 
