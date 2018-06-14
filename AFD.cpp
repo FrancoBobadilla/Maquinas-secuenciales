@@ -117,9 +117,11 @@ AFD::AFD(const AFD &x) : Automata(x) {
 }
 
 AFD::~AFD() {
-    for (int i = 0; i < this->nroEstados; ++i)
+    for (int i = 0; i < this->nroEstados; ++i) {
         for (int j = 0; j < this->nroElementosAlfabeto; ++j)
             delete f[i][j];
+        delete this->f[i];
+    }
     delete f;
 
     cout << "Saliendo de AFD:destructor\n";

@@ -298,3 +298,55 @@ std::string APila::expresionEspecifica() {
 
     return r;
 }
+
+APila::APila(const APila &x) : Automata(x) {
+    this->nroElementosAlfabetoPila = x.nroElementosAlfabetoPila;
+    this->cantActualElementosAlfabetoPila = x.cantActualElementosAlfabetoPila;
+
+    this->alfabetoPila = new char[this->nroElementosAlfabetoPila];
+    for (int l = 0; l < this->cantActualElementosAlfabetoPila; ++l)
+        this->alfabetoPila[l] = x.alfabetoPila[l];
+
+    this->tieneSimbolosPilaDefinidos = x.tieneSimbolosPilaDefinidos;
+
+    this->finDePila = x.finDePila;
+
+    this->pila = new Stack<char>(*x.pila);
+
+    this->f = new ElementosTransicionPila ***[this->nroEstados];
+    for (int i = 0; i < this->nroEstados; ++i) {
+        this->f[i] = new ElementosTransicionPila **[this->nroElementosAlfabeto];
+        for (int j = 0; j < this->nroElementosAlfabeto; ++j) {
+            this->f[i][j] = new ElementosTransicionPila *[this->nroElementosAlfabeto];
+            for (int k = 0; k < this->nroElementosAlfabetoPila; ++k) {
+                if (nullptr == x.f[i][j][k])
+                    this->f[i][j][k] = nullptr;
+                else {
+                    this->f[i][j][k] = new ElementosTransicionPila;
+                    this->f[i][j][k]->estado.nombre = x.f[i][j][k]->estado.nombre;
+                    this->f[i][j][k]->estado.situacion = x.f[i][j][k]->estado.situacion;
+                    this->f[i][j][k]->apilamiento = x.f[i][j][k]->apilamiento;
+                    this->f[i][j][k]->conservarTope = x.f[i][j][k]->conservarTope;
+                }
+            }
+        }
+    }
+    std::cout << "Saliendo de APila:constructor por copia\n";
+}
+
+APila::~APila() {
+    delete this->alfabetoPila;
+    delete this->pila;
+
+    for (int i = 0; i < this->nroEstados; ++i) {
+        for (int j = 0; j < this->nroElementosAlfabeto; ++j) {
+            for (int k = 0; k < this->nroElementosAlfabetoPila; ++k) {
+                delete this->f[i][j][k];
+            }
+            delete this->f[i][j];
+        }
+        delete this->f[i];
+    }
+    delete this->f;
+    std::cout << "Saliendo de APila:destructor\n";
+}

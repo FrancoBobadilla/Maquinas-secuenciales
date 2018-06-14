@@ -18,14 +18,28 @@ AFD *F;
 APila *P;
 MTuring *T;
 
-void haciendoT(AFD *F) {
-    while (!F->isAutomataApagado()) {
-        cout << F->getNombreEstadoActual() << "\n";
-        F->transicion();
+void haciendoT(AFD &F) {
+    while (!F.isAutomataApagado()) {
+        cout << F.getNombreEstadoActual() << "\n";
+        F.transicion();
     }
 };
 
-void haciendoT(AFD &F) {
+void haciendoTenCopia(AFD F) {
+    while (!F.isAutomataApagado()) {
+        cout << F.getNombreEstadoActual() << "\n";
+        F.transicion();
+    }
+};
+
+void haciendoT(APila &F) {
+    while (!F.isAutomataApagado()) {
+        cout << F.getNombreEstadoActual() << "\n";
+        F.transicion();
+    }
+};
+
+void haciendoTenCopia(APila F) {
     while (!F.isAutomataApagado()) {
         cout << F.getNombreEstadoActual() << "\n";
         F.transicion();
@@ -357,42 +371,6 @@ TEST(test_prueba, MTuring_Exceptions) {
     ASSERT_ANY_THROW(T->setCadenaAnalizar("111"));
 }
 
-TEST(Ejercicios_Guia, AFD_aImpar_bPar_noPTR) {
-    // consigna: hallar un AFD que acepte que w tenga un numero impar de a y par de b
-    AFD W(4, 2);
-    ASSERT_NO_THROW(W.setEstado("C0", false));
-    ASSERT_NO_THROW(W.setEstado("C1", false));
-    ASSERT_NO_THROW(W.setEstado("C2", false));
-    ASSERT_NO_THROW(W.setEstado("C3", true));
-
-    ASSERT_NO_THROW(W.setAlfabeto('a'));
-    ASSERT_NO_THROW(W.setAlfabeto('b'));
-
-    ASSERT_NO_THROW(W.setF("C0", 'a', "C3"));
-    ASSERT_NO_THROW(W.setF("C0", 'b', "C1"));
-
-    ASSERT_NO_THROW(W.setF("C1", 'a', "C2"));
-    ASSERT_NO_THROW(W.setF("C1", 'b', "C0"));
-
-    ASSERT_NO_THROW(W.setF("C2", 'a', "C1"));
-    ASSERT_NO_THROW(W.setF("C2", 'b', "C3"));
-
-    ASSERT_NO_THROW(W.setF("C3", 'a', "C0"));
-    ASSERT_NO_THROW(W.setF("C3", 'b', "C2"));
-
-    ASSERT_NO_THROW(W.setCadenaAnalizar("aaabbbb"));
-
-    ASSERT_NO_THROW(W.setEstadoInicial("C0"));
-
-    haciendoT(W);
-
-    EXPECT_EQ(W.getNombreEstadoActual(), "C3");
-    EXPECT_TRUE(W.getSituacionEstadoActual());
-    EXPECT_TRUE(W.isAutomataApagado());
-
-    string tmp = W.getExpresionFormal();
-}
-
 TEST(Ejercicios_Guia, AFD_aImpar_bPar) {
     // consigna: hallar un AFD que acepte que w tenga un numero impar de a y par de b
     F = new AFD(4, 2);
@@ -420,13 +398,62 @@ TEST(Ejercicios_Guia, AFD_aImpar_bPar) {
 
     ASSERT_NO_THROW(F->setEstadoInicial("C0"));
 
-    haciendoT(F);
+    while (!F->isAutomataApagado()) {
+        cout << F->getNombreEstadoActual() << "\n";
+        F->transicion();
+    }
 
     EXPECT_EQ(F->getNombreEstadoActual(), "C3");
     EXPECT_TRUE(F->getSituacionEstadoActual());
     EXPECT_TRUE(F->isAutomataApagado());
 
     string tmp = F->getExpresionFormal();
+}
+
+TEST(Ejercicios_Guia, AFD_aImpar_bPar_noPTR) {
+    // consigna: hallar un AFD que acepte que w tenga un numero impar de a y par de b
+    AFD W(4, 2);
+    ASSERT_NO_THROW(W.setEstado("C0", false));
+    ASSERT_NO_THROW(W.setEstado("C1", false));
+    ASSERT_NO_THROW(W.setEstado("C2", false));
+    ASSERT_NO_THROW(W.setEstado("C3", true));
+
+    ASSERT_NO_THROW(W.setAlfabeto('a'));
+    ASSERT_NO_THROW(W.setAlfabeto('b'));
+
+    ASSERT_NO_THROW(W.setF("C0", 'a', "C3"));
+    ASSERT_NO_THROW(W.setF("C0", 'b', "C1"));
+
+    ASSERT_NO_THROW(W.setF("C1", 'a', "C2"));
+    ASSERT_NO_THROW(W.setF("C1", 'b', "C0"));
+
+    ASSERT_NO_THROW(W.setF("C2", 'a', "C1"));
+    ASSERT_NO_THROW(W.setF("C2", 'b', "C3"));
+
+    ASSERT_NO_THROW(W.setF("C3", 'a', "C0"));
+    ASSERT_NO_THROW(W.setF("C3", 'b', "C2"));
+
+    ASSERT_NO_THROW(W.setCadenaAnalizar("aaabbbb"));
+
+    ASSERT_NO_THROW(W.setEstadoInicial("C0"));
+
+    AFD WCopia(W);
+
+    haciendoTenCopia(WCopia);
+    haciendoT(W);
+    haciendoT(WCopia);
+
+    EXPECT_EQ(W.getNombreEstadoActual(), "C3");
+    EXPECT_TRUE(W.getSituacionEstadoActual());
+    EXPECT_TRUE(W.isAutomataApagado());
+
+    EXPECT_EQ(WCopia.getNombreEstadoActual(), "C3");
+    EXPECT_TRUE(WCopia.getSituacionEstadoActual());
+    EXPECT_TRUE(WCopia.isAutomataApagado());
+
+    EXPECT_EQ(W.getExpresionFormal(), WCopia.getExpresionFormal());
+
+    string tmp = W.getExpresionFormal();
 }
 
 TEST(Ejercicios_Guia, APila_nibbles) {
@@ -476,6 +503,63 @@ TEST(Ejercicios_Guia, APila_nibbles) {
     EXPECT_TRUE(P->isAutomataApagado());
 
     string tmp = P->getExpresionFormal();
+}
+
+TEST(Ejercicios_Guia, APila_nibbles_noPTR) {
+    //Consigna: dos nibbles separados por un * donde el primero tiene la misma cantidad de 1 que el segundo de 0
+    APila S(4, 3, 1, '#');
+
+    S.setEstado("q0", false);
+    S.setEstado("q1", false);
+    S.setEstado("q2", false);
+    S.setEstado("q3", true);
+
+    S.setEstadoInicial("q0");
+
+    S.setAlfabeto('0');
+    S.setAlfabeto('1');
+    S.setAlfabeto('*');
+
+    S.setAlfabetoPila('a');
+
+    S.setF("q0", '0', '#', "q0", true, (char) 0);
+    S.setF("q0", '0', 'a', "q0", true, (char) 0);
+    S.setF("q0", '1', '#', "q1", true, 'a');
+    S.setF("q0", '*', '#', "q2", true, (char) 0);
+    S.setF("q0", '*', 'a', "q2", true, (char) 0);
+
+    S.setF("q1", '1', 'a', "q1", true, 'a');
+    S.setF("q1", '0', 'a', "q1", true, (char) 0);
+    S.setF("q1", '*', 'a', "q2", true, (char) 0);
+
+    S.setF("q2", '0', 'a', "q2", false, (char) 0);
+    S.setF("q2", '1', 'a', "q2", true, (char) 0);
+    S.setF("q2", '1', '#', "q2", true, (char) 0);
+
+    ASSERT_ANY_THROW(S.setF("q2", '0', '#', "q3", true, char(0)));
+
+    S.setCadenaAnalizar("1110*0100");
+
+    cout << S.getNombreEstadoActual() << "\n";
+
+    APila SCopia(S);
+
+    haciendoTenCopia(S);
+
+    haciendoT(S);
+    haciendoT(SCopia);
+
+    EXPECT_EQ(S.getNombreEstadoActual(), "q3");
+    EXPECT_TRUE(S.getSituacionEstadoActual());
+    EXPECT_TRUE(S.isAutomataApagado());
+
+    EXPECT_EQ(SCopia.getNombreEstadoActual(), "q3");
+    EXPECT_TRUE(SCopia.getSituacionEstadoActual());
+    EXPECT_TRUE(SCopia.isAutomataApagado());
+
+    EXPECT_EQ(S.getExpresionFormal(), SCopia.getExpresionFormal());
+
+    string tmp = S.getExpresionFormal();
 }
 
 TEST(Ejercicios_Guia, MT_incremento) {

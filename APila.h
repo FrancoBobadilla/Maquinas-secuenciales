@@ -60,6 +60,10 @@ public:
     std::string tipoAutomata() override;
 
     std::string expresionEspecifica() override;
+
+    APila(const APila&);
+
+    ~APila();
 };
 
 

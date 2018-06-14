@@ -19,6 +19,8 @@ private:
 public:
     Stack();
 
+    Stack(const Stack &);
+
     ~Stack();
 
     void push(T dato);
@@ -33,6 +35,21 @@ public:
 template<class T>
 Stack<T>::Stack() {
     this->top = nullptr;
+}
+
+template<class T>
+Stack<T>::Stack(const Stack &x) {
+    Node<T> *tmpX = x.top;
+
+    this->top = new Node<T>(tmpX->getData());
+    Node<T> *tmpT = this->top;
+    tmpX = tmpX->getNext();
+
+    while (nullptr != tmpX) {
+        tmpT->setNext(new Node<T>(tmpX->getData()));
+        tmpT = tmpT->getNext();
+        tmpX = tmpX->getNext();
+    }
 }
 
 template<class T>
@@ -64,9 +81,9 @@ bool Stack<T>::isEmpty() {
     return nullptr == this->top;
 }
 
-template <class T>
+template<class T>
 T Stack<T>::peek() {
-    if(this->isEmpty())
+    if (this->isEmpty())
         throw -11;
     return top->getData();
 }
