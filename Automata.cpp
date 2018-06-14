@@ -11,6 +11,7 @@ Automata::Automata(unsigned int cantEstados, unsigned int tamAlfabeto) {
     this->cantActualEstados = 0;
     this->estados = new Estado[cantEstados];
     this->estadoActual = nullptr;
+    this->estadoInicial = nullptr;
 
     this->nroElementosAlfabeto = tamAlfabeto;
     this->cantActualElementosAlfabeto = 0;
@@ -194,7 +195,7 @@ std::string Automata::getExpresionFormal() {
 
     r += this->expresionEspecifica();
 
-    r += this->estadoInicial->nombre + ", { " ;
+    r += this->estadoInicial->nombre + ", { ";
 
     std::string estadosfinales = "";
 

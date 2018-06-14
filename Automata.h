@@ -5,7 +5,12 @@
 #ifndef AFD_AUTOMATA_H
 #define AFD_AUTOMATA_H
 
-#include "Estado.h"
+#include<iostream>
+
+struct Estado {
+    std::string nombre;
+    bool situacion;
+};
 
 class Automata {
 protected:

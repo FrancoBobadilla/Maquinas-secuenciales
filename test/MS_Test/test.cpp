@@ -9,9 +9,6 @@
 #include "../../MTuring.h"
 #include "../../MTuring.cpp"
 
-#include "../../Estado.h"
-#include "../../Estado.cpp"
-
 #include "../../Data_Structures/Celda.h"
 #include "../../Data_Structures/Cinta.h"
 #include "../../Data_Structures/Node.h"
@@ -20,15 +17,6 @@
 AFD *F;
 APila *P;
 MTuring *T;
-
-TEST(test_prueba, test_trivialmente_verdadero) {
-    EXPECT_EQ(1, 1);
-}
-
-// hacer un automata finito determinista que de salida si la cantidad de 1 en una cadena es impar
-TEST(test_prueba, AFD_1) {
-    F = new AFD(2, 2);
-}
 
 TEST(test_prueba, AFD_Exceptions) {
     F = new AFD(2, 3);
