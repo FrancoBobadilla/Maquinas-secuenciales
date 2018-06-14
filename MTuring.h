@@ -18,25 +18,22 @@ class MTuring : public Automata {
 private:
     SalidaFuncMaqTuring ***f;
 
+    // atributos del alfabeto de cinta
     Cinta<char> *cinta;
-
     unsigned int nroElementosAlfabetoCinta;
     unsigned int cantActualElementosAlfabetoCinta;
     char *alfabetoCinta;
 
     //banderas
-    bool isCintaLista;
     bool isCabezalListo;    // solo se puede ubicar el cabezal una vez
-    bool maquinaApagada;     // una vez el cabezal se ha detenido, la maquina no trabaja más
     bool tieneSimbolosCintaDefinidos;
-
 
     //metodos auxiliares
     unsigned int getAlfabetoCintaIndex(const char &simboloEntradaCinta);
 
-    virtual void transicion(char);
+    inline void escribirCinta(std::string);
 
-    virtual void setAutomataListo();
+    void setAutomataListo() override;
 
 public:
     MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoCinta, char blanco);
@@ -44,25 +41,22 @@ public:
     void setF(std::string nombreEstadoSalida, char entradaCinta, std::string nombreEstadoDestino,
               char direccion, char escritura);
 
-    void setAlfabetoCinta(char);    //graba el alfabeto aceptado por la cinta
+    void transicion() override;
 
-    char getLecturaCabezal();
+    std::string getExpresionFormal() override;
 
-    void escribirCinta(std::string);
+    void setCadenaAnalizar(std::string) override;
+
+    // métodos para simbolos del alfabeto de entrada de cinta
+    void setAlfabetoCinta(char);
+
+    unsigned int getNroElementosAlfabetoCinta();
 
     std::string getCopiaCinta();
 
-    void setCintaLista();
-
-    void transicion();
-
-    bool isMaquinaParada();
+    char getLecturaCabezal();
 
     void ponerCabezal(unsigned int);
-
-    virtual std::string getExpresionFormal();
-
-    unsigned int getNroElementosAlfabetoCinta();
 };
 
 #endif //AFD_MTURING_H

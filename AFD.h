@@ -11,21 +11,18 @@ class AFD : public Automata {
 private:
     Estado ***f;        // para poder ser nullptr
 
+    void setAutomataListo() override;
+
     bool isReadyF();
 
-    virtual void setAutomataListo();
 public:
-
     AFD(unsigned int cantidadEstados, unsigned int tamanoAlfabeto);
 
     void setF(std::string nombreEstadoSalida, char entrada, std::string nombreEstadoDestino);
 
-    virtual void transicion(char);
+    void transicion() override;
 
-    virtual std::string getExpresionFormal();
+    std::string getExpresionFormal() override;
 };
-
-
-//falta corroborar que haya al menos un estado que sea de salida
 
 #endif //AFD_AFD_H

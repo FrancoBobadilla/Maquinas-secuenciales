@@ -23,6 +23,10 @@ Automata::Automata(unsigned int cantEstados, unsigned int tamAlfabeto) {
     this->tieneEstadosDefinidos = false;
     this->tieneEntradasDefinidas = false;
     this->tieneFDeterminada = false;
+
+    this->cadenaAnalizar = "";
+    this->tieneCadenaAnalizar = false;
+    this->automataApagado = false;
 }
 
 void Automata::setEstado(const std::string &nombreEstado, bool estadoSalida) {
@@ -60,13 +64,13 @@ void Automata::setEstadoActual(const std::string &nombreEstado) {
 }
 
 std::string Automata::getNombreEstadoActual() const {
-    if(!this->tieneEstadoInicial)
+    if (!this->tieneEstadoInicial)
         throw -85;
     return this->estadoActual->nombre;
 }
 
 bool Automata::getSituacionEstadoActual() const {
-    if(!this->tieneEstadoInicial)
+    if (!this->tieneEstadoInicial)
         throw -85;
     return this->estadoActual->situacion;
 }
@@ -124,7 +128,7 @@ unsigned int Automata::getNroElementosAlfabeto() const {
 }
 
 std::string Automata::getNombreEstadoInicial() {
-    if(!this->tieneEstadoInicial)
+    if (!this->tieneEstadoInicial)
         throw -85;
     return this->estadoInicial->nombre;
 }
@@ -143,4 +147,33 @@ unsigned int Automata::getAlfabetoIndex(char c) {
             return i;
     }
     throw -1;
+}
+
+void Automata::setCadenaAnalizar(std::string s) {
+    if (this->tieneCadenaAnalizar)
+        throw -2;
+    if ("" == s)
+        throw -5;
+
+        unsigned int i = 0;
+    while ('\0' != s[i]) {
+        try {
+            this->getAlfabetoIndex(s[i]); // si existe la entreada
+        } catch (int exc) {
+            if (-1 == exc) {
+                this->cadenaAnalizar = "";
+                throw -21;   //No pertenece al alfabeto de entrada
+            }
+        }
+        //cambiar despues por funcion existe();
+
+        this->cadenaAnalizar += s[i];
+        i++;
+    }
+    this->tieneCadenaAnalizar = true;
+    this->setAutomataListo();
+}
+
+bool Automata::isAutomataApagado() {
+    return this->automataApagado;
 }

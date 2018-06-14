@@ -20,52 +20,43 @@ private:
     // es una matriz cubica de punteros a estructura de estados y apilamientos (para que pueda ser null)
     ElementosTransicionPila ****f;
 
+    // atributos de alfabeto de pila
+    Stack<char> *pila;
     unsigned int nroElementosAlfabetoPila;
     unsigned int cantActualElementosAlfabetoPila;
     char *alfabetoPila;
     char finDePila;
 
-    Stack<char> *pila;
-
     //banderas
     bool tieneSimbolosPilaDefinidos;
-    bool automataApagado;       // que tal ponerlo en la abs
 
     //métodos auxiliares
     unsigned int getAlfabetoPilaIndex(const char &simboloEntradaPila);
 
     Estado *buscarEstadoFinal();
 
-    virtual void setAutomataListo();
+    void setAutomataListo() override;
+
+    void apagarAutomata();
 
 public:
-
     APila(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsigned int tamanoAlfabetoPila,
           char finDePila);
-    virtual void transicion(char);
 
     void setF(std::string nombreEstadoSalida, char entrada, char valorPila, std::string nombreEstadoDestino,
               bool conservarTope, char apilamiento);
 
+    void transicion() override;
+
+    std::string getExpresionFormal() override;
+
+    // metodos para simbolos del alfabeto de entrade de pila
     void setAlfabetoPila(char);
 
-    char getTopeDePila();
-
-    void apagarAutomata();
-
-    virtual std::string getExpresionFormal();
-
     unsigned int getNroElementosAlfabetoPila();
+
+    char getTopeDePila();
 };
 
 
 #endif //AFD_APILA_H
-
-
-/*
- * El automata no tiene transiciones lambda
- * El automata no tiene transiciones "n-arias"
- *
- * Lo no determinista se reduce a no definir todas las transiciones
- *
- * */

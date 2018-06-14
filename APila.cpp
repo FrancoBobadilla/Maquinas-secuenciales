@@ -20,9 +20,7 @@ APila::APila(unsigned int nroEst, unsigned int nroAlfEnt, unsigned int nroAlfPil
     this->nroElementosAlfabetoPila = nroAlfPila + 1;
     this->cantActualElementosAlfabetoPila = 0;
     this->alfabetoPila = new char[this->nroElementosAlfabetoPila];
-
     this->tieneSimbolosPilaDefinidos = false;
-    this->automataApagado = false;
 
     this->finDePila = finDePila;
     this->setAlfabetoPila(this->finDePila);
@@ -171,15 +169,28 @@ void APila::setAlfabetoPila(char c) {
     throw -2;
 }
 
-void APila::transicion(char entrada) {
+void APila::transicion() {
     if (this->automataApagado)
         throw -10;
 
     if (!this->automataListo) {
-        if (!this->tieneEstadoInicial || !this->tieneEstadoSalida || !this->tieneEstadosDefinidos ||
-            !this->tieneEntradasDefinidas || !this->tieneSimbolosPilaDefinidos)
+        if (!this->tieneEstadoInicial ||
+            !this->tieneEstadoSalida ||
+            !this->tieneEstadosDefinidos ||
+            !this->tieneEntradasDefinidas ||
+            !this->tieneSimbolosPilaDefinidos ||
+            !this->tieneCadenaAnalizar)
             throw -30;
     }
+
+    if ('\0' == this->cadenaAnalizar[0]) {
+        this->apagarAutomata();
+        return;
+    }
+    // no es una excepcion porque coresponde a la transicion lambda
+
+    char entrada = this->cadenaAnalizar[0];
+    this->cadenaAnalizar = &this->cadenaAnalizar[1];
 
     ElementosTransicionPila *salidaF;
     try {
@@ -268,5 +279,6 @@ void APila::setAutomataListo() {
                           this->tieneEstadosDefinidos &&
                           this->tieneEntradasDefinidas &&
                           this->tieneFDeterminada &&
-                          this->tieneSimbolosPilaDefinidos;
+                          this->tieneSimbolosPilaDefinidos &&
+                          this->tieneCadenaAnalizar;
 }

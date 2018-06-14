@@ -15,50 +15,85 @@ abstract class Automata {
 #cantActualEstados
 #estados
 #estadoActual
+#estadoInicial
+
 #nroElementosAlfabeto
 #cantActualElementosAlfabeto
 #alfabeto
+
+#cadenaAnalizar
+
+#automataListo
+#tieneEstadoInicial
+#tieneEstadoSalida
+#tieneEstadosDefinidos
+#tieneEntradasDefinidas
+#tieneFDeterminada
+#tieneCadenaAnalizar
+#automataApagado
+
+#virtual setEstadoActual(nombreEstado)
+#virtual setAutomataListo() =0
+#virtual getExpresionFormal() =0
+
 #getEstadoIndex(nombreEstado)
 #getAlfabetoIndex(elemtoAlfabeto)
 
 +Automata(cantidadEstados, tamanoAlfabeto)
-+virtual transicion(char)=0
++virtual transicion()=0
++virtual setCadenaAnalizar(string)
+
+
++setEstado(nombreEstado, situacionEstado)
++setEstadoInicial(nombreEstado)
++getNombreEstadoInicial()
 +getNroEstados()
-+setEstado(Estado)
-
-#setEstadoActual(nombreEstado)
-
 +getNombreEstadoActual()
 +getSituacionEstadoActual()
-+getNroElementosAlfabeto()
+
 +setAlfabeto(char)
-+setEstadoInicial(nombreEstadoInicial)
++getNroElementosAlfabeto()
+
++isMaquinaParada()
 }
 
 class AFD{
 - f
--Determinado
+-setAutomataListo() override
 -isReadyF()
 
 +ADF(cantidadEstados, tamanoAlfabeto)
 +setF(nombreEstadoSalida, entrada, nombreEstadoDestino)
-+virtual transicion(char)
++transicion() override
++getExpresionFormal()
 }
 
 class APila{
 - f
+
+-pila
 -nroElementosAlfabetoPila
 -cantActualElementosAlfabetoPila
 -alfabetoPila
+-finDePila
 
--pila
+-tieneSimbolosPilaDefinidos
+
 -getAlfabetoPilaIndex(simboloEntradaPila)
+-buscarEstadoFinal
+-setAutomataListo() override
+-apagarAutomata()
 
 +APila(cantidadEstados, tamanoAlfabeto, tamanoAlfabetoPila)
-+virtual transicion(char)
 +setF(nombreEstadoSalida, entrada, valorPila, nombreEstadoDestino, conservarTope, apilamiento)
++transicion() override
++getExpresionFormal() override
+
 +setAlfabetoPila(char)
++getNroElementosAlfabetoPila
 +getTopeDePila()
+
++apagarAutomata();
 }
 
 class Stack{
@@ -87,21 +122,23 @@ class MTuring{
 -nroElementosAlfabetoCinta
 -cantActualElementosAlfabetoCinta
 -alfabetoCinta
--isCintaLista
+
 -isCabezalListo
--maquinaParada
+-tieneSimbolosCintaDefinidos
 
 -getAlfabetoCintaIndex(simboloEntradaCinta)
+-escribirCinta(string)
+-setAutomataListo() override
 
 +MTuring(cantidadEstados, tamanoAlfabeto, tamanoAlfabetoCinta)
-+virtual transicion(char)
 +setF(nombreEstadoSalida, entrada, valorCinta, nombreEstadoDestino, direccion, escritura)
++transicion() override
++setCadenaAnalizar(string) override
+
 +setAlfabetoCinta(char)
++getNroElementosAlfabetoCinta()
++getCopiaCinta()
 +getLecturaCabezal()
-+escribirSimboloEnCinta(char)
-+setCintaLista()
-+transicion()
-+isMaquinaParada()
 +ponerCabezal(position)
 }
 

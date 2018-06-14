@@ -17,10 +17,6 @@ AFD::AFD(unsigned int cantEstados, unsigned int tamAlfabeto) : Automata(cantEsta
 void AFD::setF(std::string nombreEstadoSalida, char entrada, std::string nombreEstadoDestino) {
     unsigned int ESalida, EDestino, entIndex;
 
-//    if (!this->tieneEstadosDefinidos)
-//        throw -21;              // tiene que tener todos los estados definidos
-//    if (!this->tieneEntradasDefinidas)
-//        throw -22;              // tiene que tener todas las entradas definidas
     if (tieneFDeterminada)
         throw -23;              // la funcion de transicion ya fue definida
 
@@ -54,15 +50,18 @@ void AFD::setF(std::string nombreEstadoSalida, char entrada, std::string nombreE
     this->tieneFDeterminada = this->isReadyF();
 }
 
-void AFD::transicion(char entrada) {
-    if (!this->automataListo)
+void AFD::transicion() {
+    if (!this->automataListo || this->automataApagado) // o automata apagado
         throw -8;
-    try {
-        estadoActual = this->f[this->getEstadoIndex(estadoActual->nombre)][this->getAlfabetoIndex(entrada)];
-    } catch (int exc) {
-        if (-1 == exc)
-            throw -21;
+
+    if (this->cadenaAnalizar[1] == '\0') {
+        this->automataApagado = true;
     }
+    char entrada = this->cadenaAnalizar[0];
+    this->cadenaAnalizar = &this->cadenaAnalizar[1];
+
+    estadoActual = this->f[this->getEstadoIndex(estadoActual->nombre)][this->getAlfabetoIndex(entrada)];
+    // no puede dar error porque entrada ya fue verificada en setCadenaAnalizar
 }
 
 bool AFD::isReadyF() {
@@ -76,8 +75,12 @@ bool AFD::isReadyF() {
 }
 
 void AFD::setAutomataListo() {
-    this->automataListo = this->tieneEstadoInicial && this->tieneEstadoSalida && this->tieneEstadosDefinidos &&
-                          this->tieneEntradasDefinidas && this->tieneFDeterminada;
+    this->automataListo = this->tieneEstadoInicial &&
+                          this->tieneEstadoSalida &&
+                          this->tieneEstadosDefinidos &&
+                          this->tieneEntradasDefinidas &&
+                          this->tieneFDeterminada &&
+                          this->tieneCadenaAnalizar;
 }
 
 std::string AFD::getExpresionFormal() {

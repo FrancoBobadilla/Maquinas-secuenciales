@@ -15,10 +15,8 @@ MTuring::MTuring(unsigned int cantidadEstados, unsigned int tamanoAlfabeto, unsi
     this->alfabetoCinta = new char[this->nroElementosAlfabetoCinta];
 
     //seteo de banderas
-    this->isCintaLista = false;
     this->isCabezalListo = false;
     this->tieneSimbolosCintaDefinidos = false;
-    this->maquinaApagada = false;
 
     this->cinta = new Cinta<char>(blanco);
     // el blanco cuenta como simbolo del alfabeto de cinta?
@@ -111,60 +109,53 @@ void MTuring::setAlfabetoCinta(char c) {
     // dejame esto para más adelante Bob
 }
 
-void MTuring::escribirCinta(std::string s) {
-    if (this->isCintaLista)
-        throw -2;   //Cinta ya estaba lista
+void MTuring::setCadenaAnalizar(std::string s) {
+    if (this->tieneCadenaAnalizar)
+        throw -2;
 
     unsigned int i = 0;
-
     while ('\0' != s[i]) {
         try {
-            this->getAlfabetoIndex(s[i]);
+            this->getAlfabetoIndex(s[i]); // si existe la entreada
         } catch (int exc) {
-            if (-1 == exc)
-                throw -1;   //No pertenece al alfabeto de entrada
+            if (-1 == exc) {
+                this->cadenaAnalizar = "";
+                throw -21;   //No pertenece al alfabeto de entrada
+            }
         }
         //cambiar despues por funcion existe();
+
+        this->cadenaAnalizar += s[i];
         i++;
     }
+    this->escribirCinta(this->cadenaAnalizar);
+    this->tieneCadenaAnalizar = true;
+    this->setAutomataListo();
+}
 
-    i = 0;
+inline void MTuring::escribirCinta(std::string s) {
+    unsigned int i = 0;
     while ('\0' != s[i]) {
         this->cinta->desplazarDerecha();
         this->cinta->escribir(s[i]);
         i++;
     }
+    this->cinta->desplazarDerecha();
 }
 
 std::string MTuring::getCopiaCinta() {
     return this->cinta->devolverCopiaCinta();
 }
 
-void MTuring::setCintaLista() {
-    if (this->isCintaLista)
-        throw -2;   //Cinta ya estaba lista
-    this->cinta->desplazarDerecha(); // crea un blanco al final de la cinta
-    this->isCintaLista = true;
-    this->setAutomataListo();
-}
-
-// no me gusta que tenga parámetros distintos
 void MTuring::transicion() {
-    try {
-        this->transicion(this->cinta->leer());
-    } catch (int exc) {
-        throw exc;
-    }
-}
-
-void MTuring::transicion(char lectura) {
-    if (this->maquinaApagada)
+    if (this->automataApagado)
         throw -1;
-    if (!this->isCintaLista)
+    if (!this->tieneCadenaAnalizar)
         throw -2;       // no se puede hacer tranciciones hasta que la cinta no este lista
     if (!this->isCabezalListo)
         throw -3;
 
+    char lectura = this->cinta->leer();
     SalidaFuncMaqTuring *salidaF;
     try {
         salidaF = this->f[this->getEstadoIndex(this->estadoActual->nombre)][this->getAlfabetoCintaIndex(lectura)];
@@ -179,12 +170,12 @@ void MTuring::transicion(char lectura) {
         tmpEstado->nombre = "ESTADO DE ERROR";
         tmpEstado->situacion = false;
         this->estadoActual = tmpEstado;
-        this->maquinaApagada = true;
+        this->automataApagado = true;
         //define automata como no usable
     } else {
         this->estadoActual = &salidaF->estado;
         if (this->estadoActual->situacion)
-            this->maquinaApagada = true;
+            this->automataApagado = true;
 
         this->cinta->escribir(salidaF->escritura);
 
@@ -225,12 +216,8 @@ char MTuring::getLecturaCabezal() {
     return this->cinta->leer();
 }
 
-bool MTuring::isMaquinaParada() {
-    return this->maquinaApagada;
-}
-
 void MTuring::ponerCabezal(unsigned int pos) {
-    if (!this->isCintaLista)
+    if (!this->tieneCadenaAnalizar)
         throw -1;   // solo se puede situar el cabezal cuando la cinta está cargada
     if (this->isCabezalListo)
         throw -2;   // solo se puede poner el cabezal una vez
@@ -267,6 +254,6 @@ void MTuring::setAutomataListo() {
                           this->tieneEntradasDefinidas &&
                           this->tieneFDeterminada &&
                           this->tieneSimbolosCintaDefinidos &&
-                          this->isCintaLista &&
+                          this->tieneCadenaAnalizar &&
                           this->isCabezalListo;
 }

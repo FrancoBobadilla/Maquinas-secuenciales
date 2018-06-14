@@ -18,6 +18,11 @@ Automata getNombreEstadoActual
 Automata getSituacionEstadoActual
     -85 no tiene estado inicial
 
+Automata setCadenaAnalizar
+    -2 ya tiene una cadena
+    -5 no se puede ingresar una cadena vacia
+    -21 no encuentra simbolo entrada
+
 AFD setF
     -11 no encuentra estado origen
     -12 no encuentra estado destino
@@ -30,7 +35,7 @@ AFD setF
 
 AFD transicion
     -8 el automata no está listo para funcionar
-    -21 no encuentra simbolo entrada
+    -12 no hay simbolos para la transicion
 
 AFD getExpresionFormal
     -55 falta definirse completente el automata
@@ -61,11 +66,17 @@ APila setAlfabetoPila
 APila transicion
     -10 automata apagado
     -20 stack underflow
-    -21 no encuentra simbolo de entrada o pila
+    -21 desbordamiento por pila vacia
     -30 no tiene simbolos o estados definidos
+
+APila apagarAutomata
+    -11 desbordamiento de pila
 
 APila getExpresionFormal
     -55 falta definirse completente el automata
+
+APila buscarEstadoFinal
+    -5 no hay estado final
 
 MTuring constructor
     0 alfabeto de cinta nulo
@@ -84,6 +95,10 @@ MTuring setF
     -50 se esperaba estado de no salida
     -51 se eseprada estado de salida
 
+MTuring setCadenaAnalizar
+    -2 ya tiene la cadena ingresada
+    -21 el automata no reconoce el simbolo de entrada
+
 MTuring setAlfabetoCinta
     -1 tiene todos los simbolos de cinta definidos
     + chanchada
@@ -93,8 +108,7 @@ MTuring escribirSimboloEnCinta
     -2 ya cinta ya estaba lista
 
 MTuring escribirCinta
-    -1 un simbolo a escribir no pertenece al alfabeto de entrada
-    -2 ya cinta ya estaba lista
+
 
 MTuring setCintaLista
     -2 la cinta ya estaba lista

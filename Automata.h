@@ -9,15 +9,20 @@
 
 class Automata {
 protected:
+    // Atributos para los estados
     unsigned int nroEstados;
     unsigned int cantActualEstados;
     Estado *estados;
     const Estado *estadoActual;
-    const Estado *estadoInicial; // int * const ptr;         Declares a const pointer to int type. You're not allowed to modify ptr, but the data pointed
+    const Estado *estadoInicial;
 
+    // Atributos para el alfabeto de entrada
     unsigned int nroElementosAlfabeto;
     unsigned int cantActualElementosAlfabeto;
     char *alfabeto;
+
+    // Atributos para la cadena de entrada a analizar por el automata
+    std::string cadenaAnalizar;
 
     // banderas del automata
     bool automataListo;       // true cuando se puede hacer transiciones
@@ -26,10 +31,14 @@ protected:
     bool tieneEstadosDefinidos; //true cuando el usuario tiene tantos estados como ha establecido en el constructor
     bool tieneEntradasDefinidas; //true cuando el usuario tiene tantos simbolos de entrada como declarados
     bool tieneFDeterminada;           // true si la funcion de transición está definida o usada por primera vez
+    bool tieneCadenaAnalizar;   // true si el usuario a ingresado completamente la cadena a analizar
+    bool automataApagado;   // true si ya termino de andar
+
+
+    void setEstadoActual(const std::string &nombreEstado);
 
     virtual void setAutomataListo() =0;
 
-    virtual std::string getExpresionFormal() =0;
 
     //metodos auxiliares
     unsigned int getEstadoIndex(const std::string &nombreEstado);
@@ -42,28 +51,33 @@ protected:
 public:
     Automata(unsigned int cantidadEstados, unsigned int tamanoAlfabeto);
 
-    virtual void transicion(char) =0;
-    // como hacer para que las funciones derivadas deban implementarla con distintos parametros;
+    virtual void transicion() =0;
 
-    unsigned int getNroEstados() const;
+    virtual std::string getExpresionFormal() =0;
 
+    virtual void setCadenaAnalizar(std::string);
+
+    // metodos de estado
     void setEstado(const std::string &nombreEstado, bool estadoSalida);
-
-protected:
-    void setEstadoActual(const std::string &nombreEstado);
-
-public:
-    std::string getNombreEstadoActual() const;
-
-    bool getSituacionEstadoActual() const;
-
-    unsigned int getNroElementosAlfabeto() const;
-
-    void setAlfabeto(char);
 
     void setEstadoInicial(std::string nombreEstadoInicial);
 
     std::string getNombreEstadoInicial();
+
+    unsigned int getNroEstados() const;
+
+    std::string getNombreEstadoActual() const;
+
+    bool getSituacionEstadoActual() const;
+
+
+    //metodos de alfabeto de simbolos de entrada
+    void setAlfabeto(char);
+
+    unsigned int getNroElementosAlfabeto() const;
+
+
+    bool isAutomataApagado();
 
 //    ~Automata(); //virtual?
 };
