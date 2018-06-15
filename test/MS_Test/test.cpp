@@ -1,5 +1,7 @@
 #include <include/gtest/gtest.h>
 
+#include <iostream>
+
 #include "../../Automata.h"
 #include "../../Automata.cpp"
 #include "../../AFD.h"
@@ -13,6 +15,8 @@
 #include "../../Data_Structures/Cinta.h"
 #include "../../Data_Structures/Node.h"
 #include "../../Data_Structures/Stack.h"
+
+using namespace std;
 
 AFD *F;
 APila *P;
@@ -63,7 +67,7 @@ void haciendoTenCopia(MTuring F) {
 TEST(test_prueba, AFD_Exceptions) {
     F = new AFD(2, 3);
     ASSERT_ANY_THROW(F->transicion());
-    ASSERT_ANY_THROW(F->getExpresionFormal());
+    ASSERT_NO_THROW(F->getExpresionFormal());
     ASSERT_ANY_THROW(F->getNombreEstadoInicial());
     ASSERT_ANY_THROW(F->getNombreEstadoActual());
     ASSERT_ANY_THROW(F->getSituacionEstadoActual());
@@ -89,7 +93,7 @@ TEST(test_prueba, AFD_Exceptions) {
     ASSERT_NO_THROW(F->setF("q1", 'a', "q1"));
     ASSERT_ANY_THROW(F->setF("q1", 'a', "q1"));
     ASSERT_ANY_THROW(F->transicion());
-    ASSERT_ANY_THROW(F->getExpresionFormal());
+    ASSERT_NO_THROW(F->getExpresionFormal());
 
     ASSERT_NO_THROW(F->setEstado("q2", true));
     ASSERT_ANY_THROW(F->setEstado("q2", false));
@@ -154,7 +158,7 @@ TEST(test_prueba, AFD_Exceptions) {
 TEST(test_prueba, APila_Exceptions) {
     P = new APila(4, 2, 1, '#');
     ASSERT_ANY_THROW(P->transicion());
-    ASSERT_ANY_THROW(P->getExpresionFormal());
+    ASSERT_NO_THROW(P->getExpresionFormal());
     ASSERT_ANY_THROW(P->getNombreEstadoInicial());
     ASSERT_ANY_THROW(P->getNombreEstadoActual());
     ASSERT_ANY_THROW(P->getSituacionEstadoActual());
@@ -181,8 +185,7 @@ TEST(test_prueba, APila_Exceptions) {
     ASSERT_ANY_THROW(P->setEstadoInicial("q1"));
     ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q2", true, 'a'));
     ASSERT_ANY_THROW(P->transicion());
-//    ASSERT_NO_THROW(P->transicion('a'));
-    ASSERT_ANY_THROW(P->getExpresionFormal());
+    ASSERT_NO_THROW(P->getExpresionFormal());
 
     ASSERT_NO_THROW(P->setEstado("q2", false));
     ASSERT_ANY_THROW(P->setF("q1", 'a', '#', "q2", true, 'a'));
@@ -267,7 +270,7 @@ TEST(test_prueba, APila_Exceptions) {
 TEST(test_prueba, MTuring_Exceptions) {
     T = new MTuring(3, 2, 4, 'b');
     ASSERT_ANY_THROW(T->transicion());
-    ASSERT_ANY_THROW(T->getExpresionFormal());
+    ASSERT_NO_THROW(T->getExpresionFormal());
     ASSERT_ANY_THROW(T->getNombreEstadoInicial());
     ASSERT_ANY_THROW(T->getNombreEstadoActual());
     ASSERT_ANY_THROW(T->getSituacionEstadoActual());
@@ -294,7 +297,7 @@ TEST(test_prueba, MTuring_Exceptions) {
     ASSERT_ANY_THROW(T->setEstadoInicial("q1"));
     ASSERT_ANY_THROW(T->setF("q0", '0', "q1", 'd', '0'));
     ASSERT_ANY_THROW(T->transicion());
-    ASSERT_ANY_THROW(T->getExpresionFormal());
+    ASSERT_NO_THROW(T->getExpresionFormal());
 
     ASSERT_NO_THROW(T->setEstado("q1", false));
     ASSERT_ANY_THROW(T->setF("q0", '0', "q1", 'd', '0'));

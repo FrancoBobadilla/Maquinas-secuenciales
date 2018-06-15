@@ -244,11 +244,9 @@ Automata::Automata(const Automata &x) {
     this->cadenaAnalizar = x.cadenaAnalizar;
     this->tieneCadenaAnalizar = x.tieneCadenaAnalizar;
     this->automataApagado = x.automataApagado;
-    std::cout << "saliendo del Automata::constructor por copia\n";
 }
 
 Automata::~Automata() {
     delete this->alfabeto;
-    std::cout << "saliendo de Automata::destructor\n";
 }
 

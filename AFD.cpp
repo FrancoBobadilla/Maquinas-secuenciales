@@ -1,7 +1,4 @@
-//#include <iostream>
 #include "AFD.h"
-
-using namespace std;
 
 AFD::AFD(unsigned int cantEstados, unsigned int tamAlfabeto) : Automata(cantEstados, tamAlfabeto) {
     this->f = new Estado **[cantEstados];
@@ -115,8 +112,6 @@ AFD::AFD(const AFD &x) : Automata(x) {
             }
         }
     }
-
-    cout << "Saliendo de AFD:constructor por copia\n";
 }
 
 AFD::~AFD() {
@@ -126,6 +121,4 @@ AFD::~AFD() {
         delete this->f[i];
     }
     delete f;
-
-    cout << "Saliendo de AFD:destructor\n";
 }

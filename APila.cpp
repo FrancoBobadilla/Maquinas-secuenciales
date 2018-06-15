@@ -278,14 +278,6 @@ char APila::getTopeDePila() {
     return tmp;
 }
 
-bool APila::expresionFormalLista() {
-    return !(!this->tieneEstadoInicial ||
-             !this->tieneEstadoSalida ||
-             !this->tieneEstadosDefinidos ||
-             !this->tieneEntradasDefinidas ||
-             !this->tieneSimbolosPilaDefinidos);
-}
-
 void APila::setAutomataListo() {
     this->automataListo = this->tieneEstadoInicial &&
                           this->tieneEstadoSalida &&
@@ -304,7 +296,7 @@ std::string APila::expresionEspecifica() {
     std::string r = "{ ";
     char i;
     if (0 < this->cantActualElementosAlfabetoPila) {
-        for (i = 0; i < this->nroElementosAlfabetoPila - 1; i++) {
+        for (i = 0; i < this->cantActualElementosAlfabetoPila - 1; i++) {
             r += this->alfabetoPila[i];
             r += ", ";
         }
@@ -350,7 +342,6 @@ APila::APila(const APila &x) : Automata(x) {
             }
         }
     }
-    std::cout << "Saliendo de APila:constructor por copia\n";
 }
 
 APila::~APila() {
@@ -367,5 +358,4 @@ APila::~APila() {
         delete this->f[i];
     }
     delete this->f;
-    std::cout << "Saliendo de APila:destructor\n";
 }

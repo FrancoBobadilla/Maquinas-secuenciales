@@ -244,14 +244,6 @@ unsigned int MTuring::getNroElementosAlfabetoCinta() {
     return this->nroElementosAlfabetoCinta;
 }
 
-bool MTuring::expresionFormalLista() {
-    return !(!this->tieneEstadoInicial ||
-             !this->tieneEstadoSalida ||
-             !this->tieneEstadosDefinidos ||
-             !this->tieneEntradasDefinidas ||
-             !this->tieneSimbolosCintaDefinidos);
-}
-
 void MTuring::setAutomataListo() {
     this->automataListo = this->tieneEstadoInicial &&
                           this->tieneEstadoSalida &&
@@ -271,13 +263,14 @@ std::string MTuring::expresionEspecifica() {
     std::string r = "{ ";
     char i;
     if(0 < this->cantActualElementosAlfabetoCinta) {
-        for (i = 0; i < this->nroElementosAlfabetoCinta - 1; i++) {
+        for (i = 0; i < this->cantActualElementosAlfabetoCinta - 1; i++) {
             r += this->alfabetoCinta[i];
             r += ", ";
         }
         r += this->alfabetoCinta[i];
     }
     r += " }, ";
+
     r += this->cinta->getBlanco();
     r += ", ";
 
@@ -314,7 +307,6 @@ MTuring::MTuring(const MTuring &x) : Automata(x) {
             }
         }
     }
-    std::cout << "Saliendo de MTuring:constructor por copia\n";
 }
 
 MTuring::~MTuring() {
@@ -327,5 +319,4 @@ MTuring::~MTuring() {
         delete this->f[i];
     }
     delete this->f;
-    std::cout << "Saliendo de MTuring:destructor\n";
 }

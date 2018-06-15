@@ -35,7 +35,7 @@ void cargarEstado(AFD &a) {
     cout << "\tNombre del Estado: ";
     LEERSTRING(nombre);
 
-    if('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
+    if ('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
         salida = 0;
 
     try {
@@ -59,7 +59,7 @@ void cargarEstado(APila &a) {
     cout << "\tNombre del Estado: ";
     LEERSTRING(nombre);
 
-    if('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
+    if ('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
         salida = 0;
 
     try {
@@ -83,7 +83,7 @@ void cargarEstado(MTuring &a) {
     cout << "\tNombre del Estado: ";
     LEERSTRING(nombre);
 
-    if('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
+    if ('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
         salida = 0;
 
     try {
@@ -319,7 +319,7 @@ void definirUnaTransicion(APila &a) {
     cout << "\tNueva situación de la pila\n";
     consTope = leerOpciones("01", "\t\tConservar el valor tope anterior? (1 sí / 0 no): ");
 
-    if (leerOpciones("01", "\t\tpilar otro valor más?(1 sí / 0 no):")) {
+    if ('1' == leerOpciones("01", "\t\tApilar otro valor más?(1 sí / 0 no):")) {
         cout << "\t\t\tIngrese el nuevo valor a apliar: ";
         cin >> nuevoTope;
     } else
@@ -465,7 +465,6 @@ void hacerUnaTransicion(AFD &a) {
 
 void hacerUnaTransicion(APila &a) {
     cout << "Efectuando nueva transicion\n";
-    cout << "\tIngresar la entrada: ";
     try {
         a.transicion();
         mostrarSalida(a);
@@ -506,6 +505,7 @@ void hacerUnaTransicion(MTuring &p) {
             case -21:
                 cout << " \n\tNo se encuentra el simbolo de cinta (verifique que alfabeto de entrada"
                         " este comprendido en el alfabeto de cinta)\n";
+                break;
             default:
                 cout << "ERROR: " << exc << "\n";
                 break;
@@ -514,18 +514,75 @@ void hacerUnaTransicion(MTuring &p) {
 }
 
 void hacerTodasTransiciones(AFD &a) {
-    while (!a.isAutomataApagado())
-        hacerUnaTransicion(a);
+    while (!a.isAutomataApagado()) {
+        cout << "Efectuando nueva transicion\n";
+        try {
+            a.transicion();
+            mostrarSalida(a);
+        } catch (int exc) {
+            if (-8 == exc) {
+                cout << " \n\tEl automata no está listo para hacer transiciones\n";
+                return;
+            } else {
+                cout << "ERROR: " << exc << "\n";
+                return;
+            }
+        }
+    }
 }
 
 void hacerTodasTransiciones(APila &a) {
-    while (!a.isAutomataApagado())
-        hacerUnaTransicion(a);
+    while (!a.isAutomataApagado()) {
+        cout << "Efectuando nueva transicion\n";
+        try {
+            a.transicion();
+            mostrarSalida(a);
+        } catch (int exc) {
+            switch (exc) {
+                case -10:
+                    cout << " \n\tEl autómata esta apagado\n";
+                    return;
+                case -20:
+                    cout << " \n\tDesbordamiento negativo de pila\n";
+                    return;
+                case -30:
+                    cout << " \n\tEl automata no está listo para hacer transiciones\n";
+                    return;
+                default:
+                    cout << "ERROR: " << exc << "\n";
+                    return;
+            }
+        }
+    }
 }
 
 void hacerTodasTransiciones(MTuring &a) {
-    while (!a.isAutomataApagado())
-        hacerUnaTransicion(a);
+    while (!a.isAutomataApagado()) {
+        cout << "Efectuando nueva transicion\n";
+        try {
+            a.transicion();
+            mostrarSalida(a);
+        } catch (int exc) {
+            switch (exc) {
+                case -1:
+                    cout << " \n\tEl autómata esta apagado\n";
+                    return;
+                case -2:
+                    cout << " \n\tLa cinta no esta lista para ser leida por la maquina\n";
+                    return;
+                case -3:
+                    cout << " \n\tEl cabezal de la máquina no ha sido situado en la cinta\n";
+                    return;
+                case -21:
+                    cout << " \n\tNo se encuentra el simbolo de cinta (verifique que alfabeto de entrada"
+                            " este comprendido en el alfabeto de cinta)\n";
+                    return;
+                default:
+                    cout << "ERROR: " << exc << "\n";
+                    return;
+            }
+        }
+    }
 }
 
 // funciones para entrar la cadena a analizar por el automata
@@ -690,8 +747,8 @@ void mostrarSalida(MTuring &a) {
         cout << "La cinta se encuentra así " << a.getCopiaCinta() << endl;
     } catch (int exc) {
         if (-85 == exc) {
-            cout<< "\n El autómata no se encuentra en ningún estado\n";
-        } else{
+            cout << "\n El autómata no se encuentra en ningún estado\n";
+        } else {
             cout << "ERROR: " << exc << "\n";
         }
     }

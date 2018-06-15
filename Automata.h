@@ -54,9 +54,6 @@ protected:
 
     bool existsIn(char, const char *, unsigned int);
 
-//    bool nombreEstadoDisponible(std::string n);
-//    bool simboloEntradaDisponible(char c);
-
 public:
     Automata(unsigned int cantidadEstados, unsigned int tamanoAlfabeto);
 
@@ -99,7 +96,7 @@ public:
 
     Automata(const Automata &);
 
-    virtual~Automata(); //virtual?
+    virtual~Automata();
 };
 
 
