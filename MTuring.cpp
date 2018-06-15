@@ -81,7 +81,6 @@ void MTuring::setF(std::string nombreEstadoSalida, char entradaCinta, std::strin
     if (nullptr != f[ESalidaIndex][entradaCintaIndex])
         throw -16;
 
-    // tiene que haber una forma prolija de hacerlo
     this->f[ESalidaIndex][entradaCintaIndex] = new SalidaFuncMaqTuring;
     this->f[ESalidaIndex][entradaCintaIndex]->estado.nombre = this->estados[EDestinoIndex].nombre;
     this->f[ESalidaIndex][entradaCintaIndex]->estado.situacion = this->estados[EDestinoIndex].situacion;

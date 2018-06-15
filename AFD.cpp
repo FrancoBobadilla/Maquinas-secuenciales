@@ -42,7 +42,6 @@ void AFD::setF(std::string nombreEstadoSalida, char entrada, std::string nombreE
     this->f[ESalida][entIndex] = new Estado();
     this->f[ESalida][entIndex]->nombre = this->estados[EDestino].nombre;
     this->f[ESalida][entIndex]->situacion = this->estados[EDestino].situacion;
-    // se puede usar sobrecarga asignacion?
 
     this->tieneFDeterminada = this->isReadyF();
 }

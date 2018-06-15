@@ -136,7 +136,6 @@ void APila::setF(std::string nombreEstadoSalida, char entrada, char valorPila, s
     if (nullptr != this->f[ESalidaIndex][entradaIndex][valorPilaIndex])
         throw -16;      // sólo se puede definir una
 
-    // tiene que haber una forma prolija de hacerlo
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex] = new ElementosTransicionPila;
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->estado.nombre = this->estados[EDestinoIndex].nombre;
     this->f[ESalidaIndex][entradaIndex][valorPilaIndex]->estado.situacion = this->estados[EDestinoIndex].situacion;
