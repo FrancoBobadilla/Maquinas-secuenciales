@@ -194,7 +194,7 @@ void APila::transicion() {
                 entrada)][this->getAlfabetoPilaIndex(this->pila->peek())];
     } catch (int exc) {
         if (-1 == exc)
-            throw -21;
+            throw -20;
     }
 
     // En caso de efectuarse una transicion quita simbolo de la pila. Porque si no se hace la

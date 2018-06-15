@@ -72,7 +72,7 @@ bool Automata::getSituacionEstadoActual() const {
 
 void Automata::setEstadoInicial(std::string nombreEstadoInicial) {
     if (this->tieneEstadoInicial)
-        throw -1;
+        throw -10;
 
     try {
         this->estadoInicial = &this->estados[getEstadoIndex(nombreEstadoInicial)];

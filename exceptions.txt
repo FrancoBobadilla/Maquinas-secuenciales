@@ -3,15 +3,15 @@ Automata constructor
 
 Automata setEstado
     -1: tiene todos los estados ocupados
-    + arreglar chanchada
+    -2: ya existe un estado con ese nombre
 
 Automata setEstadoInicial
-    -1 si ya hay estado inicial
     -1 si no hay estado con ese nombre
+    -10 si ya hay estado inicial
 
 Automata setAlfabeto
     -1 tiene todos los simbolos de entrada definidos
-    + chanchada
+    -2 ya existe ese simbolo de entrada
 
 Automata getNombreEstadoInicial
 Automata getNombreEstadoActual
@@ -32,13 +32,10 @@ AFD setF
     -13 no encuentra simbolo entrada
     -14 transicion definida previamente
 
-    -21 no tiene todos los estados definidos
-    -22 no tiene todas las entradas definidas
     -23 la funcion ya fue definida
 
 AFD transicion
     -8 el automata no está listo para funcionar
-    -12 no hay simbolos para la transicion
 
 AFD getExpresionFormal
     -55 falta definirse completente el automata
@@ -64,12 +61,11 @@ APila setF
 
 APila setAlfabetoPila
     -1 tiene todos los simbolos de pila definidos
-    + chanchada
+    -2 ya existe el simbolo
 
 APila transicion
     -10 automata apagado
     -20 stack underflow
-    -21 desbordamiento por pila vacia
     -30 no tiene simbolos o estados definidos
 
 APila apagarAutomata
@@ -100,11 +96,12 @@ MTuring setF
 
 MTuring setCadenaAnalizar
     -2 ya tiene la cadena ingresada
+    -5 no se puede ingresar una cadena vacia
     -21 el automata no reconoce el simbolo de entrada
 
 MTuring setAlfabetoCinta
     -1 tiene todos los simbolos de cinta definidos
-    + chanchada
+    -2 ya existía el simbolo
 
 MTuring escribirSimboloEnCinta
     -1 el simbolo a escribir no pertenece al alfabeto de entrada
@@ -117,9 +114,6 @@ MTuring setCintaLista
     -2 la cinta ya estaba lista
 
 MTuring transicion
-    los mismos que MTuring transicion(char)
-
-MTuring transicion(char)
     -1 la máquina está apagada
     -2 la cinta no está lista
     -3 el cabezal no está listo
