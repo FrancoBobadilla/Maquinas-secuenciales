@@ -167,37 +167,47 @@ bool Automata::isAutomataApagado() {
 }
 
 std::string Automata::getExpresionFormal() {
-    if (!this->expresionFormalLista())
-        throw -0;
     char i;
     std::string r = "";
     r += this->tipoAutomata() + " = ( { ";
 
-    for (i = 0; i < this->nroElementosAlfabeto - 1; i++) {
+    if (0 < this->cantActualElementosAlfabeto) {
+        for (i = 0; i < this->cantActualElementosAlfabeto - 1; i++) {
+            r += this->alfabeto[i];
+            r += ", ";
+        }
         r += this->alfabeto[i];
-        r += ", ";
     }
-    r += this->alfabeto[i];
     r += " }, ";
 
     r += this->expresionEspecifica();
 
-    r += this->estadoInicial->nombre + ", { ";
+    if (this->tieneEstadoInicial)
+        r += this->estadoInicial->nombre;
+
+    r += ", { ";
 
     std::string estadosfinales = "";
 
-    for (i = 0; i < this->getNroEstados() - 1; ++i) {
-        r += this->estados[i].nombre + ", ";
+    if (0 < this->cantActualEstados) {
+        for (i = 0; i < this->cantActualEstados - 1; ++i) {
+            r += this->estados[i].nombre + ", ";
+            if (this->estados[i].situacion)
+                estadosfinales += this->estados[i].nombre + ", ";
+        }
+        r += this->estados[i].nombre;
+
         if (this->estados[i].situacion)
-            estadosfinales += this->estados[i].nombre + ", ";
+            estadosfinales += this->estados[i].nombre;
     }
-    r += this->estados[i].nombre + " },";
-    if (this->estados[i].situacion)
-        estadosfinales += this->estados[i].nombre;
-    // muestra una coma de mas;
+    r += " }, ";
 
     r += " { " + estadosfinales + " }, f )";
     return r;
+}
+
+bool Automata::tieneFuncionDeterminada() {
+    return this->tieneFDeterminada;
 }
 
 Automata::Automata(const Automata &x) {
@@ -238,7 +248,6 @@ Automata::Automata(const Automata &x) {
 }
 
 Automata::~Automata() {
-//    delete this->estados; // Estado ya no es mas un objeto
     delete this->alfabeto;
     std::cout << "saliendo de Automata::destructor\n";
 }

@@ -303,12 +303,15 @@ std::string APila::tipoAutomata() {
 std::string APila::expresionEspecifica() {
     std::string r = "{ ";
     char i;
-    for (i = 0; i < this->nroElementosAlfabetoPila - 1; i++) {
+    if (0 < this->cantActualElementosAlfabetoPila) {
+        for (i = 0; i < this->nroElementosAlfabetoPila - 1; i++) {
+            r += this->alfabetoPila[i];
+            r += ", ";
+        }
         r += this->alfabetoPila[i];
-        r += ", ";
     }
-    r += this->alfabetoPila[i];
     r += " }, ";
+
     r += this->finDePila;
     r += ", ";
 

@@ -88,12 +88,12 @@ public:
 
     bool isAutomataApagado();
 
+    bool tieneFuncionDeterminada();
+
     virtual void reiniciarAutomata() =0;
 
     // metodos para expresion formal
     virtual std::string tipoAutomata() =0;
-
-    virtual bool expresionFormalLista() =0;
 
     virtual std::string expresionEspecifica() =0;
 

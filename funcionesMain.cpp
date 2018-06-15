@@ -30,12 +30,13 @@ char leerOpciones(const std::string &opciones, const std::string &texto) {
 
 void cargarEstado(AFD &a) {
     std::string nombre;
-    int salida;
+    char salida = 1;
     cout << "Ingresando nuevo Estado\n";
     cout << "\tNombre del Estado: ";
     LEERSTRING(nombre);
 
-    salida = leerOpciones("01", "Ingrese 1 si es de salida (0 si no)");
+    if('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
+        salida = 0;
 
     try {
         a.setEstado(nombre, (bool) salida);
@@ -53,12 +54,13 @@ void cargarEstado(AFD &a) {
 
 void cargarEstado(APila &a) {
     std::string nombre;
-    int salida;
+    char salida = 1;
     cout << "Ingresando nuevo Estado\n";
     cout << "\tNombre del Estado: ";
     LEERSTRING(nombre);
 
-    salida = leerOpciones("01", "Ingrese 1 si es de salida (0 si no)");
+    if('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
+        salida = 0;
 
     try {
         a.setEstado(nombre, (bool) salida);
@@ -76,12 +78,13 @@ void cargarEstado(APila &a) {
 
 void cargarEstado(MTuring &a) {
     std::string nombre;
-    int salida;
+    char salida = 1;
     cout << "Ingresando nuevo Estado\n";
     cout << "\tNombre del Estado: ";
     LEERSTRING(nombre);
 
-    salida = leerOpciones("01", "Ingrese 1 si es de salida (0 si no)");
+    if('0' == leerOpciones("01", "Ingrese 1 si es de salida (0 si no)"))
+        salida = 0;
 
     try {
         a.setEstado(nombre, (bool) salida);
@@ -450,13 +453,14 @@ void hacerUnaTransicion(AFD &a) {
     cout << "Efectuando nueva transicion\n";
     try {
         a.transicion();
+        mostrarSalida(a);
     } catch (int exc) {
-        if (-8 == exc)
+        if (-8 == exc) {
             cout << " \n\tEl automata no está listo para hacer transiciones\n";
-        else
+        } else {
             cout << "ERROR: " << exc << "\n";
+        }
     }
-    mostrarSalida(a);
 }
 
 void hacerUnaTransicion(APila &a) {
@@ -464,6 +468,7 @@ void hacerUnaTransicion(APila &a) {
     cout << "\tIngresar la entrada: ";
     try {
         a.transicion();
+        mostrarSalida(a);
     } catch (int exc) {
         switch (exc) {
             case -10:
@@ -480,13 +485,13 @@ void hacerUnaTransicion(APila &a) {
                 break;
         }
     }
-    mostrarSalida(a);
 }
 
 void hacerUnaTransicion(MTuring &p) {
     cout << "Efectuando nueva transicion\n";
     try {
         p.transicion();
+        mostrarSalida(p);
     } catch (int exc) {
         switch (exc) {
             case -1:
@@ -506,7 +511,6 @@ void hacerUnaTransicion(MTuring &p) {
                 break;
         }
     }
-    mostrarSalida(p);
 }
 
 void hacerTodasTransiciones(AFD &a) {
@@ -641,30 +645,54 @@ void ponerCabezalCinta(MTuring &p) {
 // funciones para mostrar salida
 
 void mostrarSalida(AFD &a) {
-    cout << "Se ha alcanzado el estado: " << a.getNombreEstadoActual() << "\n";
-    if (a.getSituacionEstadoActual())
-        cout << " \t SALIDA\n ";
+    try {
+        cout << "Se ha alcanzado el estado: " << a.getNombreEstadoActual() << "\n";
+        if (a.getSituacionEstadoActual())
+            cout << " \t SALIDA\n ";
+    } catch (int exc) {
+        if (-85 == exc) {
+            cout << "\n El autómata no se encuentra en ningún estado\n";
+        } else {
+            cout << "ERROR: " << exc << "\n";
+        }
+    }
 }
 
 void mostrarSalida(APila &a) {
-    cout << "Se ha alcanzado el estado: " << a.getNombreEstadoActual() << "\n";
-    if (a.getSituacionEstadoActual())
-        cout << " \t SALIDA\n ";
     try {
-        cout << "El tope de pila es : " << a.getTopeDePila() << "\n";
+        cout << "Se ha alcanzado el estado: " << a.getNombreEstadoActual() << "\n";
+        if (a.getSituacionEstadoActual())
+            cout << " \t SALIDA\n ";
+        try {
+            cout << "El tope de pila es : " << a.getTopeDePila() << "\n";
+        } catch (int exc) {
+            if (-11 == exc) {
+                cout << "\nDesbordamiento de pila\n";
+            } else {
+                cout << "\nERROR: " << exc << "\n";
+            }
+        }
     } catch (int exc) {
-        if (-11 == exc) {
-            cout << "\nDesbordamiento de pila\n";
+        if (-85 == exc) {
+            cout << "\n El autómata no se encuentra en ningún estado\n";
         } else {
-            cout << "\nERROR: " << exc << "\n";
+            cout << "ERROR: " << exc << "\n";
         }
     }
 }
 
 void mostrarSalida(MTuring &a) {
-    cout << "Se ha alcanzado el estado: " << a.getNombreEstadoActual() << "\n";
-    if (a.getSituacionEstadoActual())
-        cout << " \t SALIDA\n ";
-    cout << " El cabezal de la máquina lee " << a.getLecturaCabezal() << endl;
-    cout << "La cinta se encuentra así " << a.getCopiaCinta() << endl;
+    try {
+        cout << "Se ha alcanzado el estado: " << a.getNombreEstadoActual() << "\n";
+        if (a.getSituacionEstadoActual())
+            cout << " \t SALIDA\n ";
+        cout << " El cabezal de la máquina lee " << a.getLecturaCabezal() << endl;
+        cout << "La cinta se encuentra así " << a.getCopiaCinta() << endl;
+    } catch (int exc) {
+        if (-85 == exc) {
+            cout<< "\n El autómata no se encuentra en ningún estado\n";
+        } else{
+            cout << "ERROR: " << exc << "\n";
+        }
+    }
 }

@@ -58,8 +58,6 @@ public:
 
     void ponerCabezal(unsigned int);
 
-    bool expresionFormalLista() override;
-
     std::string tipoAutomata() override;
 
     std::string expresionEspecifica() override;

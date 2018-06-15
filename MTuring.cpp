@@ -270,11 +270,13 @@ std::string MTuring::tipoAutomata() {
 std::string MTuring::expresionEspecifica() {
     std::string r = "{ ";
     char i;
-    for (i = 0; i < this->nroElementosAlfabetoCinta - 1; i++) {
+    if(0 < this->cantActualElementosAlfabetoCinta) {
+        for (i = 0; i < this->nroElementosAlfabetoCinta - 1; i++) {
+            r += this->alfabetoCinta[i];
+            r += ", ";
+        }
         r += this->alfabetoCinta[i];
-        r += ", ";
     }
-    r += this->alfabetoCinta[i];
     r += " }, ";
     r += this->cinta->getBlanco();
     r += ", ";

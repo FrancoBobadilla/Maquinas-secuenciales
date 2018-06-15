@@ -24,8 +24,6 @@ public:
 
     void reiniciarAutomata() override;
 
-    bool expresionFormalLista() override;
-
     std::string tipoAutomata() override;
 
     std::string expresionEspecifica() override;

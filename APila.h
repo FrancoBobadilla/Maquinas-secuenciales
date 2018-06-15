@@ -57,8 +57,6 @@ public:
 
     char getTopeDePila();
 
-    bool expresionFormalLista() override;
-
     std::string tipoAutomata() override;
 
     std::string expresionEspecifica() override;

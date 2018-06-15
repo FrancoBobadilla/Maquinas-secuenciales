@@ -83,13 +83,6 @@ void AFD::setAutomataListo() {
                           this->tieneCadenaAnalizar;
 }
 
-bool AFD::expresionFormalLista() {
-    return !(!this->tieneEstadoInicial ||
-             !this->tieneEstadoSalida ||
-             !this->tieneEstadosDefinidos ||
-             !this->tieneEntradasDefinidas);
-}
-
 std::string AFD::tipoAutomata() {
     return "AFD";
 }
